@@ -5,7 +5,6 @@ const Dashboard = () => {
 
     return(
         <div>
-            
             <h1>ha ur gay </h1>
         </div>
     )
