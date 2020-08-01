@@ -42,7 +42,16 @@ async function main(){
 main().catch(console.error);
 
 async function addSomething(client){
-    client.db('HabitApp').collection('Test').insertOne({hi:'hi'});  
+    doc = {hi:'hi'};
+    client.db('HabitApp').collection('Test').insertOne(doc, function(error, response){
+        if(error) {
+            console.log('Error occurred while inserting');
+           // return 
+        } else {
+           console.log('inserted record', response);
+          // return 
+        }
+    });  
  
     console.log("Databases:");
 };
@@ -50,6 +59,15 @@ async function addSomething(client){
 
 const PORT = process.env.PORT || 5000;
 
+io.on('connection', function(socket) {
+
+    socket.on('join', function() {
+    });
+  
+
+  
+
+});
 
 
 app.use(router);
