@@ -12,16 +12,16 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import TopMenu from './component/TopMenu'
 import Routine from './component/routine'
+import { useSelector, useDispatch } from 'react-redux';
+import * as test from '../../actions/retHabitInfo'
 
 
 const Dashboard = () => {
+    const dispatch = useDispatch()
 
     const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
     useEffect(() => {
-        const retRoutines = () => {
-            let routines;
-            return 'hi'
-        }
+        dispatch(test.retTest())
     }, [])
     return(
         <div>
