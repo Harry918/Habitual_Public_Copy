@@ -74,7 +74,7 @@ const Auth = () => {
                 <Grid item xs={12}>
                 <Button onClick={(event) => {logValues(event)}} variant="contained">LOG IN WITH GOOGLE</Button>
                 </Grid>
-                <h3>OR</h3>
+                <h3 className={classes.pad}>OR</h3>
                 <Grid item xs={12}>
                     <TextField required className={classes.user} placeholder="User" onChange={(event) => {changeValue(event, 'user')}}/>
                 </Grid>
