@@ -69,6 +69,11 @@ io.on('connection', function(socket) {
 
 });
 
+app.get("/getUsers", function(req, res) {
+    //add the ret from db here
+    res.send("test")
+})
+
 
 app.use(router);
 
