@@ -57,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
     inputRoot: {
       color: 'inherit',
     },
+    bar: {
+      marginBottom: 20
+    },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
@@ -76,7 +79,7 @@ const TopMenu = () => {
     const classes = useStyles();
     return(
         <div>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.bar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             Routines

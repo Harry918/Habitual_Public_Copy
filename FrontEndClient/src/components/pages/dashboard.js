@@ -11,6 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import TopMenu from './component/TopMenu'
+import Routine from './component/routine'
 
 
 const Dashboard = () => {
@@ -22,10 +23,11 @@ const Dashboard = () => {
             return 'hi'
         }
     }, [])
-    console.log(routines)
     return(
         <div>
              <TopMenu />
+             <Routine
+                routines={routines}/>
         </div>
     )
 }
