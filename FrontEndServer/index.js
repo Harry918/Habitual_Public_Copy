@@ -6,32 +6,32 @@ const router = require('./router');
 
 const app = express();
 const server = http.createServer(app);
+require('dotenv').config();
 
 const io = socketio(server);
 const {MongoClient} = require('mongodb');
-/*const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://Anyone:<password>@cluster0.7u46e.mongodb.net/<dbname>?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  console.log('whatsup')
-  collection.insertOne({stuff: 'hello'});
-  client.close();
-});*/
 async function main(){
-    const uri = "mongodb+srv://Anyone:anyonepass@cluster0.7u46e.mongodb.net/HabitApp?retryWrites=true&w=majority";
- 
+    const uri = process.env.MONGO_URI;
 
-    const client = new MongoClient(uri, { useUnifiedTopology: true } );
- 
+
+   
+    var client
     try {
-        // Connect to the MongoDB cluster
+        client = new MongoClient(uri, { useUnifiedTopology: true } );
         await client.connect();
- 
-        // Make the appropriate DB calls
-        await  addSomething(client);
- 
+        await incrementCoutner(client);
+        console.log('\x1b[32m','[mongo] connected');
+        console.log('\x1b[40m');
+        console.log('\x1b[37m');
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+    try {
+        client = new MongoClient(uri, { useUnifiedTopology: true } );
+        await client.connect();
+        await printServerStarts(client);
     } catch (e) {
         console.error(e);
     } finally {
@@ -40,20 +40,58 @@ async function main(){
 }
 
 main().catch(console.error);
-
-async function addSomething(client){
+async function incrementCoutner(client){
+    query = {numStarts: {$exists: true}}
+    update = { $inc: { numStarts:1 } }
+    client.db('HabitApp').collection('Test').updateOne(query, update, (function(err, doc){
+        if(err) 
+        {
+            console.log('error occured while searching');
+            console.log(err);
+        }
+    }));
+}
+async function printServerStarts(client){
+    query = {numStarts: {$exists: true}}
+    client.db('HabitApp').collection('Test').findOne(query, function(err, doc){
+        if(err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            console.log('The server has been started', doc.numStarts, 'times');
+        }
+    });
+}
+/*async function addSomething(client){
     doc = {hi:'hi'};
     client.db('HabitApp').collection('Test').insertOne(doc, function(error, response){
         if(error) {
             console.log('Error occurred while inserting');
-           // return 
+           // return
         } else {
            console.log('inserted record', response);
-          // return 
+          // return
         }
-    });  
- 
+    });
+
     console.log("Databases:");
+};*/
+async function findHi(client){
+    client.db('HabitApp').collection('Test').find().toArray(function(err, docs){
+        if(err)
+        {
+            console.log('error occured while searching');
+            console.log(err);
+        }
+        else
+        {
+            console.log("retrieved records:");
+            console.log(docs);
+        }
+      
+    });
 };
 
 
@@ -63,9 +101,9 @@ io.on('connection', function(socket) {
 
     socket.on('join', function() {
     });
-  
 
-  
+
+
 
 });
 
