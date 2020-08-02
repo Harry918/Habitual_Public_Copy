@@ -10,24 +10,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import TopMenu from './component/TopMenu'
 
 
-const Dashboard = () => {
-
-    const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
-    useEffect(() => {
-        const retRoutines = () => {
-            let routines;
-            return 'hi'
-        }
-    }, [])
-    console.log(routines)
+const Routine = ({routines}) => {
     return(
         <div>
-             <TopMenu />
         </div>
     )
 }
 
-export default Dashboard
+export default Routine
