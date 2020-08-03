@@ -115,22 +115,22 @@ const Auth = () => {
         <div>
             <div className={classes.back}>
                 <h1 className={classes.pad}>Login</h1>
-<<<<<<< HEAD
+
                 <Button className={classes.test} onClick={(event) => {logValues(event)}} variant="contained">SIGN UP</Button>
 
                 <Button className={classes.test} onClick={googleLogin} variant="contained">LOG IN WITH GOOGLE</Button>
                 <h3 className={classes.pad}>OR</h3>
-=======
+
                 <Grid item xs={12}>
                 <Button onClick={(event) => {logValues(event)}} variant="contained">LOG IN WITH GOOGLE</Button>
                 </Grid>
                 <h3 className={classes.pad}>OR</h3>
                 <Grid item xs={12}>
->>>>>>> b48d59a312bdc491a9ed042283aa152c993ffe31
+
                     <TextField required className={classes.user} placeholder="User" onChange={(event) => {changeValue(event, 'user')}}/>
                     <TextField required className={classes.pass} placeholder="Password" onChange={(event) => {changeValue(event, 'pass')}}/>
                 <Button className={classes.test} onClick={logValues} variant="contained">LOG IN</Button>
-                    
+                </Grid>  
             </div>
         </div>
     )

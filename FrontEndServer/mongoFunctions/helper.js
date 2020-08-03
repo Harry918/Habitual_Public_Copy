@@ -80,7 +80,7 @@ async function findHi(client){
       
     });
 };
-/*async function createUserDoc(uid, email){
+async function createUserDoc(uid, email){
     console.log('creating user');
     try {
         let client = new MongoClient(uri, { useUnifiedTopology: true } );
@@ -104,5 +104,5 @@ async function findHi(client){
     } finally {
         await client.close();
     }
-};*/
-module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi  };
+};
+module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc  };
