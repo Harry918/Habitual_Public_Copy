@@ -45,10 +45,10 @@ export const getRoutinePosts = () => async dispatch => {
     }
 }
 
-export const createRoutine = () => async dispatch => {
+export const createRoutine = (title, desc, pub, file) => async dispatch => {
     try{
         // dispatch({type: 'ROUTINE_POSTS_START'})
-        let url = 'http://localhost:5000/createRoutine?uid=harry&title=wakingup&description=somethingcool&public=true'
+        let url = 'http://localhost:5000/createRoutine?uid=timothyzhu&title=beingcute&description=wannabeascuteasrtim&public=false'
         const response = await axios.get(url)
         console.log(response)
         dispatch({type: 'ROUTINE_POSTS_SUCCESS', payload: response.data})
@@ -74,6 +74,22 @@ export const getPhoto = (callback) => async dispatch => {
         {
             callback(response.data)
         }
+    }
+    catch(err)
+    {
+        console.log(err)
+        // dispatch({type: 'ROUTINE_POSTS_SUCCESS'})
+    }
+}
+
+export const joinRoutine = () => async dispatch => {
+    //uid routineID
+    try{
+        // dispatch({type: 'ROUTINE_POSTS_START'})
+        let url = 'http://localhost:5000/joinRoutine?uid=7ffgf&routineid=1000'
+        const response = await axios.get(url)
+        console.log(response)
+        dispatch({type: 'ROUTINE_POSTS_SUCCESS', payload: response.data})
     }
     catch(err)
     {

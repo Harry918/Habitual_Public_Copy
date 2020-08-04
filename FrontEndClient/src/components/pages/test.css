@@ -1,0 +1,47 @@
+html {
+	height: 100%;
+	background: RGB(205, 209, 206);
+		background-size:     cover;                      /* <------ */
+		background-repeat:   no-repeat;
+        background-position: center center;    
+}
+
+/* .back{
+    height: 100%;
+	background: linear-gradient(180deg, #FFC0CB 30%, #00FFFF 70%);
+		background-size:     cover;                      
+		background-repeat:   no-repeat;
+        background-position: center center;    
+    display: grid;    
+} */
+
+
+.wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr;
+
+}
+
+.box1{
+    grid-column: 1/4 ;
+    height: 20%;
+    text-align: center;
+}
+
+.box2{
+    height: 20%;
+    grid-column: 1/4 ;
+
+    text-align: center;
+}
+
+.box3{
+    height: 20%;
+    text-align: center;
+}
+
+.box4{
+    height: 20%;
+    text-align: center;
+}

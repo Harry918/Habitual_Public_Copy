@@ -30,22 +30,22 @@ const Dashboard = () => {
     const [dialog, setDialog] = useState(false)
     const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
     useEffect(() => {
-        // dispatch(test.getPublicRoutines())
-        dispatch(test.getPhoto((blob) => {
-            if(blob)
-            {
-            console.log(blob)
-              var base64data
-            const url = window.URL.createObjectURL(new Blob([blob]))
-              const fileReaderInstance = new FileReader();
-               fileReaderInstance.readAsDataURL(blob);
-               fileReaderInstance.onload = () => {
-                   base64data = fileReaderInstance.result;
-                   document.getElementById('frame').src = base64data
-                   console.log(document.getElementById('frame').src)
-                 }
-          }
-          }))
+        // dispatch(test.joinRoutine())
+        // dispatch(test.getPhoto((blob) => {
+        //     if(blob)
+        //     {
+        //       console.log(blob)
+        //       var base64data
+        //     const url = window.URL.createObjectURL(new Blob([blob]))
+        //     const fileReaderInstance = new FileReader();
+        //     fileReaderInstance.readAsDataURL(blob);
+        //     fileReaderInstance.onload = () => {
+        //         base64data = fileReaderInstance.result;
+        //         document.getElementById('frame').src = base64data
+        //         return base64data
+        //       }
+        //   }
+        //   }))
     }, [])
     const openDialog = () => {
         setDialog(true)
@@ -62,11 +62,6 @@ const Dashboard = () => {
         </div>
     )
 }
-//hi guys
-//wssp
+
 export default Dashboard
 
-//title 
-// description
-// public
-// photo

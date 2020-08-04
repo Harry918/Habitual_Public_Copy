@@ -95,6 +95,18 @@ app.get("/getPublicRoutines", (req, res) => {
     })
     
 })
+app.get("/joinRoutine", (req, res) => {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin',  req.headers.origin);
+    res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response =  mongo.joinRoutine(req.query.uid, req.query.routineid, (result) => {
+        console.log(result)
+        res.send(result);
+    })
+    
+})
 app.get("/getPhoto", (req, res) => {
 
     res.header('Access-Control-Allow-Credentials', true);
@@ -102,15 +114,15 @@ app.get("/getPhoto", (req, res) => {
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
     AWS.config.update({
-        accessKeyId: "AKIAI5KWJTOWMR55KNEA",
-        secretAccessKey: "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"
+        accessKeyId: process.env.ACCESS_KEY_ID,
+        secretAccessKey: process.env.SECRET_ACCESS_KEY
       });
     let s3 = new AWS.S3();
     async function getImage(){
         const data =  s3.getObject(
           {
-              Bucket: 'test-bucket-95014',
-              Key: 'folder/1596477588953_image.png'
+              Bucket: 'habitapp-photos',
+              Key: 'yourin.png'
             }
           
         ).promise();
@@ -118,8 +130,9 @@ app.get("/getPhoto", (req, res) => {
     }
     getImage()
       .then((img)=>{
-        console.log(img)
-        res.send(img.Body)
+        res.writeHead(200, {'Content-Type': 'image/png'});
+        res.write(img.Body, 'binary');
+        res.end(null, 'binary');
       }).catch((e)=>{
         res.send(e)
     })
