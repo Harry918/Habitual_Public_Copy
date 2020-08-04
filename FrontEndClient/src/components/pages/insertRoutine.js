@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const RoutineDialog = ({ dialog }) => {
+const RoutineDialog = ({ dialog, openDialog }) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const [title, setTitle] = useState('')
@@ -118,7 +118,7 @@ const RoutineDialog = ({ dialog }) => {
         <Grid container>
             <Dialog aria-labelledby="customized-dialog-title" open={dialog} maxWidth = {'sm'} fullWidth={true} maxHeight = {'md'} fullHeight={true}>
                 <Grid className={classes.close}>
-                    <Button><CloseRoundedIcon/></Button>
+                    <Button onClick={openDialog}><CloseRoundedIcon/></Button>
                 </Grid>
                 
                 <Grid container jusitfyContent="center" direction="column" className={classes.dialog}>

@@ -48,7 +48,7 @@ const Dashboard = () => {
         //   }))
     }, [])
     const openDialog = () => {
-        setDialog(true)
+        setDialog(!dialog)
     }
     console.log(dialog)
     return(
@@ -58,7 +58,7 @@ const Dashboard = () => {
              <Routine
                 routines={routines}/>
          <Button variant="contained" onClick={openDialog} color="primary">+</Button>
-         <RoutineDialog dialog={dialog} />
+         <RoutineDialog dialog={dialog} openDialog={openDialog}/>
         </div>
     )
 }
