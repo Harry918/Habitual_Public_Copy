@@ -58,7 +58,8 @@ const useStyles = makeStyles((theme) => ({
       color: 'inherit',
     },
     bar: {
-      marginBottom: 20
+      marginBottom: 20,
+      // background: 'black'
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),

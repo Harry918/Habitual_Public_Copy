@@ -7,27 +7,27 @@ async function connectToMongo(){
     try {
         client = new MongoClient(uri, { useUnifiedTopology: true } );
         await client.connect();
-        await incrementCoutner(client);
+        await incrementCoutner();
         console.log('\x1b[32m','[mongo] connected');
         console.log('\x1b[40m');
         console.log('\x1b[37m');
     } catch (e) {
         console.error(e);
     } finally {
-        await client.close();
+        //await client.close();
     }
     //read server start counter
     try {
         client = new MongoClient(uri, { useUnifiedTopology: true } );
         await client.connect();
-        await printServerStarts(client);
+        await printServerStarts();
     } catch (e) {
         console.error(e);
     } finally {
-        await client.close();
+        //await client.close();
     }
 }
-async function incrementCoutner(client){
+async function incrementCoutner(){
     query = {numStarts: {$exists: true}}
     update = { $inc: { numStarts:1 } }
     client.db('HabitApp').collection('Test').updateOne(query, update, (function(err, doc){
@@ -38,7 +38,7 @@ async function incrementCoutner(client){
         }
     }));
 }
-async function printServerStarts(client){
+async function printServerStarts(){
     query = {numStarts: {$exists: true}}
     client.db('HabitApp').collection('Test').findOne(query, function(err, doc){
         if(err)
@@ -81,13 +81,15 @@ async function findHi(client){
     });
 };
 async function createUserDoc(uid, email){
-    console.log('creating user');
+    console.log('creating user with id', uid, 'and email', email);
     try {
-        let client = new MongoClient(uri, { useUnifiedTopology: true } );
-        await client.connect();
+        //let client = new MongoClient(uri, { useUnifiedTopology: true } );
+        //await client.connect();
         doc = {
-            uid:uid,
-            email:email
+            _id:uid,
+            email:email,
+            username: '',
+            routines: []
         };
         client.db('HabitApp').collection('Users').insertOne(doc, function(error, response){
             if(error) {
@@ -102,7 +104,73 @@ async function createUserDoc(uid, email){
     } catch (e) {
         console.error(e);
     } finally {
-        await client.close();
+        //await client.close();
     }
 };
-module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc  };
+async function createRoutine(uid, title, description, public, callback){
+    console.log('creating Routine');
+    let routineID
+    routineDoc = {
+        creator: uid,
+        title: title,
+        description: description,
+        numPeople: 1,
+        public: public,
+        picturekey: ''
+    }
+    try{
+        //let client = new MongoClient(uri, { useUnifiedTopology: true } );
+        //await client.connect();
+        client.db('HabitApp').collection('Routines').insertOne(routineDoc, function(error, response){
+            if(error) {
+                console.log('Error occurred while inserting');
+                console.log(error);
+                return error;
+            } else {
+               routineID = response.ops[0]._id;
+               console.log('inserted record with id: ', routineID);
+               if(callback){
+                   callback(routineID)
+               }
+            }
+        });
+    } catch (e) {
+        console.error(e);
+    } finally {
+        //await client.close();
+    }
+    
+}
+async function getPublicRoutines(callback){
+    console.log('retreiving public routines')
+    query = {public :{$eq: 'true'}}
+    let publicRoutines
+    //let client = new MongoClient(uri, { useUnifiedTopology: true});
+    //await client.connect();
+    client.db('HabitApp').collection('Routines').find(query).toArray(function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        if(callback){
+            callback(result)
+        }
+    });  
+    
+}
+async function joinRoutine(uid, routineid, callback)
+{
+    console.log("joining routine of routineid", routineid, 'with uid', uid)
+    update = { $addToSet : { routines: routineid}}
+    query = {_id: uid}
+    client.db('HabitApp').collection('Users').updateOne(query, update, function(err, doc){
+        if(err) 
+        {
+            console.log('error occured while searching');
+            console.log(err);
+        }
+        //console.log(doc)
+        if(callback){
+            callback('routine joined')
+        }
+    })
+}
+module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine};
