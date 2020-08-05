@@ -13,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import logo from './mountain.PNG';
 import Typography from '@material-ui/core/Typography';
 import 'fontsource-roboto';
+import 'fontsource-raleway';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,8 +43,9 @@ const useStyles = makeStyles((theme) => ({
     uploadbutton: {
         ///marginTop: 10, 
         //fontSize: 20,
-        color: '#F3EFF5!important',
-        background: 'linear-gradient(45deg, #535865 30%, #454955 90%)',
+        color: 'linear-gradient(45deg, #535865 30%, #454955 90%)',
+        borderWidth: 1,
+        borderColor: '#454955',
         marginTop:20,
         paddingLeft:60,
         paddingRight:60,
@@ -65,14 +67,14 @@ const useStyles = makeStyles((theme) => ({
         //...StyleSheet.absoluteFillObject
         
         backgroundColor: 'transparent',
-        maxWidth: '200px',
+        maxWidth: '300px',
         //maxHeight: 50,
         //margin: 15,
     },
     header: {
         alignSelf: 'center',
-        fontSize:50,
-        fontFamily:'Roboto',
+        fontSize:35,
+        fontFamily:'raleway',
         //margin: 15,
         //marginLeft:45
     },
@@ -112,6 +114,7 @@ const RoutineDialog = ({ dialog, openDialog }) => {
         // dispatch(test.sendFile(temp.userID, fd))
     }
     const createRoutine = () => {
+        console.log("here")
     dispatch(test.createRoutine(title, desc, pub, file))
     }
     return (
@@ -123,7 +126,7 @@ const RoutineDialog = ({ dialog, openDialog }) => {
                 
                 <Grid container jusitfyContent="center" direction="column" className={classes.dialog}>
                     <Typography variant="h2" className={classes.header}>Create a Routine</Typography>
-                    <img src={logo} alt="Logo" className={classes.greetingImage}/>
+                    
                     <TextField id="standard-multiline-flexible" label="Title" placeholder="title" onChange={(e) => { changeText(e, 'title') }} className={classes.title} />
                     <TextField
                         id="outlined-textarea"
@@ -137,7 +140,7 @@ const RoutineDialog = ({ dialog, openDialog }) => {
                     <Grid container direction="row" jusitfyContent="space-between">
                         <Grid item xs={12} sm={6}>
                             <Button variant="outlined" component="label"  className={classes.uploadbutton}>
-                                Upload File
+                                Upload a Photo
                                 <input type="file"onChange={upload} style={{ display: "none" }}/>
                             </Button>
                         </Grid>
@@ -145,7 +148,7 @@ const RoutineDialog = ({ dialog, openDialog }) => {
                             <FormControlLabel control={<Checkbox name="checkedA" onChange={(e) => { changeText(e, 'public') }} />} label="Make Routine Private" className={classes.checkbox}/>
                         </Grid>
                     </Grid>
-                    <Button variant="outlined" className={classes.submitbutton} component="label" onPress={createRoutine}>
+                    <Button variant="outlined" className={classes.submitbutton} component="label" onClick={createRoutine}>
                          Submit
                     </Button>
                     {/* public */}

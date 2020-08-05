@@ -24,6 +24,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { useSelector, useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,44 +52,57 @@ const useStyles = makeStyles((theme) => ({
 
 
 const Routine = ({routines}) => {
-    console.log(routines)
-    const classes = useStyles();
-    let description = "This is a test description"
-    return(
-        <Grid container spacing={1}>
-        {routines.map((item, i) => (
-                <List key={i} style={{display: 'flex', justifyContent: 'center'}}>
-                    <Grid container item xs={12} spacing={3}>
-                    <Card className={classes.root}>
-                        <CardHeader
-                            avatar={
-                            <Avatar aria-label="recipe" className={classes.avatar}>
-                                R
-                            </Avatar>
-                            }
-                            action={
-                            <IconButton aria-label="settings">
-                                <MoreVertIcon />
-                            </IconButton>
-                            }
-                            title={item}
-                            subheader="September 14, 2016"
-                        />
-                        <CardMedia
-                            className={classes.media}
-                            image="/static/images/cards/paella.jpg"
-                            title="Paella dish"
-                        />
-                        <CardContent>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                            {description}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                    </Grid>
-                </List>
-            ))}
-            </Grid>
+  console.log(routines)
+  const classes = useStyles();
+  let description = "This is a test description"
+  const images = useSelector(state => state.images)
+  
+  const renderImages = (image) => {
+    console.log("line 68")
+    var base64data
+    const url = window.URL.createObjectURL(new Blob([image]))
+    const fileReaderInstance = new FileReader();
+    fileReaderInstance.readAsDataURL(image);
+    fileReaderInstance.onload = () => {
+      base64data = fileReaderInstance.result;
+      document.getElementById('frame').src = base64data
+      console.log(base64data)
+      return base64data
+    }
+  }
+  return(
+      <Grid container spacing={1}>
+      {routines.map((item, i) => (
+              <List key={i} style={{display: 'flex', justifyContent: 'center'}}>
+                  <Grid container item xs={12} spacing={3}>
+                  <Card className={classes.root}>
+                      <CardHeader
+                          avatar={
+                          <Avatar aria-label="recipe" className={classes.avatar}>
+                              R
+                          </Avatar>
+                          }
+                          action={
+                          <IconButton aria-label="settings">
+                              <MoreVertIcon />
+                          </IconButton>
+                          }
+                          title={item.title}
+                          subheader="September 14, 2016"
+                      />
+                      <iframe
+                          id={`iframe ${i}`}
+                      />
+                      <CardContent>
+                          <Typography variant="body2" color="textSecondary" component="p">
+                          {item.description}
+                          </Typography>
+                      </CardContent>
+                  </Card>
+                  </Grid>
+              </List>
+          ))}
+      </Grid>
     )
 }
 

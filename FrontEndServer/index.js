@@ -10,6 +10,19 @@
 */
 
 const AWS = require('aws-sdk');
+const fs = require('fs');
+const fileType = require('file-type');
+const bluebird = require('bluebird');
+const multiparty = require('multiparty');
+AWS.config.update({
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY
+});
+
+AWS.config.setPromisesDependency(bluebird);
+const s3 = new AWS.S3();
+
+
 const express = require('express');
 //express is being used for FrontEndServer
 const socketio = require('socket.io');
@@ -77,7 +90,8 @@ app.get("/createRoutine", (req, res) => {
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
     let result;
-    const response =  mongo.createRoutine(req.query.uid, req.query.title, req.query.description, req.query.public, (recordID) => {
+    console.log('recieved request');
+    const response =  mongo.createRoutine(req.query.uid, req.query.title, req.query.description, req.query.public, req.query.picturekey, (recordID) => {
         console.log(recordID)
         res.send(recordID);
     })
@@ -107,6 +121,31 @@ app.get("/joinRoutine", (req, res) => {
     })
     
 })
+
+app.post('/uploadImg', (req, res) => {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin',  req.headers.origin);
+    res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+   
+    const form = new multiparty.Form();
+      form.parse(req, async (error, fields, files) => {
+        if (error) throw new Error(error);
+        try {
+          const path = files.file[0].path;
+          const buffer = fs.readFileSync(path);
+          const type = await fileType.fromBuffer(buffer);
+          const timestamp = Date.now().toString();
+          const fileName = `bucketFolder/${timestamp}-lg`;
+          const data = await uploadFile(buffer, fileName, type);
+          return res.status(200).send(data);
+        } catch (error) {
+            console.log(error)
+          return res.status(400).send(error);
+        }
+    });
+});
 app.get("/getPhoto", (req, res) => {
 
     res.header('Access-Control-Allow-Credentials', true);
@@ -122,7 +161,7 @@ app.get("/getPhoto", (req, res) => {
         const data =  s3.getObject(
           {
               Bucket: 'habitapp-photos',
-              Key: 'yourin.png'
+              Key: req.query.key
             }
           
         ).promise();
@@ -137,14 +176,18 @@ app.get("/getPhoto", (req, res) => {
         res.send(e)
     })
 })
-/*app.get("/sendPhoto", (req, res) => {
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Origin',  req.headers.origin);
-    res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
-})*/
+const uploadFile = (buffer, name, type) => {
+    const params = {
+        ACL: 'public-read-write',
+        Body: buffer,
+        Bucket: 'habitapp-photos',
+        ContentType: type.mime,
+        Key: `${name}.${type.ext}`
+    };
+    return s3.upload(params).promise();
+};
 
-
+  
 
 app.use(router);
 

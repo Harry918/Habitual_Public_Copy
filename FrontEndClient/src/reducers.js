@@ -1,6 +1,7 @@
 const initalState = {
     loading: false,
-    routines: []
+    routines: [],
+    images: []
 }
 
 function PublicReducers(state=initalState, action) {
@@ -17,6 +18,8 @@ function PublicReducers(state=initalState, action) {
             return{...state, loading: false, routines: action.payload}
         case 'ROUTINE_POSTS_FAILURE':
             return {...state, loading: false}
+        case 'GET_PIC_SUCCESS':
+            return {...state, images: action.payload}
         default: 
             return{...state}
     }

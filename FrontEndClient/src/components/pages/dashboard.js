@@ -28,9 +28,12 @@ async function upload(event) {
 const Dashboard = () => {
     const dispatch = useDispatch()
     const [dialog, setDialog] = useState(false)
-    const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
+    const routines = useSelector(state => state.routines)
+    const temp = useSelector(state => state)
+    console.log(temp)
+    // const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
     useEffect(() => {
-        // dispatch(test.joinRoutine())
+        dispatch(test.getPublicRoutines())
         // dispatch(test.getPhoto((blob) => {
         //     if(blob)
         //     {

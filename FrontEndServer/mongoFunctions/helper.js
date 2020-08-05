@@ -107,7 +107,7 @@ async function createUserDoc(uid, email){
         //await client.close();
     }
 };
-async function createRoutine(uid, title, description, public, callback){
+async function createRoutine(uid, title, description, public, picturekey, callback){
     console.log('creating Routine');
     let routineID
     routineDoc = {
@@ -116,7 +116,7 @@ async function createRoutine(uid, title, description, public, callback){
         description: description,
         numPeople: 1,
         public: public,
-        picturekey: ''
+        picturekey: picturekey
     }
     try{
         //let client = new MongoClient(uri, { useUnifiedTopology: true } );
@@ -173,4 +173,17 @@ async function joinRoutine(uid, routineid, callback)
         }
     })
 }
-module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine};
+
+const uploadFile = (buffer, name, type) => {
+    const params = {
+      ACL: 'public-read',
+      Body: buffer,
+      Bucket: 'habitapp-photos',
+      ContentType: type.mime,
+      Key: `${name}.${type.ext}`
+    };
+    return s3.upload(params).promise();
+  };
+
+
+module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile};
