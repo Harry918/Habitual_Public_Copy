@@ -7,14 +7,13 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 
 
-// todo: get rid of margins around the page, reformat image size/shape, make post text wrap
+// todo: get rid of margins around the page, reformat image size/shape, make post text wrap (when word is long)
 
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
-      overflow: 'hidden',
      
 
     },
@@ -70,11 +69,20 @@ const useStyles = makeStyles((theme) => ({
       },
       test3: {
         float: 'left',
+        borderRadius: '50%',
+        width: 150
 
       },
 
     
   }));
+
+
+const message = `Truncation should be conditionally applicable on this long line of text
+as this is a much longer line than what the container can support. Truncation should be conditionally applicable on this long line of text
+as this is a much longer line than what the container can support. Truncation should be conditionally applicable on this long line of text
+as this is a much longer line than what the container can support. Truncation should be conditionally applicable on this long line of text
+as this is a much longer line than what the container can support. `;
 
 
 const Routine = () => {
@@ -91,9 +99,7 @@ const Routine = () => {
                         <Grid container spacing={0}>
                             <Grid item xs={12}>
                                 <Paper className={classes.test}>
-                                    <div className={classes.test3}>
-                                    <   img src = "https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies" style={{width:150}}></img>
-                                    </div>
+                                    < img src = "https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies"  className={classes.test3}></img>
                                     <h1 className={classes.test2}> Routine Name</h1>
                                     img + routine name + join
                                 </Paper>
@@ -109,7 +115,7 @@ const Routine = () => {
                                             <Avatar>W</Avatar>
                                         </Grid>
                                         <Grid item xs>
-                                            <Typography>{"Post"}</Typography>
+                                            <Typography>{message}</Typography>
                                         </Grid>
                                     </Grid>
                                 </Paper>
@@ -145,7 +151,7 @@ const Routine = () => {
                                             <Avatar>W</Avatar>
                                         </Grid>
                                         <Grid item xs>
-                                            <Typography>{"Posdddddsfsfsdfsfasdfsafsaasdadsadasdsaddadasdsadaadl;kfjaskiflhsafhvjikludsfghdksaulhfdsjklghsdfgdsgdsfgdsfgdsfgfdsgdsgdsgfdsgfdsgsdfgsdfgfdsgfdsjlkhfgdsflkjgt"}</Typography>
+                                            <Typography>{message}</Typography>
                                         </Grid>
                                     </Grid>
                                 </Paper>
