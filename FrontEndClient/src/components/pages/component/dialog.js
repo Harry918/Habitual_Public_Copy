@@ -61,13 +61,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-const Routine = ({ routines }) => {
+const Routine = () => {
   const classes = useStyles();
   let description = "This is a test description"
   const images = useSelector(state => state.images)
-  console.log(images)
-
+  const routines = useSelector(state => state.routines)
+  
   // const renderImages = (image) => {
   //   console.log("line 68")
   //   var base64data

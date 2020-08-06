@@ -19,6 +19,7 @@ import RoutineDialog from './insertRoutine'
 import { NeuButton } from "neumorphism-react";
 
 async function upload(event) {
+    console.log(event.target.files[0])
     const fd = new FormData();
     const file = event.target.files[0]
     fd.append('file', file, file.name)
@@ -26,41 +27,24 @@ async function upload(event) {
     // dispatch(documents.sendFile(temp.userID, fd))
 }
 
-const Dashboard = () => {
+const Dashboard = React.memo(() => {
     const dispatch = useDispatch()
     const [dialog, setDialog] = useState(false)
     const routines = useSelector(state => state.routines)
+    const update = useSelector(state => state.update)
     const temp = useSelector(state => state)
-    console.log(temp)
     // const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
     useEffect(() => {
         dispatch(test.getPublicRoutines())
-        // dispatch(test.getPhoto((blob) => {
-        //     if(blob)
-        //     {
-        //       console.log(blob)
-        //       var base64data
-        //     const url = window.URL.createObjectURL(new Blob([blob]))
-        //     const fileReaderInstance = new FileReader();
-        //     fileReaderInstance.readAsDataURL(blob);
-        //     fileReaderInstance.onload = () => {
-        //         base64data = fileReaderInstance.result;
-        //         document.getElementById('frame').src = base64data
-        //         return base64data
-        //       }
-        //   }
-        //   }))
-    }, [])
+    }, [update])
     const openDialog = () => {
         setDialog(!dialog)
     }
-    console.log(dialog)
     return (
         <div>
             <TopMenu />
             <iframe id="frame" frameborder="0"></iframe>
-            <Routine
-                routines={routines} />
+            <Routine />
             <NeuButton
                 width="50px"
                 height="50px"
@@ -73,7 +57,7 @@ const Dashboard = () => {
             <RoutineDialog dialog={dialog} openDialog={openDialog} />
         </div>
     )
-}
+})
 
 export default Dashboard
 
