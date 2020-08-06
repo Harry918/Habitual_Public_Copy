@@ -53,11 +53,11 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const Routine = ({routines}) => {
+const Routine = () => {
   const classes = useStyles();
   let description = "This is a test description"
   const images = useSelector(state => state.images)
-  console.log(images)
+  const routines = useSelector(state => state.routines)
   
   // const renderImages = (image) => {
   //   console.log("line 68")
@@ -76,7 +76,6 @@ const Routine = ({routines}) => {
       {images.map((item, i) => (
               <List key={i} style={{display: 'flex', justifyContent: 'center'}}>
                   <Grid container item xs={12} spacing={3}>
-                    <Slide bottom collapse>
                   <Card className={classes.root}>
                       <CardHeader
                           avatar={
@@ -101,7 +100,6 @@ const Routine = ({routines}) => {
                           </Typography>
                       </CardContent>
                   </Card>
-                  </Slide>
                   </Grid>
               </List>
           ))}

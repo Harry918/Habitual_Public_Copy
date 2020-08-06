@@ -116,6 +116,7 @@ const RoutineDialog = ({ dialog, openDialog }) => {
     const createRoutine = () => {
         console.log("here")
     dispatch(test.createRoutine(title, desc, pub, file))
+    openDialog(!dialog)
     }
     return (
         <Grid container>
