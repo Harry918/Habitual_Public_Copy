@@ -62,13 +62,13 @@ const Dashboard = () => {
             <Routine
                 routines={routines} />
             <NeuButton
-                width="150px"
-                height="100px"
+                width="50px"
+                height="50px"
                 onClick={openDialog}
                 color="#DEE2E6"
                 radius={10}
             >
-               Add Routine
+               +
             </NeuButton>
             <RoutineDialog dialog={dialog} openDialog={openDialog} />
         </div>

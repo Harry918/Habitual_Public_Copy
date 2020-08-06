@@ -15,8 +15,8 @@ const fileType = require('file-type');
 const bluebird = require('bluebird');
 const multiparty = require('multiparty');
 AWS.config.update({
-    accessKeyId: process.env.ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY
+    accessKeyId: '',
+    secretAccessKey: 's'
 });
 
 AWS.config.setPromisesDependency(bluebird);

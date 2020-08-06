@@ -32,7 +32,7 @@ const Post = () => {
         <div>
             <div style={{ padding: 15 }}>
 
-                <NeuDiv distance={40} radius={2}color="#DEE2E6" style={{ padding: 15 }} >
+                <NeuDiv distance={4} radius={4} color="#ffffff" style={{ padding: 15 }} >
 
                     <Grid item xs={12}>
                         <Grid container wrap="nowrap" spacing={2}>

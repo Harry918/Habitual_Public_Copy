@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import 'fontsource-roboto';
 import 'fontsource-raleway';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
+import { NeuButton } from "neumorphism-react";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -31,11 +32,7 @@ const useStyles = makeStyles((theme) => ({
         padding:30,
     },
     submitbutton: {
-        background: 'linear-gradient(15deg, #3F7D20 30%, #72B01D 90%)',
-        border: 0,
-        borderRadius: 3,
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-        color: 'white',
+        color: 'linear-gradient(15deg, #3F7D20 30%, #72B01D 90%)',
         height: 48,
         padding: '0 30px',
         marginTop: 20.
@@ -43,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     uploadbutton: {
         ///marginTop: 10, 
         //fontSize: 20,
-        color: 'linear-gradient(45deg, #535865 30%, #454955 90%)',
+        color: 'white',
         borderWidth: 1,
         borderColor: '#454955',
         marginTop:20,
@@ -139,18 +136,22 @@ const RoutineDialog = ({ dialog, openDialog }) => {
                         />
                     <Grid container direction="row" jusitfyContent="space-between">
                         <Grid item xs={12} sm={6}>
-                            <Button variant="outlined" component="label"  className={classes.uploadbutton}>
-                                Upload a Photo
-                                <input type="file"onChange={upload} style={{ display: "none" }}/>
-                            </Button>
+                            <div style={{ marginBottom: 15 }, {marginRight: 15}, {marginTop: 15}}>
+                                <Button distance={4} color="#ffffff" radius={4} style={{ padding: 15 }} component="label" >
+                                    <input type="file"onChange={upload} style={{ display: "none" }}/>
+                                    <Typography style={{color:"#454955"}}>upload a photo</Typography> 
+                                </Button>
+                            </div>
                         </Grid>
                         <Grid item container justifyContent="center" xs={12} sm={6}>
-                            <FormControlLabel control={<Checkbox name="checkedA" onChange={(e) => { changeText(e, 'public') }} />} label="Make Routine Private" className={classes.checkbox}/>
+                            <FormControlLabel style={{ margin: 15 }} control={<Checkbox name="checkedA" onChange={(e) => { changeText(e, 'public') }} />} label="Make Routine Private" className={classes.checkbox}/>
                         </Grid>
                     </Grid>
-                    <Button variant="outlined" className={classes.submitbutton} component="label" onClick={createRoutine}>
-                         Submit
-                    </Button>
+                    <div style={{ marginBottom: 15 }, {marginRight: 15}, {marginTop: 15}}>
+                        <NeuButton distance={4} color="#ffffff" radius={4} style={{ padding: 15 }} component="label" onClick={createRoutine}>
+                            <Typography style={{color:"#72B01D"}}>SUBMIT</Typography>
+                        </NeuButton>
+                    </div>
                     {/* public */}
                     {/* photo*/}
                 </Grid>

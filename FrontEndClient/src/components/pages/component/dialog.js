@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import {fade, makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -25,40 +25,49 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useSelector, useDispatch } from 'react-redux';
-import {useTransition, animated} from 'react-spring'
-import {Slide } from 'react-reveal';
+import { useTransition, animated } from 'react-spring'
+import { Slide } from 'react-reveal';
+import { NeuButton } from "neumorphism-react";
+import Image from 'react-bootstrap/Image';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      maxWidth: 345,
-      margin: 10,
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
-    expand: {
-      transform: 'rotate(0deg)',
-      marginLeft: 'auto',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: 'rotate(180deg)',
-    },
-    avatar: {
-      backgroundColor: red[500],
-    },
-  }));
+  root: {
+    maxWidth: 345,
+    margin: 10,
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
+  neubutton: {
+    padding: 15
+  },
+  image: {
+    width:400,
+    height:150
+  }
+}));
 
 
-const Routine = ({routines}) => {
+const Routine = ({ routines }) => {
   const classes = useStyles();
   let description = "This is a test description"
   const images = useSelector(state => state.images)
   console.log(images)
-  
+
   // const renderImages = (image) => {
   //   console.log("line 68")
   //   var base64data
@@ -71,42 +80,37 @@ const Routine = ({routines}) => {
   //     return base64data
   //   }
   // }
-  return(
-      <Grid container spacing={1}>
+  return (
+    <Grid container spacing={1}>
       {images.map((item, i) => (
-              <List key={i} style={{display: 'flex', justifyContent: 'center'}}>
-                  <Grid container item xs={12} spacing={3}>
-                    <Slide bottom collapse>
-                  <Card className={classes.root}>
-                      <CardHeader
-                          avatar={
-                          <Avatar aria-label="recipe" className={classes.avatar}>
-                              R
-                          </Avatar>
-                          }
-                          action={
-                          <IconButton aria-label="settings">
-                              <MoreVertIcon />
-                          </IconButton>
-                          }
-                          title={routines[i].title}
-                          subheader="September 14, 2016"
-                      />
-                      <iframe
-                          src={item}
-                      />
-                      <CardContent>
-                          <Typography variant="body2" color="textSecondary" component="p">
-                          {routines[i].description}
-                          </Typography>
-                      </CardContent>
-                  </Card>
-                  </Slide>
-                  </Grid>
-              </List>
-          ))}
-      </Grid>
-    )
+        <List key={i} style={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid container item xs={12} spacing={3}>
+            <Slide bottom collapse>
+              <div style={{ padding: 15 }}>
+                <NeuButton
+                  className={classes.neubutton}
+                  onClick={() => console.log("Button cliked !")}
+                  color="#FFFFFF"
+                >
+                  <Typography variant="h4" color="textSecondary" component="p">
+                    {routines[i].title}
+                  </Typography>
+
+                  <Image src={item} className={classes.image} fluid  />
+
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {routines[i].description}
+                  </Typography>
+
+
+                </NeuButton>
+              </div>
+            </Slide>
+          </Grid>
+        </List>
+      ))}
+    </Grid>
+  )
 }
 
 export default Routine
