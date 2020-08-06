@@ -122,7 +122,7 @@ app.get("/joinRoutine", (req, res) => {
 })
 
 app.post('/uploadImg', (req, res) => {
-    res.header('Access-Control-Allow-Credentials', true);
+   /* res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
@@ -143,7 +143,7 @@ app.post('/uploadImg', (req, res) => {
             console.log(error)
           return res.status(400).send(error);
         }
-    });
+    });*/
 });
 app.get("/createPost", (req, res) => {
     res.header('Access-Control-Allow-Credentials', true);
@@ -171,16 +171,15 @@ app.get("/getPosts", (req, res) => {
     
 })
 app.get("/getPhoto", (req, res) => {
-
+/*
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
-    // AWS.config.update({
-    //     accessKeyId:'AKIAIETAAPLUUVF6EZSQ',
-    //     secretAccessKey:'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',
-    // });
-    
+    AWS.config.update({
+        accessKeyId: '',
+        secretAccessKey: ''
+      });
     let s3 = new AWS.S3();
     async function getImage(){
         const data =  s3.getObject(
@@ -199,9 +198,9 @@ app.get("/getPhoto", (req, res) => {
         res.end(null, 'binary');
       }).catch((e)=>{
         res.send(e)
-    })
+    })*/
 })
-const uploadFile = (buffer, name, type) => {
+/*(const uploadFile = (buffer, name, type) => {
     const params = {
         ACL: 'public-read-write',
         Body: buffer,
@@ -210,7 +209,7 @@ const uploadFile = (buffer, name, type) => {
         Key: `${name}.${type.ext}`
     };
     return s3.upload(params).promise();
-};
+};*/
 
   
 

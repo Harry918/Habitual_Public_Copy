@@ -19,8 +19,6 @@ import AboutRoutine from './component/aboutRoutine'
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-
-
     },
     paper: {
         padding: theme.spacing(2),
@@ -40,8 +38,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundPosition: 'center center',
         height: 200, // change to200
         borderRadius: 0,
-
-
     },
 
     // paper2: {
