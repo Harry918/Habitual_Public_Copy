@@ -16,6 +16,7 @@ function App() {
         <Route path="/" exact component={Dashboard} />
         <Route path="/auth" exact component={Auth} />
         <Route path="/routine" exact component={Routine} />
+        <Route path="/routinePrototype" exact component={Routine} />
       </Router>
       
     </div>

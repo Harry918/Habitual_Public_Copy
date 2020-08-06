@@ -10,7 +10,6 @@ import * as test from '../../actions/retHabitInfo'
 import { useSelector, useDispatch } from 'react-redux';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from "@material-ui/core/Paper";
-import logo from './mountain.PNG';
 import Typography from '@material-ui/core/Typography';
 import 'fontsource-roboto';
 import 'fontsource-raleway';

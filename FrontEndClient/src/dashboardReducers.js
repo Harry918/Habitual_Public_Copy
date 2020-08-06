@@ -5,7 +5,7 @@ const initalState = {
     update: false
 }
 
-function PublicReducers(state=initalState, action) {
+export default function dashboardReducers(state=initalState, action) {
     switch(action.type){
         case 'PUBLIC_ROUTINES_START':
             return{...state, loading: true}
@@ -26,4 +26,3 @@ function PublicReducers(state=initalState, action) {
     }
 
 }
-export default PublicReducers

@@ -16,18 +16,19 @@ import Avatar from '@material-ui/core/Avatar';
 import { NeuButton } from "neumorphism-react";
 import 'fontsource-antic-slab';
 
+// title
+// avatar
+// picture 
+// content
 
-
-const message = `Truncation should be conditionally applicable on this long line of text as this is a much longer line than what the container can support. 
-Truncation should be conditionally applicable on this long line of text as this is a much longer line than what the container can support. 
-Truncation should be conditionally applicable on this long line of text as this is a much longer line than what the container can support. 
-Truncation should be conditionally applicable on this long line of text as this is a much longer line than what the container can support.`;
+const message = `ur mom is a hoe
+`;
 
 const useStyles = makeStyles((theme) => ({
 
 }));
 
-const Post = () => {
+const Post = ({description}) => {
     return (
         <div>
             <div style={{ padding: 15 }}>

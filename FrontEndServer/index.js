@@ -14,10 +14,7 @@ const fs = require('fs');
 const fileType = require('file-type');
 const bluebird = require('bluebird');
 const multiparty = require('multiparty');
-AWS.config.update({
-    accessKeyId:'AKIAIETAAPLUUVF6EZSQ',
-    secretAccessKey:'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',
-});
+
 AWS.config.setPromisesDependency(bluebird);
 const s3 = new AWS.S3();
 
@@ -176,10 +173,7 @@ app.get("/getPhoto", (req, res) => {
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
-    AWS.config.update({
-        accessKeyId: '',
-        secretAccessKey: ''
-      });
+  
     let s3 = new AWS.S3();
     async function getImage(){
         const data =  s3.getObject(

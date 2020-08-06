@@ -30,9 +30,7 @@ async function upload(event) {
 const Dashboard = React.memo(() => {
     const dispatch = useDispatch()
     const [dialog, setDialog] = useState(false)
-    const routines = useSelector(state => state.routines)
     const update = useSelector(state => state.update)
-    const temp = useSelector(state => state)
     // const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
     useEffect(() => {
         dispatch(test.getPublicRoutines())

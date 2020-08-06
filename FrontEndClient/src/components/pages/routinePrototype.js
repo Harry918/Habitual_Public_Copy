@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import TopMenu from './component/TopMenu'
 import { fade, makeStyles } from '@material-ui/core/styles';
 import './test.css'
@@ -9,8 +9,6 @@ import { NeuDiv } from "neumorphism-react";
 import { NeuButton } from "neumorphism-react";
 import Post from './component/post'
 import AboutRoutine from './component/aboutRoutine'
-import * as routineActions from '../../actions/routineFunctions'
-import { useSelector, useDispatch } from 'react-redux';
 
 
 
@@ -91,16 +89,8 @@ as this is a much longer line than what the container can support. Truncation sh
 as this is a much longer line than what the container can support. `;
 
 
-const Routine = (props) => {
-    const dispatch = useDispatch()
+const RoutinePrototype = () => {
     const classes = useStyles();
-    const params = props.location.state
-
-    useEffect(() => {
-        console.log(params.routine_ID)
-        dispatch(routineActions.retRoutinePosts(params.routine_ID))
-    }, [])
-
     return (
         <div>
             <TopMenu />
@@ -161,4 +151,4 @@ const Routine = (props) => {
 }
 
 
-export default Routine
+export default RoutinePrototype

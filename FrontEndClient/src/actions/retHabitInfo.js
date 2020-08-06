@@ -39,10 +39,6 @@ async function retPic(response, callback) {
     }
 }
 
-const check = ()  => {
-    console.log("here2")
-}
-
 function convertPic(callback1, res, imagesArray, arraySize, callback){
     const url = window.URL.createObjectURL(new Blob([res.data]))
     const fileReaderInstance = new FileReader();
@@ -67,30 +63,8 @@ export const getPublicRoutines = () => async dispatch => {
             let images = []
             dispatch({type: 'PUBLIC_ROUTINES_SUCCESS', payload: response.data})
             retPic(response, (imagesArray) => {
-
-                console.log("here")
                 dispatch({type: 'PUBLIC_PIC_SUCCESS', payload: imagesArray})
             })
-
-            // images = response.data.map(async id => {
-            //     const data = await retPic(id)
-            //     console.log(data)
-            //     images.push(data)
-            // })
-            // console.log(images)
-            // for (i in response.data){
-            //     let url2 = `http://localhost:5000/getPhoto?key=${response.data[i].picturekey}`
-            //     const response2 = await axios.get(url2, options)
-            //     var base64data
-            //     const url = window.URL.createObjectURL(new Blob([response2.data]))
-            //     const fileReaderInstance = new FileReader();
-            //     fileReaderInstance.readAsDataURL(response2.data);
-            //     fileReaderInstance.onloadend = () => {
-            //       const base64data = fileReaderInstance.result;
-            //       images.push(base64data)
-            //       console.log(images.length)
-            //     }
-            // }
         })
     }
     catch(err)
@@ -130,6 +104,7 @@ export const createRoutine = (title, desc, pub, file, callback) => async dispatc
               'Content-Type': 'multipart/form-data'
             }
           }).then((response) => {
+              console.log(response)
             // dispatch({type: 'ROUTINE_POSTS_SUCCESS', payload: {title: title, description: desc, public: pub}})
               console.log('title, des, pub, ', title, desc, pub)
                  let url = `http://localhost:5000/createRoutine?uid=100&title=${title}&description=${desc}&public=true&picturekey=${response.data.key}`

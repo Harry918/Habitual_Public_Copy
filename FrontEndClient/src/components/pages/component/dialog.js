@@ -29,6 +29,7 @@ import { useTransition, animated } from 'react-spring'
 import { Slide } from 'react-reveal';
 import { NeuButton } from "neumorphism-react";
 import Image from 'react-bootstrap/Image';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,23 +63,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Routine = () => {
+  let history = useHistory();
   const classes = useStyles();
   let description = "This is a test description"
-  const images = useSelector(state => state.images)
-  const routines = useSelector(state => state.routines)
+  const images = useSelector(state => state.dashboardReducers.images)
+  const routines = useSelector(state => state.dashboardReducers.routines)
+  console.log(routines)
   
-  // const renderImages = (image) => {
-  //   console.log("line 68")
-  //   var base64data
-  //   const url = window.URL.createObjectURL(new Blob([image]))
-  //   const fileReaderInstance = new FileReader();
-  //   fileReaderInstance.readAsDataURL(image);
-  //   fileReaderInstance.onload = () => {
-  //     base64data = fileReaderInstance.result;
-  //     document.getElementById('frame').src = base64data
-  //     return base64data
-  //   }
-  // }
+  const movetoNextPage = (routine_ID) => {
+    console.log(routine_ID)
+    history.push('/routine', {routine_ID: routine_ID})
+  }
   return (
     <Grid container spacing={1}>
       {routines.map((item, i) => (
@@ -88,7 +83,7 @@ const Routine = () => {
               <div style={{ padding: 15 }}>
                 <NeuButton
                   className={classes.neubutton}
-                  onClick={() => console.log("Button cliked !")}
+                  onClick={() => {movetoNextPage(routines[i]._id)}}
                   color="#FFFFFF"
                 >
                   <Typography variant="h4" color="textSecondary" component="p">

@@ -16,20 +16,44 @@ import { NeuButton } from "neumorphism-react";
 const aboutMessage = `About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros `;
 
 const useStyles = makeStyles((theme) => ({
+    test: {
+        color:'red',
+        float: 'right'
+    },
+    test2: {
+        color: 'blue',
+        float: 'left',
+    }
 
 }));
 
 const AboutRoutine = () => {
+    const classes = useStyles();
     return (
         <div>
             <div style={{ padding: 15 }}>
 
-                <NeuDiv radius={2}color="#DEE2E6" style={{ padding: 15 }} >
+                <NeuDiv revert radius={10} color="#FFFFFF" style={{ padding: 15 }} >
 
                     <Grid item xs={12}>
                         <Grid container wrap="nowrap" spacing={2}>
                             <Grid item xs>
-                                <Typography style={{color:"black"}}>{aboutMessage}</Typography>
+                                <Typography style={{ color: "black" }}>
+                                    <h2>About Community</h2>
+                                    <p>{aboutMessage}</p>
+                                    <p style={{textAlign:'center'}}>num mems</p>
+                                    <p style={{textAlign:'center'}}>Created Jan 19, 2012</p>
+                                </Typography>
+                                <NeuButton
+                                        width="150px"
+                                        height="50px"
+                                        onClick={() => console.log("Button cliked !")}
+                                        color="#FFFFFF"
+                                        distance={8}
+                                        style={{textAlign:'center'}}
+                                >
+                                        Create post
+                                </NeuButton>
                             </Grid>
                         </Grid>
                     </Grid>

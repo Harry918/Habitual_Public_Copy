@@ -235,4 +235,4 @@ const uploadFile = (buffer, name, type) => {
   };
 
 
-module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile};
+module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost};
