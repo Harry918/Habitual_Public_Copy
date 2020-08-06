@@ -27,7 +27,6 @@ async function retPic(response, callback) {
             imagesArray.push(data)
             console.log("here2")
             if(imagesArray.length === arraySize){
-                console.log(imagesArray)
                 // dispatch({type: 'PUBLIC_PIC_SUCCESS', payload: imagesArray})
                 if(callback)
                 {
@@ -50,7 +49,6 @@ function convertPic(callback1, res, imagesArray, arraySize, callback){
       const base64data = fileReaderInstance.result;
       if(callback)
         {
-            console.log(callback)
             callback(callback1, base64data, imagesArray, arraySize)
         }      
     return base64data 

@@ -81,7 +81,7 @@ const Routine = () => {
   // }
   return (
     <Grid container spacing={1}>
-      {images.map((item, i) => (
+      {routines.map((item, i) => (
         <List key={i} style={{ display: 'flex', justifyContent: 'center' }}>
           <Grid container item xs={12} spacing={3}>
             <Slide bottom collapse>
