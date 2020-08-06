@@ -1,8 +1,10 @@
 import axios from 'axios';
+let serverlink = 'http://localhost:5000'
+//let serverlink = 'http://dbe991ca5bf7.ngrok.io'
 
 export const retTest = () => async dispatch => {
     try{
-        let url = 'http://localhost:5000/createUser?uid=1111111111&email=222222'
+        let url = '/createUser?uid=1111111111&email=222222'
         const response = await axios.get(url)
         console.log(response)
     }
@@ -20,7 +22,7 @@ async function retPic(response, callback) {
             responseType: 'blob',
             headers: {'Content-Type': 'multipart/form-data'}
           }
-        let url2 = `http://localhost:5000/getPhoto?key=${response.data[i].picturekey}`
+        let url2 = `${serverlink}/getPhoto?key=${response.data[i].picturekey}`
         console.log(response.data.length)
         const response2 = await axios.get(url2, options)
         convertPic(callback, response2, imagesArray, response.data.length, (callback, data, imagesArray, arraySize) => {

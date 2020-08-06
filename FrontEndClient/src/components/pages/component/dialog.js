@@ -55,8 +55,8 @@ const useStyles = makeStyles((theme) => ({
   neubutton: {
     padding: 15
   },
-  image: {
-    width:400,
+  imageDiv: {
+    width:300,
     height:150
   }
 }));
@@ -94,9 +94,9 @@ const Routine = () => {
                   <Typography variant="h4" color="textSecondary" component="p">
                     {routines[i].title}
                   </Typography>
-
-                  <Image src={item} className={classes.image} fluid  />
-
+                  <div >
+                    <Image className={classes.imageDiv} src={item}  thumbnail />
+                  </div>
                   <Typography variant="body2" color="textSecondary" component="p">
                     {routines[i].description}
                   </Typography>
