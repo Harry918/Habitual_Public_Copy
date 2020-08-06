@@ -12,23 +12,64 @@ export const retTest = () => async dispatch => {
     }
 }
 
+async function retPic(id, callback) {
+    let imagesArray = []
+    const options = {
+        responseType: 'blob',
+        headers: {'Content-Type': 'multipart/form-data'}
+      }
+    let url2 = `http://localhost:5000/getPhoto?key=${id}`
+    const response2 = await axios.get(url2, options)
+    const url = window.URL.createObjectURL(new Blob([response2.data]))
+    const fileReaderInstance = new FileReader();
+    fileReaderInstance.readAsDataURL(response2.data);
+    fileReaderInstance.onloadend = () => {
+      const base64data = fileReaderInstance.result;
+      if(callback)
+      {
+          callback(base64data)
+      }
+      return base64data
+}
+}
+
 export const getPublicRoutines = () => async dispatch => {
     let i
-    let images = []
     dispatch({type: 'PUBLIC_ROUTINES_START'})
     try{
         let url = 'http://localhost:5000/getPublicRoutines'
         const response = await axios.get(url)
         .then(async (response) => {
+            let images = []
             dispatch({type: 'PUBLIC_ROUTINES_SUCCESS', payload: response.data})
-            for (i in response.data){
-                console.log(response.data[i].picturekey)
-                let url2 = `http://localhost:5000/getPhoto?key=${response.data[i].picturekey}`
-                const response2 = await axios.get(url2)
-                console.log(response2)
-                images.push(response2.data)
+            for(i in response.data){
+                 await retPic(response.data[i].picturekey, (data) => {
+                    images.push(data)
+                    console.log(images)
+                    dispatch({type: 'GET_PIC_SUCCESS', payload: images})
+                })
             }
-            dispatch({type: 'GET_PIC_SUCCESS', payload: images})
+
+            // images = response.data.map(async id => {
+            //     const data = await retPic(id)
+            //     console.log(data)
+            //     images.push(data)
+            // })
+            // console.log(images)
+            // for (i in response.data){
+            //     let url2 = `http://localhost:5000/getPhoto?key=${response.data[i].picturekey}`
+            //     const response2 = await axios.get(url2, options)
+            //     var base64data
+            //     const url = window.URL.createObjectURL(new Blob([response2.data]))
+            //     const fileReaderInstance = new FileReader();
+            //     fileReaderInstance.readAsDataURL(response2.data);
+            //     fileReaderInstance.onloadend = () => {
+            //       const base64data = fileReaderInstance.result;
+            //       images.push(base64data)
+            //       console.log(images.length)
+            //     }
+            // }
+                console.log(images)
         })
     }
     catch(err)

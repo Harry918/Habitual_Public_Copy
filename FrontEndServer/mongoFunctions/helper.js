@@ -174,6 +174,55 @@ async function joinRoutine(uid, routineid, callback)
     })
 }
 
+async function createPost(uid, title, content, parentRoutine, callback){
+    //title
+    //content
+    //uid
+    //photokey
+    console.log('creating Post');
+    let routineID
+    postDoc = {
+        creator: uid,
+        title: title,
+        content: content,
+        picturekey: '',
+        parentRoutine: parentRoutine
+    }
+    try{
+        //let client = new MongoClient(uri, { useUnifiedTopology: true } );
+        //await client.connect();
+        client.db('HabitApp').collection('Posts').insertOne(postDoc, function(error, response){
+            if(error) {
+                console.log('Error occurred while inserting');
+                console.log(error);
+                return error;
+            } else {
+               routineID = response.ops[0]._id;
+               console.log('inserted record with id: ', routineID);
+               if(callback){
+                   callback(routineID)
+               }
+            }
+        });
+    } catch (e) {
+        console.error(e);
+    } finally {
+        //await client.close();
+    }
+    
+}
+async function getPosts(parentRoutine, callback){
+    console.log('retreiving public posts')
+    query = {'parentRoutine' :{$eq:parentRoutine}}
+    client.db('HabitApp').collection('Posts').find(query).toArray(function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        if(callback){
+            callback(result)
+        }
+    });  
+    
+}
 const uploadFile = (buffer, name, type) => {
     const params = {
       ACL: 'public-read',

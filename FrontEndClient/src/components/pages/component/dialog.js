@@ -25,6 +25,8 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useSelector, useDispatch } from 'react-redux';
+import {useTransition, animated} from 'react-spring'
+import {Slide } from 'react-reveal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,29 +54,29 @@ const useStyles = makeStyles((theme) => ({
 
 
 const Routine = ({routines}) => {
-  console.log(routines)
   const classes = useStyles();
   let description = "This is a test description"
   const images = useSelector(state => state.images)
+  console.log(images)
   
-  const renderImages = (image) => {
-    console.log("line 68")
-    var base64data
-    const url = window.URL.createObjectURL(new Blob([image]))
-    const fileReaderInstance = new FileReader();
-    fileReaderInstance.readAsDataURL(image);
-    fileReaderInstance.onload = () => {
-      base64data = fileReaderInstance.result;
-      document.getElementById('frame').src = base64data
-      console.log(base64data)
-      return base64data
-    }
-  }
+  // const renderImages = (image) => {
+  //   console.log("line 68")
+  //   var base64data
+  //   const url = window.URL.createObjectURL(new Blob([image]))
+  //   const fileReaderInstance = new FileReader();
+  //   fileReaderInstance.readAsDataURL(image);
+  //   fileReaderInstance.onload = () => {
+  //     base64data = fileReaderInstance.result;
+  //     document.getElementById('frame').src = base64data
+  //     return base64data
+  //   }
+  // }
   return(
       <Grid container spacing={1}>
-      {routines.map((item, i) => (
+      {images.map((item, i) => (
               <List key={i} style={{display: 'flex', justifyContent: 'center'}}>
                   <Grid container item xs={12} spacing={3}>
+                    <Slide bottom collapse>
                   <Card className={classes.root}>
                       <CardHeader
                           avatar={
@@ -87,18 +89,19 @@ const Routine = ({routines}) => {
                               <MoreVertIcon />
                           </IconButton>
                           }
-                          title={item.title}
+                          title={routines[i].title}
                           subheader="September 14, 2016"
                       />
                       <iframe
-                          id={`iframe ${i}`}
+                          src={item}
                       />
                       <CardContent>
                           <Typography variant="body2" color="textSecondary" component="p">
-                          {item.description}
+                          {routines[i].description}
                           </Typography>
                       </CardContent>
                   </Card>
+                  </Slide>
                   </Grid>
               </List>
           ))}

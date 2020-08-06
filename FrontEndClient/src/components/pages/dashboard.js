@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {fade, makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -11,11 +11,12 @@ import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import TopMenu from './component/TopMenu'
-import Routine from './component/routine'
+import Routine from './component/dialog'
 import { useSelector, useDispatch } from 'react-redux';
 import * as test from '../../actions/retHabitInfo'
 import Button from '@material-ui/core/Button';
 import RoutineDialog from './insertRoutine'
+import { NeuButton } from "neumorphism-react";
 
 async function upload(event) {
     const fd = new FormData();
@@ -23,7 +24,7 @@ async function upload(event) {
     fd.append('file', file, file.name)
     console.log(event.target.files[0].size)
     // dispatch(documents.sendFile(temp.userID, fd))
-  }
+}
 
 const Dashboard = () => {
     const dispatch = useDispatch()
@@ -54,14 +55,22 @@ const Dashboard = () => {
         setDialog(!dialog)
     }
     console.log(dialog)
-    return(
+    return (
         <div>
-             <TopMenu />
-             <iframe id="frame" frameborder="0"></iframe>
-             <Routine
-                routines={routines}/>
-         <Button variant="contained" onClick={openDialog} color="primary">+</Button>
-         <RoutineDialog dialog={dialog} openDialog={openDialog}/>
+            <TopMenu />
+            <iframe id="frame" frameborder="0"></iframe>
+            <Routine
+                routines={routines} />
+            <NeuButton
+                width="150px"
+                height="100px"
+                onClick={openDialog}
+                color="#DEE2E6"
+                radius={10}
+            >
+               Add Routine
+            </NeuButton>
+            <RoutineDialog dialog={dialog} openDialog={openDialog} />
         </div>
     )
 }

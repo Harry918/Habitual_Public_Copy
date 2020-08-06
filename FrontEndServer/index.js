@@ -146,6 +146,31 @@ app.post('/uploadImg', (req, res) => {
         }
     });
 });
+app.get("/createPost", (req, res) => {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin',  req.headers.origin);
+    res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response =  mongo.createPost(req.query.uid, req.query.title, req.query.content, req.query.parentRoutine, (result) => {
+        console.log(result)
+        res.send(result);
+    })
+    
+})
+app.get("/getPosts", (req, res) => {
+    //takes routineID
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin',  req.headers.origin);
+    res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response =  mongo.getPosts(req.query.parentRoutine, (result) => {
+        console.log(result)
+        res.send(result);
+    })
+    
+})
 app.get("/getPhoto", (req, res) => {
 
     res.header('Access-Control-Allow-Credentials', true);
@@ -153,8 +178,8 @@ app.get("/getPhoto", (req, res) => {
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
     AWS.config.update({
-        accessKeyId: process.env.ACCESS_KEY_ID,
-        secretAccessKey: process.env.SECRET_ACCESS_KEY
+        accessKeyId: 'AKIAIUCIG4OM4HXHICKQ',
+        secretAccessKey: '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'
       });
     let s3 = new AWS.S3();
     async function getImage(){
