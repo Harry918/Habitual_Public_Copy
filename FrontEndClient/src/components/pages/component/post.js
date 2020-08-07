@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const Post = ({description}) => {
+const Post = ({title, description}) => {
+    console.log(description)
     return (
         <div>
             <div style={{ padding: 15 }}>
@@ -41,7 +42,8 @@ const Post = ({description}) => {
                                 <Avatar>W</Avatar>
                             </Grid>
                             <Grid item xs>
-                                <Typography style={{color:"black"}, {fontFamliy:'Antic Slab'}}>{message}</Typography>
+                                <Typography style={{color:"black"}, {fontFamliy:'Antic Slab'}}>{title}</Typography>
+                                <Typography style={{color:"black"}, {fontFamliy:'Antic Slab'}}>{description}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>

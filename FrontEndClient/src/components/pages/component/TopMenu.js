@@ -159,7 +159,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignSelf: 'center',
     justifyContent: 'center',
-    fontFamily:'Lato'
+    fontFamily: 'Lato',
+    marginLeft:10,
+    marginRight:10,
   },
   search: {
     position: 'relative',
@@ -204,9 +206,14 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  logoButton: {
-    width:40,
-    height:40
+  logoImage: {
+    width: 40,
+    height: 40
+  },
+  logoButton:{
+    marginLeft:10,
+    marginRight:10,
+
   }
 }));
 
@@ -217,11 +224,19 @@ const TopMenu = () => {
 
       <Toolbar>
         <form action="./" method="get" >
-          <NeuButton color="FFFFFF"  radius={3} type="submit"><Image className={classes.logoButton} src={logo}  fluid  /></NeuButton>
+          <NeuButton className={classes.logoButton}
+            onClick={() => console.log("Button cliked !")}
+            color="#FFFFFF"
+            radius={10}
+            distance={0}
+          >
+             <Image className={classes.logoImage} src={logo} fluid />
+          </NeuButton>
+         
         </form>
-        <Typography variant="h6" className={classes.title}>
-          HABITUAL
-              </Typography>
+          <Typography variant="h6" className={classes.title}>
+            HABITUAL
+          </Typography>
         <div>
           <IconButton
             aria-label="account of current user"
@@ -236,7 +251,7 @@ const TopMenu = () => {
           <div className={classes.searchIcon}>
             <SearchIcon />
           </div>
-          <NeuDiv revert color="#e1ebf7" position="static" className={classes.bar}>
+          <NeuDiv revert color="FFFFFF" position="static" className={classes.bar}>
             <InputBase
               placeholder="Search…"
               classes={{

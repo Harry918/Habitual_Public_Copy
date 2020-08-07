@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 
 
+
 // todo: get rid of margins around the page, reformat image size/shape, make post text wrap (when word is long)
 
 
@@ -88,13 +89,14 @@ const message = `Truncation should be conditionally applicable on this long line
 as this is a much longer line than what the container can support. Truncation should be conditionally applicable on this long line of text
 as this is a much longer line than what the container can support. Truncation should be conditionally applicable on this long line of text
 as this is a much longer line than what the container can support. Truncation should be conditionally applicable on this long line of text
-as this is a much longer line than what the container can support. `;
+adas this is a much longer line than what the container can support. `;
 
 
 const Routine = (props) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const params = props.location.state
+    const posts = useSelector(state => state.routineReducers.routinePosts)
 
     useEffect(() => {
         console.log(params.routine_ID)
@@ -130,12 +132,9 @@ const Routine = (props) => {
 
 
                         <Grid container spacing={1} wrap="nowrap" direction="column">
-                            <Post />
-                            <Post />
-                            <Post />
-                            <Post />
-                            <Post />
-                            <Post />
+                            {posts.map((item, i) => (
+                                    <Post description={item.content} title={item.title} />
+                            ))}
                             <Grid item xs={12}>
                                 <Paper className={classes.paper}>
                                     <Grid container wrap="nowrap" spacing={2}>
@@ -152,7 +151,7 @@ const Routine = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={3} style={{ padding: 20 }}>
-                        <AboutRoutine/>
+                        <AboutRoutine />
                     </Grid>
                 </Grid>
             </div>

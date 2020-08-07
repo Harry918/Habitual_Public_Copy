@@ -1,15 +1,21 @@
 import axios from 'axios';
 
 export const retRoutinePosts = (routine_ID) => async dispatch => {
-    console.log("here")
     try{
+        dispatch({type: 'GET_ROUTINE_POSTS_START'})
         let url = `http://localhost:5000/getPosts?parentRoutine=${routine_ID}`
         const response = await axios.get(url)
         console.log(response)
-        dispatch({type: 'PUBLIC_PIC_SUCCESS'})
+        dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
     }
     catch(err)
     {
+        dispatch({type: 'GET_ROUTINE_POSTS_FAILURE'})
         console.log(err)
+
     }
+}
+
+export const createPost = (title, desc, routine_ID) => async dispatch => {
+    console.log("here")
 }

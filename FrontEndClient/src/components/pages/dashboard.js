@@ -18,15 +18,6 @@ import Button from '@material-ui/core/Button';
 import RoutineDialog from './insertRoutine'
 import { NeuButton } from "neumorphism-react";
 
-async function upload(event) {
-    console.log(event.target.files[0])
-    const fd = new FormData();
-    const file = event.target.files[0]
-    fd.append('file', file, file.name)
-    console.log(event.target.files[0].size)
-    // dispatch(documents.sendFile(temp.userID, fd))
-}
-
 const Dashboard = React.memo(() => {
     const dispatch = useDispatch()
     const [dialog, setDialog] = useState(false)
@@ -52,7 +43,7 @@ const Dashboard = React.memo(() => {
             >
                +
             </NeuButton>
-            <RoutineDialog dialog={dialog} openDialog={openDialog} />
+            <RoutineDialog dialog={dialog} openDialog={openDialog} type='Routine' />
         </div>
     )
 })

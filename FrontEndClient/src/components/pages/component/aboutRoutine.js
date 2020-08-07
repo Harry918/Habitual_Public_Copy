@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { NeuDiv } from "neumorphism-react";
 import { Grid, Paper } from "@material-ui/core"
 import { NeuButton } from "neumorphism-react";
+import RoutineDialog from '../insertRoutine'
 
 
 
@@ -29,28 +30,33 @@ const useStyles = makeStyles((theme) => ({
 
 const AboutRoutine = () => {
     const classes = useStyles();
+    const [dialog, setDialog] = useState(false)
+    const openDialog = () => {
+        setDialog(!dialog)
+    }
     return (
         <div>
             <div style={{ padding: 15 }}>
-
+                <RoutineDialog dialog={dialog} openDialog={openDialog} type='Post' />
                 <NeuDiv revert radius={10} color="#FFFFFF" style={{ padding: 15 }} >
 
                     <Grid item xs={12}>
                         <Grid container wrap="nowrap" spacing={2}>
                             <Grid item xs>
-                                <Typography style={{ color: "black" }}>
+                                <Typography style={{ color: "black", fontFamily: 'Lato' }}>
                                     <h2>About Community</h2>
                                     <p>{aboutMessage}</p>
                                     <p style={{textAlign:'center'}}>num mems</p>
-                                    <p style={{textAlign:'center'}}>Created Jan 19, 2012</p>
+                                    <p style={{textAlign:'center'}}>Created Aug 6, 2020</p>
                                 </Typography>
                                 <NeuButton
                                         width="150px"
                                         height="50px"
-                                        onClick={() => console.log("Button cliked !")}
+                                        onClick={openDialog}
                                         color="#FFFFFF"
                                         distance={8}
-                                        style={{textAlign:'center'}}
+                                        radius = {10}
+                                        style={{width:'100%'}}
                                 >
                                         Create post
                                 </NeuButton>

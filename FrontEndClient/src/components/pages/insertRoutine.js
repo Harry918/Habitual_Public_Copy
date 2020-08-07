@@ -15,6 +15,7 @@ import 'fontsource-roboto';
 import 'fontsource-raleway';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import { NeuButton } from "neumorphism-react";
+import * as routineActions from '../../actions/routineFunctions'
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -83,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const RoutineDialog = ({ dialog, openDialog }) => {
+const RoutineDialog = ({ dialog, openDialog, type }) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const [title, setTitle] = useState('')
@@ -103,17 +104,23 @@ const RoutineDialog = ({ dialog, openDialog }) => {
     }
 
     async function upload(event) {
+        console.log(event.target.files[0])
         const fd = new FormData();
         const file = event.target.files[0]
         fd.append('file', file, file.name)
-        setFile(fd)
-        // dispatch(test.sendFile(temp.userID, fd))
+        console.log(event.target.files[0].size)
+        // dispatch(documents.sendFile(temp.userID, fd))
     }
+
     const createRoutine = () => {
-        console.log("here")
     dispatch(test.createRoutine(title, desc, pub, file))
     openDialog(!dialog)
     }
+    const createPost = () => {
+    dispatch(routineActions.createPost(title, desc, file))
+    openDialog(!dialog)
+    }
+
     return (
         <Grid container>
             <Dialog aria-labelledby="customized-dialog-title" open={dialog} maxWidth = {'sm'} fullWidth={true} maxHeight = {'md'} fullHeight={true}>
@@ -143,9 +150,9 @@ const RoutineDialog = ({ dialog, openDialog }) => {
                                 </Button>
                             </div>
                         </Grid>
-                        <Grid item container justifyContent="center" xs={12} sm={6}>
+                        {type === 'Post' ? null : <Grid item container justifyContent="center" xs={12} sm={6}>
                             <FormControlLabel style={{ margin: 15 }} control={<Checkbox name="checkedA" onChange={(e) => { changeText(e, 'public') }} />} label="Make Routine Private" className={classes.checkbox}/>
-                        </Grid>
+                        </Grid>}
                     </Grid>
                     <div style={{ marginBottom: 15 }, {marginRight: 15}, {marginTop: 15}}>
                         <NeuButton distance={4} color="#ffffff" radius={4} style={{ padding: 15 }} component="label" onClick={createRoutine}>
