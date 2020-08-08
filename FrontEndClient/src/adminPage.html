@@ -29,13 +29,22 @@
         <input  class="form-control" id="email" placeholder="email">
 
     </div>
-    <button type='button' onclick="getUsers()" class="btn btn-secondary">getUsers</button>
-    <button type='button' onclick="createUser()" class="btn btn-secondary">createUser</button>
-    <button type='button' onclick="createRoutine()" class="btn btn-secondary">createRoutine</button>
-    <button type='button' onclick="getPublicRoutines()" class="btn btn-secondary">getPublicRoutines</button>
-    <button type='button' onclick="joinRoutine()" class="btn btn-secondary">joinRoutine</button>
-    <button type='button' onclick="createPost()" class="btn btn-secondary">createPost</button>
-    <button type='button' onclick="checkCompletion()" class="btn btn-secondary">checkCompletion</button>
+
+
+    <ul class="list-group">
+      <li class="list-group-item"><button type='button' onclick="createUser()" class="btn btn-secondary">createUser</button> Requires: uid, email</li>
+      <li class="list-group-item"><button type='button' onclick="createRoutine()" class="btn btn-secondary">createRoutine</button> Requires: uid, title, description, public, picturekey</li>
+      <li class="list-group-item"><button type='button' onclick="getPublicRoutines()" class="btn btn-secondary">getPublicRoutines</button> Requires: NA</li>
+      <li class="list-group-item">  <button type='button' onclick="joinRoutine()" class="btn btn-secondary">joinRoutine</button> Requires: uid, routineid</li>
+      <li class="list-group-item">  <button type='button' onclick="createPost()" class="btn btn-secondary">createPost</button> Requires: uid, title, content, parentRoutine</li>
+      <li class="list-group-item"> <button type='button' onclick="checkCompletion()" class="btn btn-secondary">checkCompletion</button></button> Requires: uid, routineid</li>
+      <li class="list-group-item"> <button type='button' onclick="getUserRoutines()" class="btn btn-secondary">getUserRoutines</button></button> Requires: uid</li>  
+    </ul>
+
+
+
+
+
 
     <script>
         /*
@@ -50,7 +59,7 @@
         email
         */
        async function getInternals() {
-           console.log(document.getElementById('uid').innerHTML)
+           console.log(document.getElementById('uid').value)
        }
         async function getPublicRoutines() {
             try {
@@ -65,8 +74,8 @@
             }
         }
         async function checkCompletion() {
-            let uid = document.getElementById('uid').innerHTML
-            let routineid = document.getElementById('routineid').innerHTML
+            let uid = document.getElementById('uid').value
+            let routineid = document.getElementById('routineid').value
             try {
                 let url = `http://localhost:5000/checkCompletion?uid=${uid}&routineid=${routineid}`
                 const response = await axios.get(url)
@@ -79,10 +88,117 @@
             }
         }
         async function createUser() {
-            let uid = document.getElementById('uid').innerHTML
-            let email = document.getElementById('email').innerHTML
+            let uid = document.getElementById('uid').value
+            let email = document.getElementById('email').value
             try {
                 let url = `http://localhost:5000/createUser?uid=${uid}&email=${email}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function createRoutine() {
+            let uid = document.getElementById("uid").value
+            let title = document.getElementById("title").value
+            let description = document.getElementById("description").value
+            console.log('data', uid, title, description, picturekey)
+            let public = document.getElementById('public').value
+            let picturekey = document.getElementById('picturekey').value
+            let routineid = document.getElementById('routineid').value
+            let parentRoutine = document.getElementById('parentRoutine').value
+            let email = document.getElementById('email').value
+            let content = document.getElementById('content').value
+            console.log('data', uid, title, description, public, picturekey)
+            try {
+                let url = `http://localhost:5000/createRoutine?uid=${uid}&title=${title}&description=${description}&public=${public}&picturekey=${picturekey}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function joinRoutine() {
+            let uid = document.getElementById('uid').value
+            let title = document.getElementById('title').value
+            let description = document.getElementById('description').value
+            let public = document.getElementById('public').value
+            let picturekey = document.getElementById('picturekey').value
+            let routineid = document.getElementById('routineid').value
+            let parentRoutine = document.getElementById('parentRoutine').value
+            let email = document.getElementById('email').value
+            let content = document.getElementById('content').value
+            try {
+                let url = `http://localhost:5000/joinRoutine?uid=${uid}&routineid=${routineid}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function createPost() {
+            let uid = document.getElementById('uid').value
+            let title = document.getElementById('title').value
+            let description = document.getElementById('description').value
+            let public = document.getElementById('public').value
+            let picturekey = document.getElementById('picturekey').value
+            let routineid = document.getElementById('routineid').value
+            let parentRoutine = document.getElementById('parentRoutine').value
+            let email = document.getElementById('email').value
+            let content = document.getElementById('content').value
+            try {
+                let url = `http://localhost:5000/createPost?uid=${uid}&title=${title}&description=${description}&content=${content}&parentRoutine=${parentRoutine}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function getPosts() {
+            let uid = document.getElementById('uid').value
+            let title = document.getElementById('title').value
+            let description = document.getElementById('description').value
+            let public = document.getElementById('public').value
+            let picturekey = document.getElementById('picturekey').value
+            let routineid = document.getElementById('routineid').value
+            let parentRoutine = document.getElementById('parentRoutine').value
+            let email = document.getElementById('email').value
+            let content = document.getElementById('content').value
+            try {
+                let url = `http://localhost:5000/getPosts?parentRoutine=${parentRoutine}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function getUserRoutines() {
+            let uid = document.getElementById('uid').value
+            let title = document.getElementById('title').value
+            let description = document.getElementById('description').value
+            let public = document.getElementById('public').value
+            let picturekey = document.getElementById('picturekey').value
+            let routineid = document.getElementById('routineid').value
+            let parentRoutine = document.getElementById('parentRoutine').value
+            let email = document.getElementById('email').value
+            let content = document.getElementById('content').value
+            try {
+                let url = `http://localhost:5000/getUserRoutines?uid=${uid}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)

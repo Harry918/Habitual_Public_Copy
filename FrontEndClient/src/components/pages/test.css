@@ -6,14 +6,10 @@ html {
         background-position: center center;    
 }
 
-/* .back{
-    height: 100%;
-	background: linear-gradient(180deg, #FFC0CB 30%, #00FFFF 70%);
-		background-size:     cover;                      
-		background-repeat:   no-repeat;
-        background-position: center center;    
-    display: grid;    
-} */
+* {
+    margin:0;
+    padding:0;
+}
 
 
 .wrapper{

@@ -33,8 +33,8 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
-    margin: 10,
+    
+    
   },
   media: {
     height: 0,
@@ -57,9 +57,13 @@ const useStyles = makeStyles((theme) => ({
     padding: 15
   },
   imageDiv: {
-    width:300,
-    height:150
-  }
+    width: 300,
+    height: 150
+  },
+  button: {
+    padding:15,
+    margin:15
+}
 }));
 
 const Routine = () => {
@@ -69,41 +73,43 @@ const Routine = () => {
   const images = useSelector(state => state.dashboardReducers.images)
   const routines = useSelector(state => state.dashboardReducers.routines)
   console.log(routines)
-  
+
   const movetoNextPage = (routine_ID) => {
     console.log(routine_ID)
-    history.push('/routine', {routine_ID: routine_ID})
+    history.push('/routine', { routine_ID: routine_ID })
   }
   return (
-    <Grid container spacing={1}>
-      {routines.map((item, i) => (
-        <List key={i} style={{ display: 'flex', justifyContent: 'center' }}>
-          <Grid container item xs={12} spacing={3}>
-            <Slide bottom collapse>
-              <div style={{ padding: 15 }}>
-                <NeuButton
-                  className={classes.neubutton}
-                  onClick={() => {movetoNextPage(routines[i]._id)}}
-                  color="#FFFFFF"
-                >
-                  <Typography variant="h4" color="textSecondary" component="p">
-                    {routines[i].title}
-                  </Typography>
-                  <div >
-                    <Image className={classes.imageDiv} src={item}  thumbnail />
-                  </div>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {routines[i].description}
-                  </Typography>
+    <div className={classes.root}>
+      <Grid container spacing={1}>
+        {routines.map((item, i) => (
+          <List key={i} style={{ display: 'flex', justifyContent: 'center' }}>
+            <Grid  item xs={12} spacing={4}> 
+              <Slide bottom collapse>
+                <div className={classes.button}>
+                  <NeuButton
+                    className={classes.neubutton}
+                    onClick={() => { movetoNextPage(routines[i]._id) }}
+                    color="#FFFFFF"
+                  >
+                    <Typography variant="h4" color="textSecondary" component="p">
+                      {routines[i].title}
+                    </Typography>
+                    <div >
+                      <Image className={classes.imageDiv} src={item} thumbnail />
+                    </div>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      {routines[i].description}
+                    </Typography>
 
 
-                </NeuButton>
-              </div>
-            </Slide>
-          </Grid>
-        </List>
-      ))}
-    </Grid>
+                  </NeuButton>
+                </div>
+              </Slide>
+            </Grid>
+          </List>
+        ))}
+      </Grid>
+      </div>
   )
 }
 

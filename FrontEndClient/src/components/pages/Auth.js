@@ -4,18 +4,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid';
 import app from "../../base.js";
-import { auth } from 'firebase';
+import firebase from 'firebase';
+import { useSelector, useDispatch } from 'react-redux';
+import * as authFunctions from '../../actions/authFunctions'
+import { useHistory } from "react-router-dom";
 
 
 
@@ -56,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 const Auth = () => {
+    let history = useHistory();
+    const dispatch = useDispatch()
     const classes = useStyles();
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
@@ -91,10 +90,15 @@ const Auth = () => {
 
     const googleLogin = () => 
     {
-        let provider = new auth.GoogleAuthProvider()
-        app.auth().signInWithPopup(provider).then(function(result) {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function(result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
+            console.log(result.user.email)
+            console.log(result.user.displayName)
+            console.log(result.user.uid)
+            dispatch(authFunctions.googleUser(result.user.uid, result.user.displayName, result.user.email))
             var token = result.credential.accessToken;
+            history.push('/')
             // The signed-in user info.
             var user = result.user;
             // ...
@@ -113,23 +117,22 @@ const Auth = () => {
 
     return(
         <div>
-            <div className={classes.back}>
+            <div className={classes.back} style={{textAlign: 'center'}}>
                 <h1 className={classes.pad}>Login</h1>
 
                 <Button className={classes.test} onClick={(event) => {logValues(event)}} variant="contained">SIGN UP</Button>
 
-                <Button className={classes.test} onClick={googleLogin} variant="contained">LOG IN WITH GOOGLE</Button>
                 <h3 className={classes.pad}>OR</h3>
+                <Button className={classes.test} onClick={googleLogin} variant="contained">LOG IN WITH GOOGLE</Button>
 
                 <Grid item xs={12}>
-                <Button onClick={(event) => {logValues(event)}} variant="contained">LOG IN WITH GOOGLE</Button>
                 </Grid>
                 <h3 className={classes.pad}>OR</h3>
                 <Grid item xs={12}>
 
                     <TextField required className={classes.user} placeholder="User" onChange={(event) => {changeValue(event, 'user')}}/>
                     <TextField required className={classes.pass} placeholder="Password" onChange={(event) => {changeValue(event, 'pass')}}/>
-                <Button className={classes.test} onClick={logValues} variant="contained">LOG IN</Button>
+                <Button className={classes.test}  onClick={logValues} variant="contained">LOG IN</Button>
                 </Grid>  
             </div>
         </div>

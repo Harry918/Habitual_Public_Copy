@@ -80,7 +80,7 @@ async function findHi(client){
       
     });
 };
-async function createUserDoc(uid, email){
+async function createUserDoc(uid, email, displayName){
     console.log('creating user with id', uid, 'and email', email);
     try {
         //let client = new MongoClient(uri, { useUnifiedTopology: true } );
@@ -89,6 +89,7 @@ async function createUserDoc(uid, email){
             _id:uid,
             email:email,
             username: '',
+            displayName: displayName,
             routines: []
         };
         client.db('HabitApp').collection('Users').insertOne(doc, function(error, response){
@@ -155,6 +156,23 @@ async function getPublicRoutines(callback){
         }
     });  
     
+}
+async function getUserRoutines(uid, callback){
+    console.log('retreiving public routines')
+    userQuery = {_id :{$eq: uid}}
+    // booksCollection.find({_id: {$in: author.books}}).toArray();
+    
+    client.db('HabitApp').collection('Users').findOne(userQuery).then(data => {
+        let routines = data.routines
+        routineQuery = {_id :{ $in: routines}}
+        client.db('HabitApp').collection('Routines').find(routineQuery).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            if (callback){
+                callback(result)
+            }
+        })
+    })
 }
 async function joinRoutine(uid, routineid, callback)
 {
@@ -281,4 +299,4 @@ const uploadFile = (buffer, name, type) => {
   };
 
 
-module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion};
+module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion, getUserRoutines};

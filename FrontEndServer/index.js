@@ -108,7 +108,7 @@ app.get("/getUsers", function(req, res) {
     //add the ret from db here
     res.send("testwdwq")
 })
-app.get("/createUser", function(req, res) {
+app.get("/createUser", function(req, res) {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
 
     // origin can not be '*' when crendentials are enabled. so need to set it to the request origin
@@ -119,12 +119,12 @@ app.get("/createUser", function(req, res) {
 
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
     // console.log(req.data)
-    mongo.createUserDoc(req.query.uid, req.query.email).then(result => {
+    mongo.createUserDoc(req.query.uid, req.query.email, req.query.displayName).then(result => {
         console.log(result)
         res.send(result);
     });
 })
-app.get("/createRoutine", (req, res) => {
+app.get("/createRoutine", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -137,7 +137,7 @@ app.get("/createRoutine", (req, res) => {
     })
     
 })
-app.get("/getPublicRoutines", (req, res) => {
+app.get("/getPublicRoutines", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -149,7 +149,19 @@ app.get("/getPublicRoutines", (req, res) => {
     })
     
 })
-app.get("/joinRoutine", (req, res) => {
+app.get("/getUserRoutines", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin',  req.headers.origin);
+    res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+    let result;
+    const response =  mongo.getUserRoutines(req.query.uid, (result) => {
+        console.log(result)
+        res.send(result);
+    })
+    
+})
+app.get("/joinRoutine", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -186,7 +198,7 @@ app.post('/uploadImg', (req, res) => {
         }
     });*/
 });
-app.get("/createPost", (req, res) => {
+app.get("/createPost", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -198,7 +210,7 @@ app.get("/createPost", (req, res) => {
     })
     
 })
-app.get("/checkCompletion", (req, res) => {
+app.get("/checkCompletion", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -209,7 +221,7 @@ app.get("/checkCompletion", (req, res) => {
         res.send({data: result});
     })
 })
-app.get("/getPosts", (req, res) => {
+app.get("/getPosts", (req, res) => {//admin supported
     //takes routineID
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);

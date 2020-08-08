@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Dashboard from './components/pages/dashboard'
 import Auth from './components/pages/Auth'
 import Routine from './components/pages/routine'
+import Intro from './components/pages/intro'
 
 
 //hi tim <3
@@ -17,6 +18,7 @@ function App() {
         <Route path="/auth" exact component={Auth} />
         <Route path="/routine" exact component={Routine} />
         <Route path="/routinePrototype" exact component={Routine} />
+        <Route path="/intro" exact component={Intro} />
       </Router>
       
     </div>
