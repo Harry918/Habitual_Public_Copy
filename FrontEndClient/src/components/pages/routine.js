@@ -11,7 +11,8 @@ import Post from './component/post'
 import AboutRoutine from './component/aboutRoutine'
 import * as routineActions from '../../actions/routineFunctions'
 import { useSelector, useDispatch } from 'react-redux';
-
+import io from 'socket.io-client'
+import { StickyContainer, Sticky } from 'react-sticky';
 
 
 
@@ -79,19 +80,15 @@ const useStyles = makeStyles((theme) => ({
     },
     sharp: {
         borderRadius: '1!important'
-    }
-
+    },
+ 
 
 }));
 
 
-const message = `Truncation should be conditionally applicable on this long line of text
-as this is a much longer line than what the container can support. Truncation should be conditionally applicable on this long line of text
-as this is a much longer line than what the container can support. Truncation should be conditionally applicable on this long line of text
-as this is a much longer line than what the container can support. Truncation should be conditionally applicable on this long line of text
-adas this is a much longer line than what the container can support. `;
+const message = `No posts here yet, check back later`;
 
-
+let socket
 const Routine = (props) => {
     const dispatch = useDispatch()
     const classes = useStyles();
@@ -101,26 +98,49 @@ const Routine = (props) => {
     useEffect(() => {
         console.log(params.routine_ID)
         dispatch(routineActions.retRoutinePosts(params.routine_ID))
+        var endpoint = "localhost:5000"
+        socket = io(endpoint)
+        let name = Math.random().toString(36).substring(3); //temp name for now
+        console.log(params.routineID)
+        socket.emit('join', {roomID: params.routine_ID, name: name});
+        socket.on('first-connection', (response) => {
+            console.log(response)
+        
+        dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
+        })
     }, [])
+
+    const completedRoutine = () => {
+        socket.emit('markCompletion', {uid: '123', routine_ID: params.routine_ID, name: 'Rishi', task: 'drinking water'})
+    }
+
+    useEffect(() => {
+        socket.on('people_routine_completion', (response) => {
+            console.log(response)
+        })
+    })
 
     return (
         <div>
-            <TopMenu />
+            <StickyContainer>
+                <Sticky>
+                {({ style }) => <TopMenu/>}
+                    
+                </Sticky>
+            
+            
             <div className={classes.root}>
                 <Grid container spacing={0}>
                     <Grid item xs={12} >
                         <Paper className={classes.paper1} >live feed / counter</Paper>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid container spacing={0}>
-                            <Grid item xs={12}>
-                                <Paper className={classes.test}>
-                                    < img src="https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies" className={classes.test3}></img>
-                                    <h1 className={classes.test2}> Routine Name</h1>
-                                    img + routine name + join
-                                </Paper>
-                            </Grid>
-                        </Grid>
+                        <Paper className={classes.test}>
+                            < img src="https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies" className={classes.test3}></img>
+                            <h1 className={classes.test2}> Routine Name</h1>
+                            img + routine name + join
+                            <button onClick={completedRoutine}>completed</button>
+                        </Paper>
                     </Grid>
                     <Grid item xs={9} style={{ padding: 20 }}>
                         {/* <>
@@ -155,6 +175,7 @@ const Routine = (props) => {
                     </Grid>
                 </Grid>
             </div>
+            </StickyContainer>
         </div>
     );
 }

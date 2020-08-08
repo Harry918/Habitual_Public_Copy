@@ -211,6 +211,52 @@ async function createPost(uid, title, content, parentRoutine, callback){
     }
     
 }
+async function checkCompletion(uid, routineID, callback){
+    console.log('checking completion')
+    //db.inventory.find( { $and: [ { price: { $ne: 1.99 } }, { price: { $exists: true } } ] } )
+    query = {$and: [{'uid' :{$eq:uid}}, {'routineID' :{$eq:routineID}}]} 
+    client.db('HabitApp').collection('completionMapping').find(query).toArray(function(err, result) {
+       if (err) throw err;
+        console.log(result);
+        if(callback){
+            callback(result.length)
+        }
+    });  
+    
+}
+async function markCompletion(uid, routineID, callback){
+    console.log('marking completion');
+    query = {$and: [{'uid' :{$eq:uid}}, {'routineID' :{$eq:routineID}}]} 
+    client.db('HabitApp').collection('completionMapping').find(query).toArray(function(err, result) {
+       if (err) throw err;
+        console.log(result);
+        if(result.length==0){
+            postDoc = {
+                uid: uid,
+                routineID: routineID,
+            }
+            try{
+                client.db('HabitApp').collection('completionMapping').insertOne(postDoc, function(error, response){
+                    if(error) {
+                        console.log('Error occurred while inserting');
+                        console.log(error);
+                        return error;
+                    } else {
+                       routineID = response.ops[0]._id;
+                       console.log('inserted record with id: ', routineID);
+                       if(callback){
+                           callback(routineID)
+                       }
+                    }
+                });
+            } catch (e) {
+                console.error(e);
+            } finally {
+                //await client.close();
+            }
+        }
+    });  
+}
 async function getPosts(parentRoutine, callback){
     console.log('retreiving public posts')
     query = {'parentRoutine' :{$eq:parentRoutine}}
@@ -235,4 +281,4 @@ const uploadFile = (buffer, name, type) => {
   };
 
 
-module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost};
+module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion};

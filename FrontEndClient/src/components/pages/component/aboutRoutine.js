@@ -24,6 +24,15 @@ const useStyles = makeStyles((theme) => ({
     test2: {
         color: 'blue',
         float: 'left',
+    },
+    button: {
+        marginTop: 150,
+        marginBottom: 150,
+        width: '100%'
+    },
+    counts: {
+        textAlign: 'center',
+        fontWeight: 'bold'
     }
 
 }));
@@ -34,6 +43,7 @@ const AboutRoutine = () => {
     const openDialog = () => {
         setDialog(!dialog)
     }
+    let testClick = false;
     return (
         <div>
             <div style={{ padding: 15 }}>
@@ -46,21 +56,40 @@ const AboutRoutine = () => {
                                 <Typography style={{ color: "black", fontFamily: 'Lato' }}>
                                     <h2>About Community</h2>
                                     <p>{aboutMessage}</p>
-                                    <p style={{textAlign:'center'}}>num mems</p>
+                                    <Grid container wrap="nowrap" className = {classes.counts} spacing={2}>
+                                        <Grid item xs={6}>  
+                                            <p >23.2k Members</p>
+                                        </Grid>
+                                        <Grid item xs={6}>  
+                                            <p >462 Active</p>
+                                        </Grid>
+                                    </Grid>
                                     <p style={{textAlign:'center'}}>Created Aug 6, 2020</p>
                                 </Typography>
                                 <NeuButton
-                                        width="150px"
                                         height="50px"
                                         onClick={openDialog}
                                         color="#FFFFFF"
                                         distance={8}
                                         radius = {10}
-                                        style={{width:'100%'}}
+                                        className={classes.button}
                                 >
                                         Create post
                                 </NeuButton>
-                            </Grid>
+                                <div></div>
+                                <br />
+                                <NeuButton
+                                        height="50px"
+                                        onClick={openDialog}
+                                        color="#FFFFFF"
+                                        distance={8}
+                                        radius = {10}
+                                        className={classes.button}
+                                        
+                                >
+                                    Join
+                                </NeuButton>
+                            </Grid>         
                         </Grid>
                     </Grid>
                 </NeuDiv>

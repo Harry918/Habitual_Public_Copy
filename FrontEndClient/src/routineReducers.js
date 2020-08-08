@@ -1,7 +1,8 @@
 const initalState = {
     loading: false,
     routinePosts: [],
-    errorMessage: ''
+    errorMessage: '',
+    completedRoutine: false
 }
 
 export default function routineReducers(state=initalState, action) {

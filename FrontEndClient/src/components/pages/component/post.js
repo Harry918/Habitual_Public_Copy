@@ -21,14 +21,21 @@ import 'fontsource-antic-slab';
 // picture 
 // content
 
-const message = `ur mom is a hoe
-`;
+const message = `404`;
 
 const useStyles = makeStyles((theme) => ({
-
+    title: {
+       
+        fontFamily: 'Lato',
+        marginLeft:10,
+        marginRight:10,
+        color:"black",
+        fontSize:20
+      }
 }));
 
 const Post = ({title, description}) => {
+    const classes = useStyles();
     console.log(description)
     return (
         <div>
@@ -42,7 +49,7 @@ const Post = ({title, description}) => {
                                 <Avatar>W</Avatar>
                             </Grid>
                             <Grid item xs>
-                                <Typography style={{color:"black"}, {fontFamliy:'Antic Slab'}}>{title}</Typography>
+                                <Typography variant='h2' className={classes.title}>{title}</Typography>
                                 <Typography style={{color:"black"}, {fontFamliy:'Antic Slab'}}>{description}</Typography>
                             </Grid>
                         </Grid>
