@@ -2,7 +2,7 @@ require('dotenv').config();
 const uri = process.env.MONGO_URI;
 const {MongoClient} = require('mongodb');
 var client
-async function connectToMongo(){ 
+async function connectToMongo(){
     //start mogno
     try {
         client = new MongoClient(uri, { useUnifiedTopology: true } );
@@ -31,7 +31,7 @@ async function incrementCoutner(){
     query = {numStarts: {$exists: true}}
     update = { $inc: { numStarts:1 } }
     client.db('HabitApp').collection('Test').updateOne(query, update, (function(err, doc){
-        if(err) 
+        if(err)
         {
             console.log('error occured while searching');
             console.log(err);
@@ -77,10 +77,10 @@ async function findHi(client){
             console.log("retrieved records:");
             console.log(docs);
         }
-      
+
     });
 };
-async function createUserDoc(uid, email){
+async function createUserDoc(uid, email, displayName){
     console.log('creating user with id', uid, 'and email', email);
     try {
         //let client = new MongoClient(uri, { useUnifiedTopology: true } );
@@ -89,6 +89,7 @@ async function createUserDoc(uid, email){
             _id:uid,
             email:email,
             username: '',
+            displayName: displayName,
             routines: []
         };
         client.db('HabitApp').collection('Users').insertOne(doc, function(error, response){
@@ -139,7 +140,7 @@ async function createRoutine(uid, title, description, public, picturekey, callba
     } finally {
         //await client.close();
     }
-    
+
 }
 async function getPublicRoutines(callback){
     console.log('retreiving public routines')
@@ -153,8 +154,27 @@ async function getPublicRoutines(callback){
         if(callback){
             callback(result)
         }
-    });  
-    
+    });
+
+}
+async function getUserRoutines(uid, callback){
+    console.log('retreiving public routines')
+    userQuery = {_id :{$eq: uid}}
+    query= {'_id' :'5f2b7156b868c79e30ee6acc'}
+    // booksCollection.find({_id: {$in: author.books}}).toArray();
+
+    /*client.db('HabitApp').collection('Users').findOne(userQuery).then(data => {
+        let routines = data.routines
+        console.log(routines);
+        routineQuery = {_id :{$eq: routines[0]}}*/
+        client.db('HabitApp').collection('Routines').find(query).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            if (callback){
+                callback(result)
+            }
+        })
+    //})
 }
 async function joinRoutine(uid, routineid, callback)
 {
@@ -162,7 +182,7 @@ async function joinRoutine(uid, routineid, callback)
     update = { $addToSet : { routines: routineid}}
     query = {_id: uid}
     client.db('HabitApp').collection('Users').updateOne(query, update, function(err, doc){
-        if(err) 
+        if(err)
         {
             console.log('error occured while searching');
             console.log(err);
@@ -209,24 +229,24 @@ async function createPost(uid, title, content, parentRoutine, callback){
     } finally {
         //await client.close();
     }
-    
+
 }
 async function checkCompletion(uid, routineID, callback){
     console.log('checking completion')
     //db.inventory.find( { $and: [ { price: { $ne: 1.99 } }, { price: { $exists: true } } ] } )
-    query = {$and: [{'uid' :{$eq:uid}}, {'routineID' :{$eq:routineID}}]} 
+    query = {$and: [{'uid' :{$eq:uid}}, {'routineID' :{$eq:routineID}}]}
     client.db('HabitApp').collection('completionMapping').find(query).toArray(function(err, result) {
        if (err) throw err;
         console.log(result);
         if(callback){
             callback(result.length)
         }
-    });  
-    
+    });
+
 }
 async function markCompletion(uid, routineID, callback){
     console.log('marking completion');
-    query = {$and: [{'uid' :{$eq:uid}}, {'routineID' :{$eq:routineID}}]} 
+    query = {$and: [{'uid' :{$eq:uid}}, {'routineID' :{$eq:routineID}}]}
     client.db('HabitApp').collection('completionMapping').find(query).toArray(function(err, result) {
        if (err) throw err;
         console.log(result);
@@ -255,7 +275,7 @@ async function markCompletion(uid, routineID, callback){
                 //await client.close();
             }
         }
-    });  
+    });
 }
 async function getPosts(parentRoutine, callback){
     console.log('retreiving public posts')
@@ -266,8 +286,8 @@ async function getPosts(parentRoutine, callback){
         if(callback){
             callback(result)
         }
-    });  
-    
+    });
+
 }
 const uploadFile = (buffer, name, type) => {
     const params = {
@@ -281,4 +301,4 @@ const uploadFile = (buffer, name, type) => {
   };
 
 
-module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion};
+module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion, getUserRoutines  };

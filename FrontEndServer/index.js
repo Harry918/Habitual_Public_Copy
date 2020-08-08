@@ -4,8 +4,8 @@
     getRoutinePosts (sockets)
         returns all the posts associated with that routine (within each post: name, pic, description)
     createPost
-        creates a post given a uid 
-    
+        creates a post given a uid
+
 
 */
 
@@ -108,7 +108,7 @@ app.get("/getUsers", function(req, res) {
     //add the ret from db here
     res.send("testwdwq")
 })
-app.get("/createUser", function(req, res) {
+app.get("/createUser", function(req, res) {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
 
     // origin can not be '*' when crendentials are enabled. so need to set it to the request origin
@@ -119,12 +119,12 @@ app.get("/createUser", function(req, res) {
 
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
     // console.log(req.data)
-    mongo.createUserDoc(req.query.uid, req.query.email).then(result => {
+    mongo.createUserDoc(req.query.uid, req.query.email, req.query.displayName).then(result => {
         console.log(result)
         res.send(result);
     });
 })
-app.get("/createRoutine", (req, res) => {
+app.get("/createRoutine", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -135,9 +135,9 @@ app.get("/createRoutine", (req, res) => {
         console.log(recordID)
         res.send(recordID);
     })
-    
+
 })
-app.get("/getPublicRoutines", (req, res) => {
+app.get("/getPublicRoutines", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -147,9 +147,21 @@ app.get("/getPublicRoutines", (req, res) => {
         console.log(routineArray)
         res.send(routineArray);
     })
-    
+
 })
-app.get("/joinRoutine", (req, res) => {
+app.get("/getUserRoutines", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin',  req.headers.origin);
+    res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+    let result;
+    const response =  mongo.getUserRoutines(req.query.uid, (result) => {
+        console.log(result)
+        res.send(result);
+    })
+
+})
+app.get("/joinRoutine", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -159,7 +171,7 @@ app.get("/joinRoutine", (req, res) => {
         console.log(result)
         res.send(result);
     })
-    
+
 })
 
 app.post('/uploadImg', (req, res) => {
@@ -168,7 +180,7 @@ app.post('/uploadImg', (req, res) => {
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
 
-   
+
     const form = new multiparty.Form();
       form.parse(req, async (error, fields, files) => {
         if (error) throw new Error(error);
@@ -186,7 +198,7 @@ app.post('/uploadImg', (req, res) => {
         }
     });*/
 });
-app.get("/createPost", (req, res) => {
+app.get("/createPost", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -196,9 +208,9 @@ app.get("/createPost", (req, res) => {
         console.log(result)
         res.send(result);
     })
-    
+
 })
-app.get("/checkCompletion", (req, res) => {
+app.get("/checkCompletion", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -209,7 +221,7 @@ app.get("/checkCompletion", (req, res) => {
         res.send({data: result});
     })
 })
-app.get("/getPosts", (req, res) => {
+app.get("/getPosts", (req, res) => {//admin supported
     //takes routineID
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
@@ -220,7 +232,7 @@ app.get("/getPosts", (req, res) => {
         console.log(result)
         res.send(result);
     })
-    
+
 })
 app.get("/getPhoto", (req, res) => {
 /*
@@ -228,7 +240,7 @@ app.get("/getPhoto", (req, res) => {
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
-  
+
     let s3 = new AWS.S3();
     async function getImage(){
         const data =  s3.getObject(
@@ -236,7 +248,7 @@ app.get("/getPhoto", (req, res) => {
               Bucket: 'habitapp-photos',
               Key: req.query.key
             }
-          
+
         ).promise();
         return data;
     }
@@ -260,7 +272,7 @@ app.get("/getPhoto", (req, res) => {
     return s3.upload(params).promise();
 };*/
 
-  
+
 
 app.use(router);
 
