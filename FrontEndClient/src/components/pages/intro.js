@@ -27,7 +27,7 @@ const Intro = () => {
             <TopMenu/>
             <TopMenuSpacer/>
             <div>
-                
+
             </div>
         </div>
     );
