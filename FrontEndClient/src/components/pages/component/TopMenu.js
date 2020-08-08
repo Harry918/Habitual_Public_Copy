@@ -144,6 +144,13 @@ import Image from 'react-bootstrap/Image';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    background: '#ffffff',
+    overflow: 'hidden',
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: 9999999,
+    borderBottom: '1px solid #C8C8C8',
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -220,7 +227,7 @@ const useStyles = makeStyles((theme) => ({
 const TopMenu = () => {
   const classes = useStyles();
   return (
-    <div>
+    <div className={classes.root}>
 
       <Toolbar>
         <form action="./" method="get" >

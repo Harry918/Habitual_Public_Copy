@@ -17,8 +17,23 @@ import * as test from '../../actions/retHabitInfo'
 import Button from '@material-ui/core/Button';
 import RoutineDialog from './insertRoutine'
 import { NeuButton } from "neumorphism-react";
+import TopMenuSpacer from './component/TopMenuSpacer'
+
+
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        textAlign:'center',
+    },
+    
+
+
+}));
+
+
 
 const Dashboard = React.memo(() => {
+    const classes = useStyles();
     const dispatch = useDispatch()
     const [dialog, setDialog] = useState(false)
     const update = useSelector(state => state.update)
@@ -29,10 +44,13 @@ const Dashboard = React.memo(() => {
     const openDialog = () => {
         setDialog(!dialog)
     }
+    const stateTest = useSelector(state => state)
+    console.log(stateTest)
     return (
-        <div>
+        <div className={classes.root}>
             <TopMenu />
-            <iframe id="frame" frameborder="0"></iframe>
+            <TopMenuSpacer />
+
             <Routine />
             <NeuButton
                 width="50px"
@@ -40,6 +58,7 @@ const Dashboard = React.memo(() => {
                 onClick={openDialog}
                 color="#DEE2E6"
                 radius={10}
+                
             >
                +
             </NeuButton>

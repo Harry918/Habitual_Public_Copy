@@ -12,7 +12,7 @@ import AboutRoutine from './component/aboutRoutine'
 import * as routineActions from '../../actions/routineFunctions'
 import { useSelector, useDispatch } from 'react-redux';
 import io from 'socket.io-client'
-import { StickyContainer, Sticky } from 'react-sticky';
+import TopMenuSpacer from './component/TopMenuSpacer'
 
 
 
@@ -81,7 +81,14 @@ const useStyles = makeStyles((theme) => ({
     sharp: {
         borderRadius: '1!important'
     },
- 
+
+    about: {
+        paddingLeft: 15,
+        paddingTop: 15,
+        paddingRight: 35,
+
+    }
+
 
 }));
 
@@ -102,16 +109,16 @@ const Routine = (props) => {
         socket = io(endpoint)
         let name = Math.random().toString(36).substring(3); //temp name for now
         console.log(params.routineID)
-        socket.emit('join', {roomID: params.routine_ID, name: name});
+        socket.emit('join', { roomID: params.routine_ID, name: name });
         socket.on('first-connection', (response) => {
             console.log(response)
-        
-        dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
+
+            dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
         })
     }, [])
 
     const completedRoutine = () => {
-        socket.emit('markCompletion', {uid: '123', routine_ID: params.routine_ID, name: 'Rishi', task: 'drinking water'})
+        socket.emit('markCompletion', { uid: '123', routine_ID: params.routine_ID, name: 'Rishi', task: 'drinking water' })
     }
 
     useEffect(() => {
@@ -122,13 +129,9 @@ const Routine = (props) => {
 
     return (
         <div>
-            <StickyContainer>
-                <Sticky>
-                {({ style }) => <TopMenu/>}
-                    
-                </Sticky>
-            
-            
+            <TopMenu />
+            <TopMenuSpacer/>
+
             <div className={classes.root}>
                 <Grid container spacing={0}>
                     <Grid item xs={12} >
@@ -153,7 +156,7 @@ const Routine = (props) => {
 
                         <Grid container spacing={1} wrap="nowrap" direction="column">
                             {posts.map((item, i) => (
-                                    <Post description={item.content} title={item.title} />
+                                <Post description={item.content} title={item.title} />
                             ))}
                             <Grid item xs={12}>
                                 <Paper className={classes.paper}>
@@ -170,12 +173,11 @@ const Routine = (props) => {
 
                         </Grid>
                     </Grid>
-                    <Grid item xs={3} style={{ padding: 20 }}>
+                    <Grid item xs={3} className={classes.about}>
                         <AboutRoutine />
                     </Grid>
                 </Grid>
             </div>
-            </StickyContainer>
         </div>
     );
 }

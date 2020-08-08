@@ -32,7 +32,12 @@ const useStyles = makeStyles((theme) => ({
     },
     counts: {
         textAlign: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginBottom: 15,
+    },
+    created: {
+        marginBottom: 15, 
+        textAlign:'center',
     }
 
 }));
@@ -54,8 +59,8 @@ const AboutRoutine = () => {
                         <Grid container wrap="nowrap" spacing={2}>
                             <Grid item xs>
                                 <Typography style={{ color: "black", fontFamily: 'Lato' }}>
-                                    <h2>About Community</h2>
-                                    <p>{aboutMessage}</p>
+                                    <h2 style={{margin: '15px'}}>About Community</h2>
+                                    <p style={{margin: '25px 15px 25px 15px'}}>{aboutMessage}</p>
                                     <Grid container wrap="nowrap" className = {classes.counts} spacing={2}>
                                         <Grid item xs={6}>  
                                             <p >23.2k Members</p>
@@ -64,7 +69,7 @@ const AboutRoutine = () => {
                                             <p >462 Active</p>
                                         </Grid>
                                     </Grid>
-                                    <p style={{textAlign:'center'}}>Created Aug 6, 2020</p>
+                                    <p className={classes.created}>Created Aug 6, 2020</p>
                                 </Typography>
                                 <NeuButton
                                         height="50px"

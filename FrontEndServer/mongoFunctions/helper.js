@@ -176,6 +176,23 @@ async function getUserRoutines(uid, callback){
         })
     //})
 }
+async function getUserRoutines(uid, callback){
+    console.log('retreiving public routines')
+    userQuery = {_id :{$eq: uid}}
+    // booksCollection.find({_id: {$in: author.books}}).toArray();
+    
+    client.db('HabitApp').collection('Users').findOne(userQuery).then(data => {
+        let routines = data.routines
+        routineQuery = {_id :{ $in: routines}}
+        client.db('HabitApp').collection('Routines').find(routineQuery).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            if (callback){
+                callback(result)
+            }
+        })
+    })
+}
 async function joinRoutine(uid, routineid, callback)
 {
     console.log("joining routine of routineid", routineid, 'with uid', uid)
@@ -301,4 +318,4 @@ const uploadFile = (buffer, name, type) => {
   };
 
 
-module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion, getUserRoutines  };
+module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion, getUserRoutines};
