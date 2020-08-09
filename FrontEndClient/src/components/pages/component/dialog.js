@@ -34,11 +34,6 @@ import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     
-    
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -80,10 +75,9 @@ const Routine = () => {
   }
   return (
     <div className={classes.root}>
-      <Grid container spacing={1}>
+      <Grid container spacing={0} style={{justifyContent:'center'}}>
         {routines.map((item, i) => (
-          <List key={i} style={{ display: 'flex', justifyContent: 'center' }}>
-            <Grid  item xs={12} spacing={4}> 
+          <List key={i} style={{justifyContent: 'center' }}>
               <Slide bottom collapse>
                 <div className={classes.button}>
                   <NeuButton
@@ -105,7 +99,6 @@ const Routine = () => {
                   </NeuButton>
                 </div>
               </Slide>
-            </Grid>
           </List>
         ))}
       </Grid>

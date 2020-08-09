@@ -58,6 +58,7 @@ const Dashboard = React.memo(() => {
                 onClick={openDialog}
                 color="#DEE2E6"
                 radius={10}
+                style={{marginBottom:15}}
                 
             >
                +

@@ -14,7 +14,9 @@ import TopMenuSpacer from './component/TopMenuSpacer'
 
 
 const useStyles = makeStyles((theme) => ({
-    
+    root :{
+    },
+    buttons :{}
 }));
 
 
@@ -23,12 +25,13 @@ const Intro = () => {
     const classes = useStyles();
 
     return (
-        <div>
-            <TopMenu/>
-            <TopMenuSpacer/>
-            <div>
+        <div className={classes.root}>
+            <TopMenu />
+            <TopMenuSpacer />
+            <NeuButton height="50px" width="50%" color="#FFFFFF" distance={8} radius={10} className={classes.buttons}> Sign In </NeuButton>
+            <NeuButton height="50px" width="50%" color="#FFFFFF" distance={8} radius={10} className={classes.buttons}> Sign Up </NeuButton>
+            < img src="https://bashooka.com/wp-content/uploads/2018/01/intro-page-designs-12.jpg" alt="intro" style={{width:'100%', height:'100%'}} ></img>
 
-            </div>
         </div>
     );
 }
