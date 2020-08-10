@@ -128,7 +128,7 @@ const Routine = (props) => {
     })
 
     return (
-        <div>
+        <div style={{minWidth:1000}}>
             <TopMenu />
             <TopMenuSpacer/>
 
