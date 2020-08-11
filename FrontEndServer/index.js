@@ -161,18 +161,6 @@ app.get("/getUserRoutines", (req, res) => {//admin supported
     })
 
 })
-app.get("/getUserRoutines", (req, res) => {//admin supported
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Origin',  req.headers.origin);
-    res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
-    let result;
-    const response =  mongo.getUserRoutines(req.query.uid, (result) => {
-        console.log(result)
-        res.send(result);
-    })
-
-})
 app.get("/joinRoutine", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);

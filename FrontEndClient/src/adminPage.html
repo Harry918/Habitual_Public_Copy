@@ -13,7 +13,7 @@
 </head>
 
 <body>
-
+    <div id="bar" style="width: 25%; height: 20px; background-color: green;"></div>
     <div class="jumbotron">
         <h1 class="display-4">Habitual</h1>
         <p class="lead">Welcome to the admin dashboard</p>
@@ -59,12 +59,29 @@
         parentRoutine
         email
         */
+       const serverAddress = 'http://ec2-13-57-36-23.us-west-1.compute.amazonaws.com:9000'
+       for(let i = 0; i<500; i++)
+       {
+        console.log(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
+       }
+        
+        try {
+                let url = `${serverAddress}/getPublicRoutines`
+                const response = axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                        document.getElementById('bar').style.width='100%'
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
        async function getInternals() {
            console.log(document.getElementById('uid').value)
        }
         async function getPublicRoutines() {
             try {
-                let url = 'http://localhost:5000/getPublicRoutines'
+                let url = `${serverAddress}/getPublicRoutines`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -78,7 +95,7 @@
             let uid = document.getElementById('uid').value
             let routineid = document.getElementById('routineid').value
             try {
-                let url = `http://localhost:5000/checkCompletion?uid=${uid}&routineid=${routineid}`
+                let url = `${serverAddress}/checkCompletion?uid=${uid}&routineid=${routineid}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -92,7 +109,7 @@
             let uid = document.getElementById('uid').value
             let email = document.getElementById('email').value
             try {
-                let url = `http://localhost:5000/createUser?uid=${uid}&email=${email}`
+                let url = `${serverAddress}/createUser?uid=${uid}&email=${email}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -115,7 +132,7 @@
             let content = document.getElementById('content').value
             console.log('data', uid, title, description, public, picturekey)
             try {
-                let url = `http://localhost:5000/createRoutine?uid=${uid}&title=${title}&description=${description}&public=${public}&picturekey=${picturekey}`
+                let url = `${serverAddress}/createRoutine?uid=${uid}&title=${title}&description=${description}&public=${public}&picturekey=${picturekey}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -136,7 +153,7 @@
             let email = document.getElementById('email').value
             let content = document.getElementById('content').value
             try {
-                let url = `http://localhost:5000/joinRoutine?uid=${uid}&routineid=${routineid}`
+                let url = `${serverAddress}/joinRoutine?uid=${uid}&routineid=${routineid}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -157,7 +174,7 @@
             let email = document.getElementById('email').value
             let content = document.getElementById('content').value
             try {
-                let url = `http://localhost:5000/createPost?uid=${uid}&title=${title}&description=${description}&content=${content}&parentRoutine=${parentRoutine}`
+                let url = `${serverAddress}/createPost?uid=${uid}&title=${title}&description=${description}&content=${content}&parentRoutine=${parentRoutine}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -178,7 +195,7 @@
             let email = document.getElementById('email').value
             let content = document.getElementById('content').value
             try {
-                let url = `http://localhost:5000/getPosts?parentRoutine=${parentRoutine}`
+                let url = `${serverAddress}/getPosts?parentRoutine=${parentRoutine}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -199,7 +216,7 @@
             let email = document.getElementById('email').value
             let content = document.getElementById('content').value
             try {
-                let url = `http://localhost:5000/getUserRoutines?uid=${uid}`
+                let url = `${serverAddress}/getUserRoutines?uid=${uid}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -209,6 +226,7 @@
                 console.log(err)
             }
         }
+        
 
     </script>
 </body>

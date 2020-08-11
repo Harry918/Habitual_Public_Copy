@@ -3,6 +3,7 @@ const uri = process.env.MONGO_URI;
 const {MongoClient} = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
 var client
+var ObjectId = require('mongodb').ObjectID;
 async function connectToMongo(){
     //start mogno
     try {
@@ -162,7 +163,6 @@ async function getUserRoutines(uid, callback){
     console.log('retreiving public routines')
     userQuery = {_id :{$eq: uid}}
     // booksCollection.find({_id: {$in: author.books}}).toArray();
-
     client.db('HabitApp').collection('Users').findOne(userQuery).then(data => {
         let routines = data.routines
         routineQuery = {_id :{ $in: routines}}
@@ -180,6 +180,7 @@ async function getUserRoutines(uid, callback){
         })
     })
 }
+
 async function joinRoutine(uid, routineid, callback)
 {
     console.log("joining routine of routineid", routineid, 'with uid', uid)
