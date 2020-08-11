@@ -11,6 +11,8 @@ import { NeuDiv } from "neumorphism-react";
 import { Grid, Paper } from "@material-ui/core"
 import { NeuButton } from "neumorphism-react";
 import RoutineDialog from '../insertRoutine'
+import { useSelector, useDispatch } from 'react-redux';
+import * as routineActions from '../../../actions/routineFunctions'
 
 
 
@@ -42,13 +44,20 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const AboutRoutine = () => {
+const AboutRoutine = ({routineID}) => {
     const classes = useStyles();
+    const dispatch = useDispatch()
     const [dialog, setDialog] = useState(false)
+    const {uid} = useSelector(state => state.firebase.auth)
     const openDialog = () => {
         setDialog(!dialog)
     }
     let testClick = false;
+    console.log(routineID)
+
+    const joinGroup = () => {
+        dispatch(routineActions.joinRoutine(uid, routineID))
+    }
     return (
         <div>
             <div style={{ padding: 15 }}>
@@ -59,7 +68,7 @@ const AboutRoutine = () => {
                         <Grid container wrap="nowrap" spacing={2}>
                             <Grid item xs>
                                 <Typography style={{ color: "black", fontFamily: 'Lato' }}>
-                                    <h2 style={{margin: '15px'}}>About Community</h2>
+                                    <h2 style={{margin: '15px'}}>About Routine</h2>
                                     <p style={{margin: '25px 15px 25px 15px'}}>{aboutMessage}</p>
                                     <Grid container wrap="nowrap" className = {classes.counts} spacing={2}>
                                         <Grid item xs={6}>  
@@ -85,7 +94,7 @@ const AboutRoutine = () => {
                                 <br />
                                 <NeuButton
                                         height="50px"
-                                        onClick={openDialog}
+                                        onClick={joinGroup}
                                         color="#FFFFFF"
                                         distance={8}
                                         radius = {10}

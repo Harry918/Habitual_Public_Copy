@@ -1,12 +1,11 @@
 import axios from 'axios';
-let serverlink = 'http://localhost:5000'
+let serverAddress = 'http://ec2-13-57-36-23.us-west-1.compute.amazonaws.com:9000'
 //let serverlink = 'http://dbe991ca5bf7.ngrok.io'
 
 export const retTest = () => async dispatch => {
     try{
         let url = '/createUser?uid=1111111111&email=222222'
         const response = await axios.get(url)
-        console.log(response)
     }
     catch(err)
     {
@@ -22,12 +21,10 @@ async function retPic(response, callback) {
             responseType: 'blob',
             headers: {'Content-Type': 'multipart/form-data'}
           }
-        let url2 = `${serverlink}/getPhoto?key=${response.data[i].picturekey}`
-        console.log(response.data.length)
+        let url2 = `${serverAddress}/getPhoto?key=${response.data[i].picturekey}`
         const response2 = await axios.get(url2, options)
         convertPic(callback, response2, imagesArray, response.data.length, (callback, data, imagesArray, arraySize) => {
             imagesArray.push(data)
-            console.log("here2")
             if(imagesArray.length === arraySize){
                 // dispatch({type: 'PUBLIC_PIC_SUCCESS', payload: imagesArray})
                 if(callback)
@@ -57,7 +54,7 @@ export const getPublicRoutines = () => async dispatch => {
     let i
     dispatch({type: 'PUBLIC_ROUTINES_START'})
     try{
-        let url = 'http://localhost:5000/getPublicRoutines'
+        let url = `${serverAddress}/getPublicRoutines`
         const response = await axios.get(url)
         .then(async (response) => {
             let images = []
@@ -75,42 +72,23 @@ export const getPublicRoutines = () => async dispatch => {
 }
 
 
-
-
-export const getRoutinePosts = () => async dispatch => {
-//     try{
-//         dispatch({type: 'ROUTINE_POSTS_START'})
-//         let url = 'http://localhost:5000/getRoutinePosts'
-//         const response = await axios.get(url)
-//         console.log(response)
-//         dispatch({type: 'ROUTINE_POSTS_SUCCESS', payload: response.data})
-//     }
-//     catch(err)
-//     {
-//         console.log(err)
-//         dispatch({type: 'ROUTINE_POSTS_SUCCESS'})
-//     }
-}
-
-export const createRoutine = (title, desc, pub, file, callback) => async dispatch => {
+export const createRoutine = (uid,title, desc, pub, file, callback) => async dispatch => {
     const options = {
         headers: {'Content-Type': 'multipart/form-data'}
     }
     try{
         dispatch({type: 'ROUTINE_POSTS_START'})
-        let url = 'http://localhost:5000/uploadImg'
+        let url = `${serverAddress}/uploadImg`
         axios.post(url, file, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
           }).then((response) => {
-              console.log(response)
             // dispatch({type: 'ROUTINE_POSTS_SUCCESS', payload: {title: title, description: desc, public: pub}})
               console.log('title, des, pub, ', title, desc, pub)
-                 let url = `http://localhost:5000/createRoutine?uid=100&title=${title}&description=${desc}&public=true&picturekey=${response.data.key}`
+                 let url = `${serverAddress}/createRoutine?uid=${uid}&title=${title}&description=${desc}&public=${pub}&picturekey=${response.data.key}`
               axios.get(url)
               .then(response => {
-                console.log(response)
                 dispatch({type: 'ROUTINE_POSTS_SUCCESS'})
               })
             .catch(error => {
@@ -128,18 +106,15 @@ export const createRoutine = (title, desc, pub, file, callback) => async dispatc
     }
 }
 
-export const joinRoutine = () => async dispatch => {
-    //uid routineID
+export const getUsersRoutines = (uid) => async dispatch => {
     try{
-        // dispatch({type: 'ROUTINE_POSTS_START'})
-        let url = 'http://localhost:5000/joinRoutine?uid=7ffgf&routineid=1000'
+        let url = `${serverAddress}/getUserRoutines/?uid=${uid}`
         const response = await axios.get(url)
         console.log(response)
-        dispatch({type: 'ROUTINE_POSTS_SUCCESS', payload: response.data})
+        dispatch({type: 'GET_USERS_ROUTINES', payload: response.data})
     }
     catch(err)
     {
         console.log(err)
-        // dispatch({type: 'ROUTINE_POSTS_SUCCESS'})
     }
 }

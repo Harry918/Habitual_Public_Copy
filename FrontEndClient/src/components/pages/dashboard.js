@@ -37,15 +37,18 @@ const Dashboard = React.memo(() => {
     const dispatch = useDispatch()
     const [dialog, setDialog] = useState(false)
     const update = useSelector(state => state.update)
+    const {uid} = useSelector(state => state.firebase.auth)
     // const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
     useEffect(() => {
-        dispatch(test.getPublicRoutines())
+        dispatch(test.getUsersRoutines(uid))
     }, [update])
+    useEffect(() => {
+        dispatch(test.getUsersRoutines(uid))
+        dispatch(test.getPublicRoutines())
+    }, [])
     const openDialog = () => {
         setDialog(!dialog)
     }
-    const stateTest = useSelector(state => state)
-    console.log(stateTest)
     return (
         <div className={classes.root}>
             

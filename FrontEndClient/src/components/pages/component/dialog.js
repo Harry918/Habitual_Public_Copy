@@ -65,34 +65,34 @@ const Dialog = () => {
   let history = useHistory();
   const classes = useStyles();
   let description = "This is a test description"
-  const images = useSelector(state => state.dashboardReducers.images)
-  const routines = useSelector(state => state.dashboardReducers.routines)
-  console.log(routines)
+  const {images, publicRoutines, userRoutines} = useSelector(state => state.dashboardReducers)
+  const temp = useSelector(state => state.dashboardReducers)
+  console.log(userRoutines)
+  const {uid} = useSelector(state => state.firebase.auth)
 
   const movetoNextPage = (routine_ID) => {
-    console.log(routine_ID)
     history.push('/routine', { routine_ID: routine_ID })
   }
   return (
     <div className={classes.root}>
       <Grid container spacing={0} style={{justifyContent:'center'}}>
-        {routines.map((item, i) => (
+        {images.map((item, i) => (
           <List key={i} style={{justifyContent: 'center' }}>
               <Slide bottom collapse>
                 <div className={classes.button}>
                   <NeuButton
                     className={classes.neubutton}
-                    onClick={() => { movetoNextPage(routines[i]._id) }}
+                    onClick={() => { movetoNextPage(publicRoutines[i]._id) }}
                     color="#FFFFFF"
                   >
                     <Typography variant="h4" color="textSecondary" component="p">
-                      {routines[i].title}
+                      {publicRoutines[i].title}
                     </Typography>
                     <div >
                       <Image className={classes.imageDiv} src={item} thumbnail />
                     </div>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      {routines[i].description}
+                      {publicRoutines[i].description}
                     </Typography>
 
 

@@ -91,6 +91,7 @@ const RoutineDialog = ({ dialog, openDialog, type }) => {
     const [desc, setDesc] = useState('')
     const [pub, setPub] = useState(false)
     const [file, setFile] = useState(null)
+    const {uid} = useSelector(state => state.firebase.auth)
     const changeText = (e, type) => {
         if (type === 'title') {
             setTitle(e.target.value)
@@ -113,11 +114,11 @@ const RoutineDialog = ({ dialog, openDialog, type }) => {
     }
 
     const createRoutine = () => {
-    dispatch(test.createRoutine(title, desc, pub, file))
+    dispatch(test.createRoutine(uid, title, desc, pub, file))
     openDialog(!dialog)
     }
     const createPost = () => {
-    dispatch(routineActions.createPost(title, desc, file))
+    dispatch(routineActions.createPost(uid, title, desc, file))
     openDialog(!dialog)
     }
 

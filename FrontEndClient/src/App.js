@@ -17,9 +17,9 @@ function App() {
     <div className="App">
       <Router>
             <Route path="/login"><Auth/></Route>
-              <PrivateRoute exact path="/" component={Dashboard}></PrivateRoute>
-              <PrivateRoute exact path="/home" component={Home}></PrivateRoute>
-              <PrivateRoute path="/routine" component={Routine}></PrivateRoute>
+              <Route exact path="/" component={Dashboard}></Route>
+              <Route exact path="/home" component={Home}></Route>
+              <Route path="/routine" component={Routine}></Route>
         </Router>
       
     </div>

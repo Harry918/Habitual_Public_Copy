@@ -13,6 +13,7 @@ import * as routineActions from '../../actions/routineFunctions'
 import { useSelector, useDispatch } from 'react-redux';
 import io from 'socket.io-client'
 import TopMenuSpacer from './component/TopMenuSpacer'
+import { isBrowser, deviceDetect, isMobile } from 'react-device-detect';
 
 
 
@@ -36,22 +37,14 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         color: 'white',
-        backgroundImage: `url('https://wallpapercave.com/wp/wp2437909.jpg')`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
+        background: 'linear-gradient(270deg, #02d59f, #e4ce19, #f53f16, #5616f5, #bdb6aa, #99e15e)',
+        backgroundSize: '1200% 1200%',
+        WebkitAnimation: 'AnimationName 59s ease infinite',
+        MozAnimation: 'AnimationName 59s ease infinite',
+        animation: 'AnimationName 59s ease infinite',
         height: 200, // change to200
         borderRadius: 0,
     },
-
-    // paper2: {
-    //     padding: theme.spacing(2),
-    //     textAlign: 'center',
-    //     color: 'white',
-    //     background: 'green',
-    //     height: 150,
-    //     borderRadius: 0,
-    //   },
 
     paper3: {
         padding: theme.spacing(2),
@@ -60,24 +53,8 @@ const useStyles = makeStyles((theme) => ({
         height: 400,
     },
 
-    test: {
-        padding: theme.spacing(2),
-        color: 'black',
-        background: '#DEE2E6',
-        height: 150,
-        borderRadius: 0,
-    },
-
-    test2: {
-        textAlign: 'center',
-        color: 'white',
-    },
-    test3: {
-        float: 'left',
-        borderRadius: '50%',
-        width: 150
-
-    },
+    
+   
     sharp: {
         borderRadius: '1!important'
     },
@@ -87,6 +64,45 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 15,
         paddingRight: 35,
 
+    },
+
+    pictureBar: {
+        padding: theme.spacing(2),
+        background: '#ffffff',
+        height: 100,
+        borderRadius: 0,
+
+        
+        },
+    
+    pictureBar__left: {
+        
+    },
+
+    leftImage: {
+        borderRadius: '50%',
+        width: 100,
+    },
+
+    pictureBar__center: {
+        textAlign: 'center',
+        margin:'auto',
+    },
+
+    centerTitle: {
+        color: 'black',
+        fontFamily: 'Lato',
+        
+    },
+
+    pictureBar__right: {
+        textAlign:'right',
+        margin:'auto',
+
+    },
+
+    completedButton: {
+        padding: 15,
     }
 
 
@@ -97,6 +113,7 @@ const message = `No posts here yet, check back later`;
 
 let socket
 const Routine = (props) => {
+    const serverAddress = 'http://ec2-13-57-36-23.us-west-1.compute.amazonaws.com:9000'
     const dispatch = useDispatch()
     const classes = useStyles();
     const params = props.location.state
@@ -110,7 +127,7 @@ const Routine = (props) => {
     useEffect(() => {
         console.log(params.routine_ID)
         dispatch(routineActions.retRoutinePosts(params.routine_ID))
-        var endpoint = "localhost:5000"
+        var endpoint = serverAddress
         socket = io(endpoint)
         let name = Math.random().toString(36).substring(3); //temp name for now
         console.log(params.routineID)
@@ -131,9 +148,9 @@ const Routine = (props) => {
             console.log(response)
         })
     })
-
+    console.log('HELLLLLLLLLLLLLLdsfmsalfmsaldfafLLLLLLLLLLLLLLOOOOOOOOOOO', deviceDetect());
     return (
-        <div style={{minWidth:1000}}>
+        <div style={{minWidth:500}}>
             <TopMenu />
             <TopMenuSpacer/>
 
@@ -143,13 +160,26 @@ const Routine = (props) => {
                         <Paper className={classes.paper1} >live feed / counter</Paper>
                     </Grid>
                     <Grid item xs={12}>
-                        <Paper className={classes.test}>
-                            < img src="https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies" className={classes.test3}></img>
-                            <h1 className={classes.test2}> Routine Name</h1>
-                            img + routine name + join
-                            <button onClick={completedRoutine}>completed</button>
+
+                        <Paper className={classes.pictureBar}>
+                            <Grid container spacing={0}>
+                                <Grid item xs={4} className={classes.pictureBar__left}>
+                                    < img  className={classes.leftImage} src="https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies" ></img>
+                                </Grid>
+                                <Grid item xs={4} className={classes.pictureBar__center}>
+                                    <Typography variant="h6" className={classes.centerTitle}>
+                                        DRINKING WATER
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={4} className={classes.pictureBar__right} >
+                                    <NeuButton className={classes.completedButton} height="50px" width="150px" color="#d8e8d3" distance={8} radius = {10} onClick={completedRoutine}><Typography style={{fontFamily: 'Lato'}}>
+                                        COMPLETED
+                                    </Typography></NeuButton>
+                                </Grid>
+                            </Grid>
                         </Paper>
                     </Grid>
+
                     <Grid item xs={9} style={{ padding: 20 }}>
                         {/* <>
                             <NeuButton width="150px" height="100px" color="#212529" className={classes.sharp} />
@@ -179,7 +209,7 @@ const Routine = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={3} className={classes.about}>
-                        <AboutRoutine />
+                        <AboutRoutine routineID={params.routine_ID}/>
                     </Grid>
                 </Grid>
             </div>
