@@ -104,7 +104,7 @@ const TopMenu = () => {
   let history = useHistory();
   const classes = useStyles();
   const signOut = () => {
-    firebase.auth().signOut();
+    firebase.auth().signOut()
     window.location.reload(false);
   }
   return (

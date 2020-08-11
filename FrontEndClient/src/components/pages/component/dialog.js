@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 }
 }));
 
-const Routine = () => {
+const Dialog = () => {
   let history = useHistory();
   const classes = useStyles();
   let description = "This is a test description"
@@ -106,4 +106,4 @@ const Routine = () => {
   )
 }
 
-export default Routine
+export default Dialog

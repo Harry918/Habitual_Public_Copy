@@ -100,6 +100,11 @@ const Routine = (props) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const params = props.location.state
+    console.log(props)
+    // const params = {
+    //     routine_ID: '123'
+    // }
+
     const posts = useSelector(state => state.routineReducers.routinePosts)
 
     useEffect(() => {

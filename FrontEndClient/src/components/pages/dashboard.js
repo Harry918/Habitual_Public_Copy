@@ -11,7 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import TopMenu from './component/TopMenu'
-import Routine from './component/dialog'
+import Dialog from './component/dialog'
 import { useSelector, useDispatch } from 'react-redux';
 import * as test from '../../actions/retHabitInfo'
 import Button from '@material-ui/core/Button';
@@ -52,7 +52,7 @@ const Dashboard = React.memo(() => {
             <TopMenu />
             <TopMenuSpacer />
 
-            <Routine />
+            <Dialog />
             <NeuButton
                 width="50px"
                 height="50px"

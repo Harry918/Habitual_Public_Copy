@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const Auth = () => {
+    console.log("here")
     let history = useHistory();
     const dispatch = useDispatch()
     const classes = useStyles();
@@ -60,7 +61,6 @@ const Auth = () => {
     const [pass, setPass] = useState('')
 
     useEffect(() => {
-        console.log("here")
     }, [])
     //login
     //u would need to use useState for user and pass

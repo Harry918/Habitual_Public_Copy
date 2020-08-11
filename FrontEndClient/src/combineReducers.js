@@ -7,8 +7,8 @@ import {firebaseReducer} from 'react-redux-firebase'
 const reducers = {
     dashboardReducers,
       routineReducers,
-      firestoreReducer,
-      firebaseReducer
+      firestore: firestoreReducer,
+      firebase: firebaseReducer
 }
 
 

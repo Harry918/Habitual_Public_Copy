@@ -10,7 +10,9 @@ export default function authReducer(state=initalState, action) {
             return{...state, routinePosts: action.payload, loading: false}
         case 'GET_ROUTINE_POSTS_FAILURE':
             return{...state, errorMessage: 'ERROR RETRIEVING POSTS'}
-        default: 
+        case 'SIGNOUT_SUCCESS':
+            return{...state, authError: true}
+            default: 
             return{...state}
     }
 
