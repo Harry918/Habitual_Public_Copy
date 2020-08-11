@@ -1,6 +1,7 @@
 require('dotenv').config();
 const uri = process.env.MONGO_URI;
 const {MongoClient} = require('mongodb');
+var ObjectId = require('mongodb').ObjectID;
 var client
 async function connectToMongo(){
     //start mogno
@@ -160,30 +161,16 @@ async function getPublicRoutines(callback){
 async function getUserRoutines(uid, callback){
     console.log('retreiving public routines')
     userQuery = {_id :{$eq: uid}}
-    query= {'_id' :'5f2b7156b868c79e30ee6acc'}
     // booksCollection.find({_id: {$in: author.books}}).toArray();
 
-    /*client.db('HabitApp').collection('Users').findOne(userQuery).then(data => {
-        let routines = data.routines
-        console.log(routines);
-        routineQuery = {_id :{$eq: routines[0]}}*/
-        client.db('HabitApp').collection('Routines').find(query).toArray(function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            if (callback){
-                callback(result)
-            }
-        })
-    //})
-}
-async function getUserRoutines(uid, callback){
-    console.log('retreiving public routines')
-    userQuery = {_id :{$eq: uid}}
-    // booksCollection.find({_id: {$in: author.books}}).toArray();
-    
     client.db('HabitApp').collection('Users').findOne(userQuery).then(data => {
         let routines = data.routines
         routineQuery = {_id :{ $in: routines}}
+        console.log('routine ids are', routines);
+        for(let i = 0; i<routines.length; i++)
+        {
+          routines[i]  = ObjectId(routines[i])
+        }
         client.db('HabitApp').collection('Routines').find(routineQuery).toArray(function(err, result) {
             if (err) throw err;
             console.log(result);
