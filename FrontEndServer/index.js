@@ -143,7 +143,7 @@ app.get("/getPublicRoutines", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
     let result;
-    const response =  mongo.getPublicRoutines((routineArray) => {
+    const response =  mongo.getPublicRoutines(req.query.pageNumber, req.query.pageLimit, (routineArray) => {
         console.log(routineArray)
         res.send(routineArray);
     })

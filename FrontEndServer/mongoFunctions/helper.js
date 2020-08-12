@@ -143,13 +143,13 @@ async function createRoutine(uid, title, description, public, picturekey, callba
     }
 
 }
-async function getPublicRoutines(callback){
+async function getPublicRoutines(pageNumber, pageLimit, callback){
     console.log('retreiving public routines')
     query = {public :{$eq: 'true'}}
     let publicRoutines
     //let client = new MongoClient(uri, { useUnifiedTopology: true});
     //await client.connect();
-    client.db('HabitApp').collection('Routines').find(query).toArray(function(err, result) {
+    client.db('HabitApp').collection('Routines').find(query).skip(pageLimit*pageNumber).limit(pageLimit).toArray(function(err, result) {
         if (err) throw err;
         console.log(result);
         if(callback){
