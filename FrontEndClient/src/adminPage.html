@@ -27,6 +27,8 @@
         <input  class="form-control" id="content" placeholder="content">
         <input  class="form-control" id="parentRoutine" placeholder="parentRoutine">
         <input  class="form-control" id="email" placeholder="email">
+        <input  class="form-control" id="pageNumber" placeholder="pageNumber">
+        <input  class="form-control" id="pageLimit" placeholder="pageLimit">
 
     </div>
 
@@ -34,12 +36,13 @@
     <ul class="list-group">
       <li class="list-group-item"><button type='button' onclick="createUser()" class="btn btn-secondary">createUser</button> Requires: uid, email</li>
       <li class="list-group-item"><button type='button' onclick="createRoutine()" class="btn btn-secondary">createRoutine</button> Requires: uid, title, description, public, picturekey</li>
-      <li class="list-group-item"><button type='button' onclick="getPublicRoutines()" class="btn btn-secondary">getPublicRoutines</button> Requires: NA</li>
+      <li class="list-group-item"><button type='button' onclick="getPublicRoutines()" class="btn btn-secondary">getPublicRoutines</button> Requires: page number, page limit</li>
       <li class="list-group-item">  <button type='button' onclick="joinRoutine()" class="btn btn-secondary">joinRoutine</button> Requires: uid, routineid</li>
       <li class="list-group-item">  <button type='button' onclick="createPost()" class="btn btn-secondary">createPost</button> Requires: uid, title, content, parentRoutine</li>
       <li class="list-group-item">  <button type='button' onclick="getPosts()" class="btn btn-secondary">getPosts</button> Requires: parentRoutine</li>
       <li class="list-group-item"> <button type='button' onclick="checkCompletion()" class="btn btn-secondary">checkCompletion</button></button> Requires: uid, routineid</li>
       <li class="list-group-item"> <button type='button' onclick="getUserRoutines()" class="btn btn-secondary">getUserRoutines</button></button> Requires: uid</li>
+      <li class="list-group-item"> <button type='button' onclick="createRoom()" class="btn btn-secondary">create Room</button></button> NOT FOR HABITAPP</li>
     </ul>
 
 
@@ -80,8 +83,10 @@
            console.log(document.getElementById('uid').value)
        }
         async function getPublicRoutines() {
+            let pageLimit = document.getElementById("pageLimit").value
+            let pageNumber = document.getElementById("pageNumber").value
             try {
-                let url = `${serverAddress}/getPublicRoutines`
+                let url = `${serverAddress}/getPublicRoutines?pageLimit=${pageLimit}&pageNumber=${pageNumber}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -217,6 +222,19 @@
             let content = document.getElementById('content').value
             try {
                 let url = `${serverAddress}/getUserRoutines?uid=${uid}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function createRoom() {
+            
+            try {
+                let url = `${serverAddress}/createRoom?`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)

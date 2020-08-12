@@ -16,14 +16,15 @@ export const retTest = () => async dispatch => {
 async function retPic(response, callback) {
     let imagesArray = []
     let temp
-    for(let i in response.data){
+    for(let i in response.data.result){
         const options = {
             responseType: 'blob',
             headers: {'Content-Type': 'multipart/form-data'}
           }
-        let url2 = `${serverAddress}/getPhoto?key=${response.data[i].picturekey}`
+          console.log(response.data.result)
+        let url2 = `${serverAddress}/getPhoto?key=${response.data.result[i].picturekey}`
         const response2 = await axios.get(url2, options)
-        convertPic(callback, response2, imagesArray, response.data.length, (callback, data, imagesArray, arraySize) => {
+        convertPic(callback, response2, imagesArray, response.data.result.length, (callback, data, imagesArray, arraySize) => {
             imagesArray.push(data)
             if(imagesArray.length === arraySize){
                 // dispatch({type: 'PUBLIC_PIC_SUCCESS', payload: imagesArray})
@@ -50,11 +51,11 @@ function convertPic(callback1, res, imagesArray, arraySize, callback){
 }
 }
 
-export const getPublicRoutines = () => async dispatch => {
+export const getPublicRoutines = (pageNumber) => async dispatch => {
     let i
     dispatch({type: 'PUBLIC_ROUTINES_START'})
     try{
-        let url = `${serverAddress}/getPublicRoutines`
+        let url = `${serverAddress}/getPublicRoutines/?pageNumber=${pageNumber}&pageLimit=6`
         const response = await axios.get(url)
         .then(async (response) => {
             let images = []

@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import io from 'socket.io-client'
 import TopMenuSpacer from './component/TopMenuSpacer'
 import { isBrowser, deviceDetect, isMobile } from 'react-device-detect';
+import Particles from 'react-particles-js';
 
 
 
@@ -103,6 +104,9 @@ const useStyles = makeStyles((theme) => ({
 
     completedButton: {
         padding: 15,
+    },
+    particle: {
+        height: 400,
     }
 
 
@@ -157,7 +161,83 @@ const Routine = (props) => {
             <div className={classes.root}>
                 <Grid container spacing={0}>
                     <Grid item xs={12} >
-                        <Paper className={classes.paper1} >live feed / counter</Paper>
+                    <Particles
+                    className={classes.particle}
+    params={{
+	    "particles": {
+	        "number": {
+	            "value": 50
+            },
+	        "size": {
+	            "value": 3
+            },
+            "color": {
+                "value": "#000000"}, // color of the dot
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#000000", //color of the lines
+                    "opacity": 0.4,
+                    "width": 1
+                  },
+        },
+        
+	    "interactivity": {
+	        "events": {
+	            "onhover": {
+	                "enable": true,
+	                "mode": "repulse"
+	            }
+	        }
+        }
+	}} />
+                    {/* <Particles
+    params={{
+	    "particles": {
+	        "number": {
+	            "value": 8,
+	            "density": {
+	                "enable": true,
+	                "value_area": 800
+	            }
+	        },
+	        "line_linked": {
+	            "enable": false
+	        },
+	        "move": {
+	            "speed": 1,
+	            "out_mode": "out"
+	        },
+	        "shape": {
+	            "type": [
+	                "image",
+	                "circle"
+	            ],
+	            "image": [
+	                {
+	                    "src": "https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" ,
+	                    "height": 20,
+	                    "width": 23
+	                },
+	            ]
+	        },
+	        "color": {
+	            "value": "#CCC"
+	        },
+	        "size": {
+	            "value": 30,
+	            "random": false,
+	            "anim": {
+	                "enable": true,
+	                "speed": 4,
+	                "size_min": 10,
+	                "sync": false
+	            }
+	        }
+	    },
+	    "retina_detect": false
+	}} /> */}
+                        {/* <Paper className={classes.paper1} >live feed / counter</Paper> */}
                     </Grid>
                     <Grid item xs={12}>
 
