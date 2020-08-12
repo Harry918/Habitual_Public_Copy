@@ -76,8 +76,8 @@ async function findHi(client){
         }
         else
         {
-            console.log("retrieved records:");
-            console.log(docs);
+            //console.log("retrieved records:");
+            //console.log(docs);
         }
 
     });
@@ -100,8 +100,8 @@ async function createUserDoc(uid, email, displayName){
                 console.log(error);
                 return error;
             } else {
-               console.log('inserted record', response);
-               return 'worked';
+               //console.log('inserted record', response);
+               //return 'worked';
             }
         });
     } catch (e) {
@@ -131,7 +131,42 @@ async function createRoutine(uid, title, description, public, picturekey, callba
                 return error;
             } else {
                routineID = response.ops[0]._id;
-               console.log('inserted record with id: ', routineID);
+               //console.log('inserted record with id: ', routineID);
+               if(callback){
+                   callback(routineID)
+               }
+            }
+        });
+    } catch (e) {
+        console.error(e);
+    } finally {
+        //await client.close();
+    }
+
+}
+async function createRoutineWithBots(uid, title, description, public, picturekey, bots, callback){
+    bots = parseInt(bots, 10)
+    console.log('creating Routine');
+    let routineID
+    routineDoc = {
+        creator: uid,
+        title: title,
+        description: description,
+        numPeople: bots,
+        public: public,
+        picturekey: picturekey
+    }
+    try{
+        //let client = new MongoClient(uri, { useUnifiedTopology: true } );
+        //await client.connect();
+        client.db('HabitApp').collection('Routines').insertOne(routineDoc, function(error, response){
+            if(error) {
+                console.log('Error occurred while inserting');
+                console.log(error);
+                return error;
+            } else {
+               routineID = response.ops[0]._id;
+               //console.log('inserted record with id: ', routineID);
                if(callback){
                    callback(routineID)
                }
@@ -146,17 +181,58 @@ async function createRoutine(uid, title, description, public, picturekey, callba
 }
 async function getPublicRoutines(pageNumber, pageLimit, callback){
     console.log('retreiving public routines')
-    query = {public :{$eq: 'true'}}
+    pageNumber = parseInt(pageNumber, 10) - 1
+    pageLimit = parseInt(pageLimit, 10)
+    let query = {public :{$eq: 'true'}}
+    let jsonResponse = {}
     let publicRoutines
     //let client = new MongoClient(uri, { useUnifiedTopology: true});
     //await client.connect();
-    client.db('HabitApp').collection('Routines').find(query).skip(pageLimit*pageNumber).limit(pageLimit).toArray(function(err, result) {
+    client.db('HabitApp').collection('Routines').find(query).skip(pageLimit*pageNumber).limit(pageLimit).sort({numPeople: -1}).toArray(function(err, result) {//sort by num mems
         if (err) throw err;
-        console.log(result);
-        if(callback){
-            callback(result)
-        }
+        numRoutines = client.db('HabitApp').collection('Routines').stats().then( stats => {
+          console.log('the number of routines is', stats);
+          if(numRoutines <= pageNumber * pageLimit)
+          {
+            jsonResponse = {
+              result: result,
+              lastPage: true
+            }
+          }
+          else
+          {
+            jsonResponse = {
+              result: result,
+              lastPage: false
+            }
+          }
+        }).then(something => {
+          console.log(something);
+          if(callback){
+              callback(jsonResponse)
+          }
+        })
+        //console.log(result);
+
     });
+
+}
+async function getPublicRoutinesData(pageNumber, pageLimit, callback){
+    console.log('retreiving public routines data')
+    pageNumber = parseInt(pageNumber, 10) - 1
+    pageLimit = parseInt(pageLimit, 10)
+    let query = {public :{$eq: 'true'}}
+    let jsonResponse = {}
+    let publicRoutines
+    //let client = new MongoClient(uri, { useUnifiedTopology: true});
+    //await client.connect();
+    // cursor.explain("executionStats")
+    client.db('HabitApp').collection('Routines').find(query).skip(pageLimit*pageNumber).limit(pageLimit).sort({numPeople: -1}).explain("executionStats").then(executionStats => {
+        console.log(executionStats)
+        if (callback){
+            callback(executionStats)
+        }
+    }) 
 
 }
 async function getUserRoutines(uid, callback){
@@ -223,7 +299,7 @@ async function createPost(uid, title, content, parentRoutine, callback){
                 return error;
             } else {
                routineID = response.ops[0]._id;
-               console.log('inserted record with id: ', routineID);
+               //console.log('inserted record with id: ', routineID);
                if(callback){
                    callback(routineID)
                }
@@ -242,7 +318,7 @@ async function checkCompletion(uid, routineID, callback){
     query = {$and: [{'uid' :{$eq:uid}}, {'routineID' :{$eq:routineID}}]}
     client.db('HabitApp').collection('completionMapping').find(query).toArray(function(err, result) {
        if (err) throw err;
-        console.log(result);
+        //console.log(result);
         if(callback){
             callback(result.length)
         }
@@ -254,7 +330,7 @@ async function markCompletion(uid, routineID, callback){
     query = {$and: [{'uid' :{$eq:uid}}, {'routineID' :{$eq:routineID}}]}
     client.db('HabitApp').collection('completionMapping').find(query).toArray(function(err, result) {
        if (err) throw err;
-        console.log(result);
+        //console.log(result);
         if(result.length==0){
             postDoc = {
                 uid: uid,
@@ -268,7 +344,7 @@ async function markCompletion(uid, routineID, callback){
                         return error;
                     } else {
                        routineID = response.ops[0]._id;
-                       console.log('inserted record with id: ', routineID);
+                       //console.log('inserted record with id: ', routineID);
                        if(callback){
                            callback(routineID)
                        }
@@ -287,7 +363,7 @@ async function getPosts(parentRoutine, callback){
     query = {'parentRoutine' :{$eq:parentRoutine}}
     client.db('HabitApp').collection('Posts').find(query).toArray(function(err, result) {
         if (err) throw err;
-        console.log(result);
+        //console.log(result);
         if(callback){
             callback(result)
         }
@@ -306,4 +382,4 @@ const uploadFile = (buffer, name, type) => {
   };
 
 
-module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, getPublicRoutines, joinRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion, getUserRoutines};
+module.exports = { connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, createRoutineWithBots, getPublicRoutines, getPublicRoutinesData, joinRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion, getUserRoutines};
