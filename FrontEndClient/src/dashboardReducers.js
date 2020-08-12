@@ -3,7 +3,9 @@ const initalState = {
     publicRoutines: [],
     images: [],
     update: false,
-    userRoutines: []
+    userRoutines: [],
+    pageNumber: 1,
+    lastPage: false
 }
 
 export default function dashboardReducers(state=initalState, action) {
@@ -11,7 +13,8 @@ export default function dashboardReducers(state=initalState, action) {
         case 'PUBLIC_ROUTINES_START':
             return{...state, loading: true}
         case 'PUBLIC_ROUTINES_SUCCESS':
-            return{...state, loading: false, publicRoutines: action.payload}
+            console.log(state.pageNumber)
+            return{...state, loading: false, publicRoutines: [...state.publicRoutines, ...action.payload.result], pageNumber: state.pageNumber+ 1 }
         case 'PUBLIC_ROUTINES_FAILURE':
             return {...state, loading: false}
         case 'ROUTINE_POSTS_START':
@@ -21,7 +24,7 @@ export default function dashboardReducers(state=initalState, action) {
         case 'ROUTINE_POSTS_FAILURE':
             return {...state, loading: false}
         case 'PUBLIC_PIC_SUCCESS':
-            return {...state, images: action.payload}
+            return {...state, images: [...state.images, ...action.payload]}
         case 'GET_USERS_ROUTINES':
             return {...state, userRoutines: action.payload}
         default: 

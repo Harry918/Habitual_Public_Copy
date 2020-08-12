@@ -19,27 +19,45 @@
         <p class="lead">Welcome to the admin dashboard</p>
         <hr class="my-4">
         <input class="form-control" id="uid" placeholder="uid">
-        <input  class="form-control" id="routineid" placeholder="routineid">
-        <input  class="form-control" id="title" placeholder="title">
-        <input  class="form-control" id="description" placeholder="description">
-        <input  class="form-control" id="public" placeholder="public">
-        <input  class="form-control" id="picturekey" placeholder="picturekey">
-        <input  class="form-control" id="content" placeholder="content">
-        <input  class="form-control" id="parentRoutine" placeholder="parentRoutine">
-        <input  class="form-control" id="email" placeholder="email">
+        <input class="form-control" id="routineid" placeholder="routineid">
+        <input class="form-control" id="title" placeholder="title">
+        <input class="form-control" id="description" placeholder="description">
+        <input class="form-control" id="public" placeholder="public">
+        <input class="form-control" id="picturekey" placeholder="picturekey">
+        <input class="form-control" id="content" placeholder="content">
+        <input class="form-control" id="parentRoutine" placeholder="parentRoutine">
+        <input class="form-control" id="email" placeholder="email">
+        <input class="form-control" id="pageNumber" placeholder="pageNumber">
+        <input class="form-control" id="pageLimit" placeholder="pageLimit">
+        <input class="form-control" id="bots" placeholder="bots">
 
     </div>
 
 
     <ul class="list-group">
-      <li class="list-group-item"><button type='button' onclick="createUser()" class="btn btn-secondary">createUser</button> Requires: uid, email</li>
-      <li class="list-group-item"><button type='button' onclick="createRoutine()" class="btn btn-secondary">createRoutine</button> Requires: uid, title, description, public, picturekey</li>
-      <li class="list-group-item"><button type='button' onclick="getPublicRoutines()" class="btn btn-secondary">getPublicRoutines</button> Requires: NA</li>
-      <li class="list-group-item">  <button type='button' onclick="joinRoutine()" class="btn btn-secondary">joinRoutine</button> Requires: uid, routineid</li>
-      <li class="list-group-item">  <button type='button' onclick="createPost()" class="btn btn-secondary">createPost</button> Requires: uid, title, content, parentRoutine</li>
-      <li class="list-group-item">  <button type='button' onclick="getPosts()" class="btn btn-secondary">getPosts</button> Requires: parentRoutine</li>
-      <li class="list-group-item"> <button type='button' onclick="checkCompletion()" class="btn btn-secondary">checkCompletion</button></button> Requires: uid, routineid</li>
-      <li class="list-group-item"> <button type='button' onclick="getUserRoutines()" class="btn btn-secondary">getUserRoutines</button></button> Requires: uid</li>
+        <li class="list-group-item"><button type='button' onclick="createUser()"
+                class="btn btn-secondary">createUser</button> Requires: uid, email</li>
+        <li class="list-group-item"><button type='button' onclick="createRoutine()"
+                class="btn btn-secondary">createRoutine</button> Requires: uid, title, description, public, picturekey
+        </li>
+        <li class="list-group-item"><button type='button' onclick="getPublicRoutines()"
+                class="btn btn-secondary">getPublicRoutines</button> Requires: page number, page limit</li>
+        <li class="list-group-item"> <button type='button' onclick="joinRoutine()"
+                class="btn btn-secondary">joinRoutine</button> Requires: uid, routineid</li>
+        <li class="list-group-item"> <button type='button' onclick="createPost()"
+                class="btn btn-secondary">createPost</button> Requires: uid, title, content, parentRoutine</li>
+        <li class="list-group-item"> <button type='button' onclick="getPosts()"
+                class="btn btn-secondary">getPosts</button> Requires: parentRoutine</li>
+        <li class="list-group-item"> <button type='button' onclick="checkCompletion()"
+                class="btn btn-secondary">checkCompletion</button></button> Requires: uid, routineid</li>
+        <li class="list-group-item"> <button type='button' onclick="getUserRoutines()"
+                class="btn btn-secondary">getUserRoutines</button></button> Requires: uid</li>
+        <li class="list-group-item"> <button type='button' onclick="getPublicRoutinesData()"
+                class="btn btn-secondary">getPublicRoutinesData</button></button> query stats on public routines</li>
+        <li class="list-group-item"> <button type='button' onclick="createRoutineWithBots()" class="btn btn-secondary">create
+                Routine with bots</button></button> TESTING ONLY, Requires: BOTS, uid, title, description, public, picturekey </li>
+        <li class="list-group-item"> <button type='button' onclick="createRoom()" class="btn btn-secondary">create
+                Room</button></button> NOT FOR HABITAPP</li>
     </ul>
 
 
@@ -59,29 +77,44 @@
         parentRoutine
         email
         */
-       const serverAddress = 'http://ec2-13-57-36-23.us-west-1.compute.amazonaws.com:9000'
-       for(let i = 0; i<500; i++)
-       {
-        console.log(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
-       }
-        
+        const serverAddress = 'http://ec2-13-57-36-23.us-west-1.compute.amazonaws.com:9000'
+        for (let i = 0; i < 500; i++) {
+            console.log(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
+        }
+
         try {
-                let url = `${serverAddress}/getPublicRoutines`
-                const response = axios.get(url)
+            let url = `${serverAddress}/getPublicRoutines`
+            const response = axios.get(url)
+                .then(async (response) => {
+                    console.log(response)
+                    document.getElementById('bar').style.width = '100%'
+                })
+        }
+        catch (err) {
+            console.log(err)
+        }
+        async function getInternals() {
+            console.log(document.getElementById('uid').value)
+        }
+        async function getPublicRoutines() {
+            let pageLimit = document.getElementById("pageLimit").value
+            let pageNumber = document.getElementById("pageNumber").value
+            try {
+                let url = `${serverAddress}/getPublicRoutines?pageLimit=${pageLimit}&pageNumber=${pageNumber}`
+                const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
-                        document.getElementById('bar').style.width='100%'
                     })
             }
             catch (err) {
                 console.log(err)
             }
-       async function getInternals() {
-           console.log(document.getElementById('uid').value)
-       }
-        async function getPublicRoutines() {
+        }
+        async function getPublicRoutinesData() {
+            let pageLimit = document.getElementById("pageLimit").value
+            let pageNumber = document.getElementById("pageNumber").value
             try {
-                let url = `${serverAddress}/getPublicRoutines`
+                let url = `${serverAddress}/getPublicRoutinesData?pageLimit=${pageLimit}&pageNumber=${pageNumber}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -133,6 +166,29 @@
             console.log('data', uid, title, description, public, picturekey)
             try {
                 let url = `${serverAddress}/createRoutine?uid=${uid}&title=${title}&description=${description}&public=${public}&picturekey=${picturekey}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function createRoutineWithBots() {
+            let uid = document.getElementById("uid").value
+            let title = document.getElementById("title").value
+            let description = document.getElementById("description").value
+            let public = document.getElementById('public').value
+            let picturekey = document.getElementById('picturekey').value
+            let routineid = document.getElementById('routineid').value
+            let parentRoutine = document.getElementById('parentRoutine').value
+            let email = document.getElementById('email').value
+            let content = document.getElementById('content').value
+            let bots = document.getElementById('bots').value
+            console.log('data', uid, title, description, public, picturekey)
+            try {
+                let url = `${serverAddress}/createRoutineWithBots?uid=${uid}&title=${title}&description=${description}&public=${public}&picturekey=${picturekey}&bots=${bots}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -226,7 +282,20 @@
                 console.log(err)
             }
         }
-        
+        async function createRoom() {
+
+            try {
+                let url = `${serverAddress}/createRoom?`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
 
     </script>
 </body>

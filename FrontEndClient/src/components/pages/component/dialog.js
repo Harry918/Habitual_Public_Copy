@@ -67,7 +67,8 @@ const Dialog = () => {
   let description = "This is a test description"
   const {images, publicRoutines, userRoutines} = useSelector(state => state.dashboardReducers)
   const temp = useSelector(state => state.dashboardReducers)
-  console.log(userRoutines)
+  console.log(publicRoutines)
+  console.log(images)
   const {uid} = useSelector(state => state.firebase.auth)
 
   const movetoNextPage = (routine_ID) => {
