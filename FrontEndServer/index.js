@@ -39,7 +39,7 @@ async function main(){
 main().catch(console.error);
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 9000;
 console.log("RUNNING ON PORT", PORT)
 
 let rooms = {
@@ -161,7 +161,6 @@ app.get("/getUserRoutines", (req, res) => {//admin supported
     })
 
 })
-
 app.get("/joinRoutine", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
@@ -176,7 +175,7 @@ app.get("/joinRoutine", (req, res) => {//admin supported
 })
 
 app.post('/uploadImg', (req, res) => {
-   /* res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
@@ -197,7 +196,7 @@ app.post('/uploadImg', (req, res) => {
             console.log(error)
           return res.status(400).send(error);
         }
-    });*/
+    });
 });
 app.get("/createPost", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
@@ -236,7 +235,7 @@ app.get("/getPosts", (req, res) => {//admin supported
 
 })
 app.get("/getPhoto", (req, res) => {
-/*
+
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin',  req.headers.origin);
     res.header('Access-Control-Allow-Methods','OPTIONS,GET,PUT,POST,DELETE');
@@ -260,7 +259,7 @@ app.get("/getPhoto", (req, res) => {
         res.end(null, 'binary');
       }).catch((e)=>{
         res.send(e)
-    })*/
+    })
 })
 /*(const uploadFile = (buffer, name, type) => {
     const params = {

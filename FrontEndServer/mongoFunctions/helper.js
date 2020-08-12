@@ -1,6 +1,7 @@
 require('dotenv').config();
 const uri = process.env.MONGO_URI;
 const {MongoClient} = require('mongodb');
+var ObjectId = require('mongodb').ObjectID;
 var client
 var ObjectId = require('mongodb').ObjectID;
 async function connectToMongo(){
@@ -161,19 +162,16 @@ async function getPublicRoutines(pageNumber, pageLimit, callback){
 async function getUserRoutines(uid, callback){
     console.log('retreiving public routines')
     userQuery = {_id :{$eq: uid}}
-    query= {'_id' :"5f2b82a7b868c79e30ee6ace"}
-    console.log(ObjectId("5f2b82a7b868c79e30ee6ace"))
     // booksCollection.find({_id: {$in: author.books}}).toArray();
-
     client.db('HabitApp').collection('Users').findOne(userQuery).then(data => {
         let routines = data.routines
-        console.log(routines);
+        routineQuery = {_id :{ $in: routines}}
+        console.log('routine ids are', routines);
         for(let i = 0; i<routines.length; i++)
         {
-            routines[i] = ObjectId(routines[i])
+          routines[i]  = ObjectId(routines[i])
         }
-        routineQuery = {_id :{$in: routines}}
-        client.db('HabitApp').collection('Routines').find( routineQuery).toArray(function(err, result) {
+        client.db('HabitApp').collection('Routines').find(routineQuery).toArray(function(err, result) {
             if (err) throw err;
             console.log(result);
             if (callback){
