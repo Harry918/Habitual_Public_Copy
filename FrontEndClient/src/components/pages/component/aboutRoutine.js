@@ -59,7 +59,7 @@ const AboutRoutine = ({routineID}) => {
         dispatch(routineActions.joinRoutine(uid, routineID))
     }
     return (
-        <div>
+        <div >
             <div style={{ padding: 15 }}>
                 <RoutineDialog dialog={dialog} openDialog={openDialog} type='Post' />
                 <NeuDiv revert radius={10} color="#FFFFFF" style={{ padding: 15 }} >

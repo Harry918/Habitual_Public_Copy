@@ -18,6 +18,8 @@ import Button from '@material-ui/core/Button';
 import RoutineDialog from './insertRoutine'
 import { NeuButton } from "neumorphism-react";
 import TopMenuSpacer from './component/TopMenuSpacer'
+import AddRoutine from './component/AddRoutine'; 
+
 
 
 
@@ -39,34 +41,47 @@ const Dashboard = React.memo(() => {
     const update = useSelector(state => state.update)
     const {uid} = useSelector(state => state.firebase.auth)
     const {pageNumber} = useSelector(state => state.dashboardReducers)
-    const [pageLength, setPageLength] = useState(0)
+    const [reached, setReached] = useState(false)
     // const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
     // useEffect(() => {
     //     dispatch(test.getUsersRoutines(uid))
     // }, [update])
     useEffect(() => {
         // dispatch(test.getUsersRoutines(uid))
+        console.log("REFRESHED")
         dispatch(test.getPublicRoutines(pageNumber))
-    }, [])
+            // window.addEventListener('scroll', function() {
+            //     // setPageLength(pageLength)
+            //     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && pageNumber < 3 && reached == false) {
+            //         setReached(true)
+            //        dispatch(test.getPublicRoutines(pageNumber, () => {
+            //         dispatch({type:'INCREASE_PAGE'})
+            //        }))
+            //        //show loading spinner and make fetch request to api
+            //     }
+            //  });))
+    }, [update])
     const openDialog = () => {
         setDialog(!dialog)
     }
-
-    window.addEventListener('scroll', function() {
-        // setPageLength(pageLength)
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && pageLength != window.innerHeight && pageLength < 3) {
-           console.log(pageLength);
-           dispatch(test.getPublicRoutines(pageNumber))
-           //show loading spinner and make fetch request to api
-        }
-     });
+    // useEffect(() => {
+    // window.addEventListener('scroll', function() {
+    //     // setPageLength(pageLength)
+    //     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && pageNumber < 3 && reached == false) {
+    //         setReached(true)
+    //        dispatch(test.getPublicRoutines(pageNumber, () => {
+    //            dispatch({type:'INCREASE_PAGE'})
+    //        }))
+    //        //show loading spinner and make fetch request to api
+    //     }
+    //  });
+    // })
 
     return (
         <div className={classes.root}>
-            
             <TopMenu />
             <TopMenuSpacer />
-
+            
             <Dialog />
             <NeuButton
                 width="50px"
@@ -79,6 +94,8 @@ const Dashboard = React.memo(() => {
             >
                +
             </NeuButton>
+            <AddRoutine />
+
             <RoutineDialog dialog={dialog} openDialog={openDialog} type='Routine' />
         </div>
     )
