@@ -191,7 +191,7 @@ async function getPublicRoutines(pageNumber, pageLimit, callback){
     client.db('HabitApp').collection('Routines').find(query).skip(pageLimit*pageNumber).limit(pageLimit).sort({numPeople: -1}).toArray(function(err, result) {//sort by num mems
         if (err) throw err;
         numRoutines = client.db('HabitApp').collection('Routines').stats().then( stats => {
-          console.log('the number of routines is', stats);
+          //console.log('the number of routines is', stats);
           if(numRoutines <= pageNumber * pageLimit)
           {
             jsonResponse = {
@@ -207,7 +207,7 @@ async function getPublicRoutines(pageNumber, pageLimit, callback){
             }
           }
         }).then(something => {
-          console.log(something);
+          //console.log(something);
           if(callback){
               callback(jsonResponse)
           }

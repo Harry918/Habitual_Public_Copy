@@ -216,7 +216,7 @@ app.post('/uploadImg', (req, res) => {
             const data = await uploadFile(buffer, fileName, type);
             return res.status(200).send(data);
         } catch (error) {
-            //console.log(error)
+            console.log(error)
             return res.status(400).send(error);
         }
     });
@@ -286,7 +286,7 @@ app.get("/getPhoto", (req, res) => {
 })
 
 //app.get("setProfilerLevel", (req, res)=>)
-/*(const uploadFile = (buffer, name, type) => {
+const uploadFile = (buffer, name, type) => {
     const params = {
         ACL: 'public-read-write',
         Body: buffer,
@@ -295,7 +295,7 @@ app.get("/getPhoto", (req, res) => {
         Key: `${name}.${type.ext}`
     };
     return s3.upload(params).promise();
-};*/
+};
 //IGNORE THIS ONE RIGHT HERE V
 app.get("/createRoom", (req, res) => {
 
