@@ -15,6 +15,9 @@ import { Grid, Paper } from "@material-ui/core"
 import Avatar from '@material-ui/core/Avatar';
 import { NeuButton } from "neumorphism-react";
 import 'fontsource-antic-slab';
+import TextField from '@material-ui/core/TextField';
+import {Button} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // title
 // avatar
@@ -31,7 +34,13 @@ const useStyles = makeStyles((theme) => ({
         marginRight:10,
         color:"black",
         fontSize:20
-      }
+      },
+    go: {
+        width:'80%'
+    },
+    comment: {
+        width:'20%'
+    }
 }));
 
 const Post = ({title, description}) => {
@@ -51,6 +60,19 @@ const Post = ({title, description}) => {
                             <Grid item xs>
                                 <Typography variant='h2' className={classes.title}>{title}</Typography>
                                 <Typography style={{color:"black"}, {fontFamliy:'Antic Slab'}}>{description}</Typography>
+
+                                <Grid container spacing={0}>
+                                    <Grid item xs={6}>
+                                    <TextField classname={classes.comment} id="outlined-basic" label="Comment" variant="outlined" />
+
+                                    </Grid>
+                                    <Grid item xs={6}>
+
+                                    <Button classname={classes.go} variant="outline-success">GO</Button>
+                                    </Grid>
+                                    
+                                </Grid>
+                                
                             </Grid>
                         </Grid>
                     </Grid>

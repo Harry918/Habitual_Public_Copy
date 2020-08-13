@@ -28,8 +28,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTransition, animated } from 'react-spring'
 import { Slide } from 'react-reveal';
 import { NeuButton } from "neumorphism-react";
-import Image from 'react-bootstrap/Image';
+//  import Image from 'react-bootstrap/Image';
 import { useHistory } from "react-router-dom";
+import InfiniteScroll from 'react-infinite-scroll-component';
+import * as test from '../../../actions/retHabitInfo'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,16 +69,32 @@ const Dialog = () => {
   let description = "This is a test description"
   const {images, publicRoutines, userRoutines} = useSelector(state => state.dashboardReducers)
   const temp = useSelector(state => state.dashboardReducers)
-  console.log(publicRoutines)
-  console.log(images)
   const {uid} = useSelector(state => state.firebase.auth)
+  const {pageNumber, stop} = useSelector(state => state.dashboardReducers)
+  const dispatch = useDispatch()
 
   const movetoNextPage = (routine_ID) => {
     history.push('/routine', { routine_ID: routine_ID })
   }
+
+  const fetchNext = () => {
+    dispatch(test.getPublicRoutines(pageNumber))
+  }
   return (
     <div className={classes.root}>
+            <InfiniteScroll
+          dataLength={images.length}
+          next={fetchNext}
+          hasMore={true}
+          scrollThreshold={0.7}
+          loader={<h4>Loading...</h4>}
+        >
       <Grid container spacing={0} style={{justifyContent:'center'}}>
+      <NeuButton height="230px"
+                width="300px"
+                color="#FFFFFF"
+                distance={8}
+                > +</NeuButton>
         {images.map((item, i) => (
           <List key={i} style={{justifyContent: 'center' }}>
               <Slide bottom collapse>
@@ -90,7 +108,7 @@ const Dialog = () => {
                       {publicRoutines[i].title}
                     </Typography>
                     <div >
-                      <Image className={classes.imageDiv} src={item} thumbnail />
+                      <img className={classes.imageDiv} src={item} thumbnail />
                     </div>
                     <Typography variant="body2" color="textSecondary" component="p">
                       {publicRoutines[i].description}
@@ -103,6 +121,7 @@ const Dialog = () => {
           </List>
         ))}
       </Grid>
+      </InfiniteScroll>
       </div>
   )
 }

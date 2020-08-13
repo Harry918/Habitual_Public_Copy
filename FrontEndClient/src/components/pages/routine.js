@@ -15,6 +15,8 @@ import io from 'socket.io-client'
 import TopMenuSpacer from './component/TopMenuSpacer'
 import { isBrowser, deviceDetect, isMobile } from 'react-device-detect';
 import Particles from 'react-particles-js';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+
 
 
 
@@ -34,18 +36,6 @@ const useStyles = makeStyles((theme) => ({
 
     },
 
-    paper1: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: 'white',
-        background: 'linear-gradient(270deg, #02d59f, #e4ce19, #f53f16, #5616f5, #bdb6aa, #99e15e)',
-        backgroundSize: '1200% 1200%',
-        WebkitAnimation: 'AnimationName 59s ease infinite',
-        MozAnimation: 'AnimationName 59s ease infinite',
-        animation: 'AnimationName 59s ease infinite',
-        height: 200, // change to200
-        borderRadius: 0,
-    },
 
     paper3: {
         padding: theme.spacing(2),
@@ -54,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
         height: 400,
     },
 
-    
-   
+
+
     sharp: {
         borderRadius: '1!important'
     },
@@ -73,11 +63,11 @@ const useStyles = makeStyles((theme) => ({
         height: 100,
         borderRadius: 0,
 
-        
-        },
-    
+
+    },
+
     pictureBar__left: {
-        
+
     },
 
     leftImage: {
@@ -87,18 +77,18 @@ const useStyles = makeStyles((theme) => ({
 
     pictureBar__center: {
         textAlign: 'center',
-        margin:'auto',
+        margin: 'auto',
     },
 
     centerTitle: {
         color: 'black',
         fontFamily: 'Lato',
-        
+
     },
 
     pictureBar__right: {
-        textAlign:'right',
-        margin:'auto',
+        textAlign: 'right',
+        margin: 'auto',
 
     },
 
@@ -107,8 +97,15 @@ const useStyles = makeStyles((theme) => ({
     },
     particle: {
         height: 400,
-    }
+    },
 
+
+    live: {
+        position: 'absolute',
+        textAlign: 'center',
+        marginTop: 150,
+        color: '#575353',
+    }
 
 }));
 
@@ -154,97 +151,66 @@ const Routine = (props) => {
     })
     console.log('HELLLLLLLLLLLLLLdsfmsalfmsaldfafLLLLLLLLLLLLLLOOOOOOOOOOO', deviceDetect());
     return (
-        <div style={{minWidth:500}}>
+        <div style={{ minWidth: 500 }}>
             <TopMenu />
-            <TopMenuSpacer/>
+            <TopMenuSpacer />
 
             <div className={classes.root}>
                 <Grid container spacing={0}>
+
+
                     <Grid item xs={12} >
-                    <Particles
-                    className={classes.particle}
-    params={{
-	    "particles": {
-	        "number": {
-	            "value": 50
-            },
-	        "size": {
-	            "value": 3
-            },
-            "color": {
-                "value": "#000000"}, // color of the dot
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#000000", //color of the lines
-                    "opacity": 0.4,
-                    "width": 1
-                  },
-        },
-        
-	    "interactivity": {
-	        "events": {
-	            "onhover": {
-	                "enable": true,
-	                "mode": "repulse"
-	            }
-	        }
-        }
-	}} />
-                    {/* <Particles
-    params={{
-	    "particles": {
-	        "number": {
-	            "value": 8,
-	            "density": {
-	                "enable": true,
-	                "value_area": 800
-	            }
-	        },
-	        "line_linked": {
-	            "enable": false
-	        },
-	        "move": {
-	            "speed": 1,
-	            "out_mode": "out"
-	        },
-	        "shape": {
-	            "type": [
-	                "image",
-	                "circle"
-	            ],
-	            "image": [
-	                {
-	                    "src": "https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" ,
-	                    "height": 20,
-	                    "width": 23
-	                },
-	            ]
-	        },
-	        "color": {
-	            "value": "#CCC"
-	        },
-	        "size": {
-	            "value": 30,
-	            "random": false,
-	            "anim": {
-	                "enable": true,
-	                "speed": 4,
-	                "size_min": 10,
-	                "sync": false
-	            }
-	        }
-	    },
-	    "retina_detect": false
-	}} /> */}
-                        {/* <Paper className={classes.paper1} >live feed / counter</Paper> */}
+                        <Grid container spacing={0} className={classes.live}>
+                            <Grid item xs={6}>
+                            <h1 className={classes.liveFeed}>LIVE FEED</h1>
+                            </Grid>
+                            <Grid item xs={6}>
+                            <h1 className={classes.liveCount}>420 <br/>COMPLETED TODAY</h1>
+                            </Grid>
+                        </Grid>
+                        
+
+                        <Particles
+                            className={classes.particle}
+                            params={{
+                                "particles": {
+                                    "number": {
+                                        "value": 50
+                                    
+                                    },
+                                    "size": {
+                                        "value": 3
+                                    },
+                                    "color": {
+                                        "value": "#a1a1a1"
+                                    }, // color of the dot
+                                    "line_linked": {
+                                        "enable": true,
+                                        "distance": 250,
+                                        "color": "#a1a1a1", //color of the lines
+                                        "opacity": 0.4,
+                                        "width": 1
+                                    },
+                                },
+
+                                "interactivity": {
+                                    "events": {
+                                        "onhover": {
+                                            "enable": true,
+                                            "mode": "grab"
+                                        }
+                                    }
+                                }
+                            }} />
+
+
                     </Grid>
                     <Grid item xs={12}>
 
                         <Paper className={classes.pictureBar}>
                             <Grid container spacing={0}>
                                 <Grid item xs={4} className={classes.pictureBar__left}>
-                                    < img  className={classes.leftImage} src="https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies" ></img>
+                                    < img className={classes.leftImage} src="https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies" ></img>
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__center}>
                                     <Typography variant="h6" className={classes.centerTitle}>
@@ -252,7 +218,8 @@ const Routine = (props) => {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__right} >
-                                    <NeuButton className={classes.completedButton} height="50px" width="150px" color="#d8e8d3" distance={8} radius = {10} onClick={completedRoutine}><Typography style={{fontFamily: 'Lato'}}>
+                                    <NeuButton className={classes.completedButton} height="50px" width="150px" color="#ffffff" distance={8} radius={10} onClick={completedRoutine}>
+                                        <Typography style={{ fontFamily: 'Lato', color: 'rgb(114, 176, 29)' }}>
                                         COMPLETED
                                     </Typography></NeuButton>
                                 </Grid>
@@ -261,11 +228,6 @@ const Routine = (props) => {
                     </Grid>
 
                     <Grid item xs={9} style={{ padding: 20 }}>
-                        {/* <>
-                            <NeuButton width="150px" height="100px" color="#212529" className={classes.sharp} />
-                            <br /><br />
-                            <NeuButton width="150px" height="100px" revert color="#212529" />
-                        </> */}
 
 
 
@@ -289,7 +251,7 @@ const Routine = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={3} className={classes.about}>
-                        <AboutRoutine routineID={params.routine_ID}/>
+                        <AboutRoutine routineID={params.routine_ID} />
                     </Grid>
                 </Grid>
             </div>

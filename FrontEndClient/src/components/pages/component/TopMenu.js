@@ -127,7 +127,11 @@ const TopMenu = () => {
           </Typography>
         <div >
             
-          <button onClick={signOut}>logout</button>
+          <NeuButton height="50px"
+                                        color="#FFFFFF"
+                                        distance={8}
+                                        radius = {10}
+                                        onClick={signOut}>logout</NeuButton>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"

@@ -110,10 +110,12 @@ const RoutineDialog = ({ dialog, openDialog, type }) => {
         const file = event.target.files[0]
         fd.append('file', file, file.name)
         console.log(event.target.files[0].size)
+        setFile(fd)
         // dispatch(documents.sendFile(temp.userID, fd))
     }
 
     const createRoutine = () => {
+        console.log(file)
     dispatch(test.createRoutine(uid, title, desc, pub, file))
     openDialog(!dialog)
     }
