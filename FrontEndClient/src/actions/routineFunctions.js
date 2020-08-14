@@ -53,6 +53,38 @@ export const joinRoutine = (uid, routineID) => async dispatch => {
     }
 }
 
+export const leaveRoutine = (uid, routineID) => async dispatch => {
+    try{
+        // dispatch({type: 'GET_ROUTINE_POSTS_START'})
+        let url = `${serverAddress}/leaveRoutine?uid=${uid}&routineid=${routineID}`
+        const response = await axios.get(url)
+        console.log(response)
+        // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
+    }
+    catch(err)
+    {
+        // dispatch({type: 'GET_ROUTINE_POSTS_FAILURE'})
+        console.log(err)
+
+    }
+}
+
+// export const checkUserInRoutine = (uid) => async dispatch => {
+//     try{
+//         // dispatch({type: 'GET_ROUTINE_POSTS_START'})
+//         let url = `${serverAddress}/getUserRoutines?uid=${uid}`
+//         const response = await axios.get(url)
+//         console.log('check user ', response)
+//         // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
+//     }
+//     catch(err)
+//     {
+//         // dispatch({type: 'GET_ROUTINE_POSTS_FAILURE'})
+//         console.log(err)
+
+//     }
+// }
+
 
 export const postComment = (uid, message, postId) => async dispatch => {
     try{

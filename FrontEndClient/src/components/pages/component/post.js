@@ -46,17 +46,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Post = ({title, description, postID}) => {
-    console.log(postID)
     const dispatch = useDispatch()
     const classes = useStyles();
     const uid = useSelector(state => state.firebase.auth.uid)
-    console.log('user ', uid)
     // console.log(description)
     
     const [message, setMessage] = useState('');
 
     const postComment = (event) => {
-        console.log(message)
         dispatch(routineActions.postComment(uid, message, postID))
       }
 

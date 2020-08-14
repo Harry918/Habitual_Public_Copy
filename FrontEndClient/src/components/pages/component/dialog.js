@@ -73,8 +73,8 @@ const Dialog = () => {
   const {pageNumber, stop} = useSelector(state => state.dashboardReducers)
   const dispatch = useDispatch()
 
-  const movetoNextPage = (routine_ID) => {
-    history.push('/routine', { routine_ID: routine_ID })
+  const movetoNextPage = (routine) => {
+    history.push('/routine', { routine: routine})
   }
 
   const fetchNext = () => {
@@ -102,7 +102,7 @@ const Dialog = () => {
                 <div className={classes.button}>
                   <NeuButton
                     className={classes.neubutton}
-                    onClick={() => { movetoNextPage(publicRoutines[i]._id) }}
+                    onClick={() => { movetoNextPage(publicRoutines[i]) }}
                     color="#FFFFFF"
                   >
                     <Typography variant="h4" color="textSecondary" component="p">
