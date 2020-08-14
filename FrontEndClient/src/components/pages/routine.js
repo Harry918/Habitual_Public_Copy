@@ -12,7 +12,6 @@ import AboutRoutine from './component/aboutRoutine'
 import * as routineActions from '../../actions/routineFunctions'
 import { useSelector, useDispatch } from 'react-redux';
 import io from 'socket.io-client'
-import TopMenuSpacer from './component/TopMenuSpacer'
 import { isBrowser, deviceDetect, isMobile } from 'react-device-detect';
 import Particles from 'react-particles-js';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -128,6 +127,7 @@ const Routine = (props) => {
     useEffect(() => {
         console.log(params.routine_ID)
         dispatch(routineActions.retRoutinePosts(params.routine_ID))
+        console.log(posts)
         var endpoint = serverAddress
         socket = io(endpoint)
         let name = Math.random().toString(36).substring(3); //temp name for now
@@ -149,11 +149,10 @@ const Routine = (props) => {
             console.log(response)
         })
     })
-    console.log('HELLLLLLLLLLLLLLdsfmsalfmsaldfafLLLLLLLLLLLLLLOOOOOOOOOOO', deviceDetect());
+    console.log(posts)
     return (
         <div style={{ minWidth: 500 }}>
             <TopMenu />
-            <TopMenuSpacer />
 
             <div className={classes.root}>
                 <Grid container spacing={0}>
@@ -186,7 +185,7 @@ const Routine = (props) => {
                                     }, // color of the dot
                                     "line_linked": {
                                         "enable": true,
-                                        "distance": 250,
+                                        "distance": 300,
                                         "color": "#a1a1a1", //color of the lines
                                         "opacity": 0.4,
                                         "width": 1
@@ -233,7 +232,7 @@ const Routine = (props) => {
 
                         <Grid container spacing={1} wrap="nowrap" direction="column">
                             {posts.map((item, i) => (
-                                <Post description={item.content} title={item.title} />
+                                <Post description={item.content} title={item.title} postID={item._id}/>
                             ))}
                             <Grid item xs={12}>
                                 <Paper className={classes.paper}>

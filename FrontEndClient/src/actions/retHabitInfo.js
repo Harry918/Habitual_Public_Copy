@@ -55,7 +55,7 @@ export const getPublicRoutines = (pageNumber, callback) => async dispatch => {
     dispatch({type: 'PUBLIC_ROUTINES_START'})
     try{
         console.log(pageNumber)
-        let url = `${serverAddress}/getPublicRoutines/?pageNumber=${pageNumber}&pageLimit=10`
+        let url = `${serverAddress}/getPublicRoutines/?pageNumber=${pageNumber}&pageLimit=5`
         const response = await axios.get(url)
         .then(async (response) => {
             if(response.data.result.length < 10){
@@ -63,9 +63,9 @@ export const getPublicRoutines = (pageNumber, callback) => async dispatch => {
             }
             let images = []
             dispatch({type: 'PUBLIC_ROUTINES_SUCCESS', payload: response.data})
-            retPic(response, (imagesArray) => {
-                dispatch({type: 'PUBLIC_PIC_SUCCESS', payload: imagesArray})
-            })
+            // retPic(response, (imagesArray) => {
+            //     dispatch({type: 'PUBLIC_PIC_SUCCESS', payload: imagesArray})
+            // })
         })
         if(callback){
             callback()

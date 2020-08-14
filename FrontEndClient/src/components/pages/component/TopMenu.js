@@ -4,10 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { NeuDiv } from "neumorphism-react";
@@ -16,13 +13,18 @@ import logo from './LogoMakr_5yRiFP.png';
 import Image from 'react-bootstrap/Image';
 import firebase from 'firebase';
 import { useHistory } from "react-router-dom";
+import * as searchResultsFunctions from '../../../actions/search_Results'
+import { useSelector, useDispatch } from 'react-redux';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     background: '#ffffff',
     overflow: 'hidden',
-    position: 'fixed',
+    position: 'sticky',
     top: 0,
     width: '100%',
     zIndex: 9999999,
@@ -43,8 +45,8 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
     justifyContent: 'center',
     fontFamily: 'Lato',
-    marginLeft:10,
-    marginRight:10,
+    marginLeft: 10,
+    marginRight: 10,
   },
   search: {
     position: 'relative',
@@ -93,9 +95,10 @@ const useStyles = makeStyles((theme) => ({
     width: 40,
     height: 40
   },
-  logoButton:{
-    marginLeft:10,
-    marginRight:10,
+  logoButton: {
+    marginLeft: 10,
+    marginRight: 10,
+
 
   }
 }));
@@ -103,35 +106,44 @@ const useStyles = makeStyles((theme) => ({
 const TopMenu = () => {
   let history = useHistory();
   const classes = useStyles();
+  const dispatch = useDispatch()
+  const results1 = useSelector(state => state.searchReducers)
+  const {results} = useSelector(state => state.searchReducers)
+ console.log(results)
   const signOut = () => {
     firebase.auth().signOut()
     window.location.reload(false);
   }
+
+  const searchQueriedRoutines = (event) => {
+    console.log(event.target.value)
+    dispatch(searchResultsFunctions.getSearchRoutines(event.target.value))
+    dispatch(searchResultsFunctions.getSearchRoutines(event.target.value))
+  }
+
   return (
     <div className={classes.root}>
 
       <Toolbar>
         <form action="./" method="get" >
-          <NeuButton className={classes.logoButton}
-            onClick={() => console.log("Button cliked !")}
-            color="#FFFFFF"
-            radius={10}
-            distance={0}
-          >
-             <Image className={classes.logoImage} src={logo} fluid />
-          </NeuButton>
-         
+          <a href='./'>
+            <div className={classes.logoImage} style={{backgroundImage: `url('https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67)`}}>
+              {/* <img className={classes.ogoImage} src={logo} />  */}
+              </div>
+
+          </a>
+
         </form>
-          <Typography variant="h6" className={classes.title}>
-            HABITUAL
+        <Typography variant="h6" className={classes.title}>
+          HABITUAL
           </Typography>
         <div >
-            
+
           <NeuButton height="50px"
-                                        color="#FFFFFF"
-                                        distance={8}
-                                        radius = {10}
-                                        onClick={signOut}>logout</NeuButton>
+            color="#FFFFFF"
+            distance={8}
+            radius={10}
+            onClick={signOut}>logout</NeuButton>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -145,16 +157,22 @@ const TopMenu = () => {
           <div className={classes.searchIcon}>
             <SearchIcon />
           </div>
-          <NeuDiv revert color="FFFFFF" position="static" className={classes.bar}>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
+            <Autocomplete
+              getLimitTagsText={(more) => +`${more}`}
+              id="combo-box-demo"
+              options={results}
+              getOptionLabel={(option) => option.title + '-' + option.description}
+              filterOptions={(options, state) => options}
+              style={{ width: 300 }}
+              renderInput={(params) => <TextField
+              onChange={searchQueriedRoutines}
+                {...params} 
+                label="Combo box" variant="outlined" />
+              }
             />
-          </NeuDiv>
+
+
+
         </div>
       </Toolbar>
 
