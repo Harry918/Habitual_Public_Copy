@@ -17,7 +17,6 @@ import * as test from '../../actions/retHabitInfo'
 import Button from '@material-ui/core/Button';
 import RoutineDialog from './insertRoutine'
 import { NeuButton } from "neumorphism-react";
-import TopMenuSpacer from './component/TopMenuSpacer'
 import AddRoutine from './component/AddRoutine'; 
 
 
@@ -80,7 +79,6 @@ const Dashboard = React.memo(() => {
     return (
         <div className={classes.root}>
             <TopMenu />
-            <TopMenuSpacer />
             
             <Dialog />
             <NeuButton

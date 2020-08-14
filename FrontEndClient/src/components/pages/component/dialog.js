@@ -80,6 +80,7 @@ const Dialog = () => {
   const fetchNext = () => {
     dispatch(test.getPublicRoutines(pageNumber))
   }
+  console.log(images)
   return (
     <div className={classes.root}>
             <InfiniteScroll
@@ -95,7 +96,7 @@ const Dialog = () => {
                 color="#FFFFFF"
                 distance={8}
                 > +</NeuButton>
-        {images.map((item, i) => (
+        {publicRoutines.map((item, i) => (
           <List key={i} style={{justifyContent: 'center' }}>
               <Slide bottom collapse>
                 <div className={classes.button}>

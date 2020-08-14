@@ -18,6 +18,8 @@ import 'fontsource-antic-slab';
 import TextField from '@material-ui/core/TextField';
 import {Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import * as routineActions from '../../../actions/routineFunctions'
+import { useSelector, useDispatch } from 'react-redux';
 
 // title
 // avatar
@@ -43,9 +45,22 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Post = ({title, description}) => {
+const Post = ({title, description, postID}) => {
+    console.log(postID)
+    const dispatch = useDispatch()
     const classes = useStyles();
-    console.log(description)
+    const uid = useSelector(state => state.firebase.auth.uid)
+    console.log('user ', uid)
+    // console.log(description)
+    
+    const [message, setMessage] = useState('');
+
+    const postComment = (event) => {
+        console.log(message)
+        dispatch(routineActions.postComment(uid, message, postID))
+      }
+
+
     return (
         <div>
             <div style={{ padding: 15 }}>
@@ -63,12 +78,12 @@ const Post = ({title, description}) => {
 
                                 <Grid container spacing={0}>
                                     <Grid item xs={6}>
-                                    <TextField classname={classes.comment} id="outlined-basic" label="Comment" variant="outlined" />
+                                    <TextField onChange={(event) => {setMessage(event.target.value)}} classname={classes.comment} id="outlined-basic" label="Comment" variant="outlined" />
 
                                     </Grid>
                                     <Grid item xs={6}>
 
-                                    <Button classname={classes.go} variant="outline-success">GO</Button>
+                                    <Button onClick={postComment} classname={classes.go} variant="outline-success">GO</Button>
                                     </Grid>
                                     
                                 </Grid>
