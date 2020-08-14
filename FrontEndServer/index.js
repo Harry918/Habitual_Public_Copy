@@ -8,6 +8,7 @@
 
 
 */
+const cron = require("node-cron")
 
 const AWS = require('aws-sdk');
 const fs = require('fs');
@@ -196,7 +197,18 @@ app.get("/joinRoutine", (req, res) => {//admin supported
     })
 
 })
+app.get("/leaveRoutine", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
 
+    const response = mongo.leaveRoutine(req.query.uid, req.query.routineid, (result) => {
+        //console.log(result)
+        res.send(result);
+    })
+
+})
 app.post('/uploadImg', (req, res) => {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -220,6 +232,7 @@ app.post('/uploadImg', (req, res) => {
             return res.status(400).send(error);
         }
     });
+    console.log("upload image called");
 });
 app.get("/createPost", (req, res) => {//admin supported
     res.header('Access-Control-Allow-Credentials', true);
@@ -283,6 +296,7 @@ app.get("/getPhoto", (req, res) => {
         }).catch((e) => {
             res.send(e)
         })
+    console.log("get photo called")
 })
 
 //app.get("setProfilerLevel", (req, res)=>)
@@ -331,9 +345,73 @@ app.get("/createRoom", (req, res) => {
     }
 
 })
+app.get("/searchRoutines", (req, res) => {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
 
+    const response = mongo.searchRoutines(req.query.keywords, req.query.pageNumber, req.query.pageLimit, (result) => {
+        //console.log(result)
+        res.send({ data: result });
+    })
+})
 
+app.get("/searchPosts", (req, res) => {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
 
+    const response = mongo.seachPosts(req.query.keywords, req.query.pageNumber, req.query.pageLimit, (result) => {
+        //console.log(result)
+        res.send({ data: result });
+    })
+})
+
+app.get("/searchUsers", (req, res) => {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response = mongo.searchUsers(req.query.keywords, req.query.pageNumber, req.query.pageLimit, (result) => {
+        //console.log(result)
+        res.send({ data: result });
+    })
+})
 app.use(router);
+
+app.get("/getComments", (req, res) => {//admin supported
+    //takes routineID
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response = mongo.getComments(req.query.parentPost, (result) => {
+        //console.log(result)
+        res.send(result);
+    })
+
+})
+app.get("/createComment", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response = mongo.createComment(req.query.uid, req.query.content, req.query.parentPost, (result) => {
+        //console.log(result)
+        res.send(result);
+    })
+
+})
+
+cron.schedule("0 0 * * *", function() {
+    console.log("clearing Completion Mappings")
+    mongo.clearCompletionMapping()
+
+})
 
 server.listen(PORT, () => console.log(`Server has started`));
