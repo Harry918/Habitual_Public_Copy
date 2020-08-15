@@ -81,7 +81,7 @@ export const getPublicRoutines = (pageNumber, callback) => async dispatch => {
 
 export const createRoutine = (uid,title, desc, pub, file, callback) => async dispatch => {
     console.log(file)
-    const options = {
+    const   options = {
         headers: {'Content-Type': 'multipart/form-data'}
     }
     try{
@@ -116,11 +116,15 @@ export const createRoutine = (uid,title, desc, pub, file, callback) => async dis
     }
 }
 
-export const getUsersRoutines = (uid) => async dispatch => {
+export const getUsersRoutines = (uid, callback) => async dispatch => {
     try{
         let url = `${serverAddress}/getUserRoutines/?uid=${uid}`
         const response = await axios.get(url)
+        console.log(response)
         dispatch({type: 'GET_USERS_ROUTINES', payload: response.data})
+        if(callback){
+            callback(response.data)
+        }
     }
     catch(err)
     {

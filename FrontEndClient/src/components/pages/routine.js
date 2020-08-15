@@ -15,6 +15,8 @@ import io from 'socket.io-client'
 import { isBrowser, deviceDetect, isMobile } from 'react-device-detect';
 import Particles from 'react-particles-js';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import List from '@material-ui/core/List'
+import { Slide } from 'react-reveal';
 
 
 
@@ -117,7 +119,10 @@ const Routine = (props) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const params = props.location.state
-    console.log(props)
+    const user = useSelector(state => state.firebase.auth)
+    const [live_feed, setLive_feed] = useState([])
+    // console.log(temp.displayName)
+    // console.log(temp.uid)
     // const params = {
     //     routine_ID: '123'
     // }
@@ -125,28 +130,27 @@ const Routine = (props) => {
     const posts = useSelector(state => state.routineReducers.routinePosts)
 
     useEffect(() => {
-        console.log(params.routine_ID)
-        dispatch(routineActions.retRoutinePosts(params.routine_ID))
+        console.log(params.routine)
+        dispatch(routineActions.retRoutinePosts(params.routine._id))
         console.log(posts)
         var endpoint = serverAddress
         socket = io(endpoint)
         let name = Math.random().toString(36).substring(3); //temp name for now
-        console.log(params.routineID)
-        socket.emit('join', { roomID: params.routine_ID, name: name });
+        socket.emit('join', { roomID: params.routine._id, name: user.displayName });
         socket.on('first-connection', (response) => {
             console.log(response)
-
-            dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
+            // dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
         })
     }, [])
 
     const completedRoutine = () => {
-        socket.emit('markCompletion', { uid: '123', routine_ID: params.routine_ID, name: 'Rishi', task: 'drinking water' })
+        socket.emit('markCompletion', {uid: user.uid, routine_ID: params.routine._id, name: user.displayName, task: 'drinking water' })
     }
 
     useEffect(() => {
         socket.on('people_routine_completion', (response) => {
-            console.log(response)
+            console.log(response.message)
+            setLive_feed([...response.message])
         })
     })
     console.log(posts)
@@ -160,9 +164,14 @@ const Routine = (props) => {
 
                     <Grid item xs={12} >
                         <Grid container spacing={0} className={classes.live}>
-                            <Grid item xs={6}>
-                            <h1 className={classes.liveFeed}>LIVE FEED</h1>
-                            </Grid>
+                                {live_feed.map((item, i) => (
+                                <List key={i} style={{justifyContent: 'center' }}>
+                                            <Typography style={{fontSize: 5}}variant="h4" color="textSecondary" component="p">
+                                                {item}
+                                            </Typography>
+                                </List>
+                                ))}
+                            <h1 className={classes.liveFeed}>{live_feed}</h1>
                             <Grid item xs={6}>
                             <h1 className={classes.liveCount}>420 <br/>COMPLETED TODAY</h1>
                             </Grid>
@@ -250,7 +259,7 @@ const Routine = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={3} className={classes.about}>
-                        <AboutRoutine routineID={params.routine_ID} />
+                        <AboutRoutine routineID={params.routine._id} />
                     </Grid>
                 </Grid>
             </div>

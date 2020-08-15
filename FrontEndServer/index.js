@@ -43,9 +43,7 @@ main().catch(console.error);
 const PORT = process.env.PORT || 9000;
 console.log("RUNNING ON PORT", PORT)
 
-let rooms = {
-
-}
+let rooms = {}
 class User {
     constructor(name) {
         this.name = name;
@@ -61,7 +59,6 @@ io.on('connection', function (socket) {
     let members;
 
     socket.on('join', function ({ roomID, name }) {
-        //console.log(roomID)
         socket.join(roomID);
         // const user = new User(name);
         // if (rooms.hasOwnProperty(roomID)) {

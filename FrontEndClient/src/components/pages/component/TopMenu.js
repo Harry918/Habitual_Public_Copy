@@ -109,7 +109,6 @@ const TopMenu = () => {
   const dispatch = useDispatch()
   const results1 = useSelector(state => state.searchReducers)
   const {results} = useSelector(state => state.searchReducers)
- console.log(results)
   const signOut = () => {
     firebase.auth().signOut()
     window.location.reload(false);
@@ -127,9 +126,9 @@ const TopMenu = () => {
       <Toolbar>
         <form action="./" method="get" >
           <a href='./'>
-            <div className={classes.logoImage} style={{backgroundImage: `url('https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67)`}}>
-              {/* <img className={classes.ogoImage} src={logo} />  */}
-              </div>
+            {/* <div className={classes.logoImage} style={{backgroundImage: `url('https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67)`}}> */}
+              <img className={classes.logoImage} src={logo} /> 
+              {/* </div> */}
 
           </a>
 
