@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-
+import './components/pages/PressStart2P-Regular.ttf'
 
 import {Provider} from 'react-redux'
 import {createStore, applyMiddleware, compose} from 'redux'
@@ -16,7 +16,7 @@ import firebase from 'firebase/app'
 //   firebase,
 //   config: fbConfig,
 //   dispatch: store.dispatch,
-//   createFirestoreInstance
+//   createFirestoreInstance 
 // };
 
 const store = createStore(

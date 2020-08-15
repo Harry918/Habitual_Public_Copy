@@ -19,6 +19,8 @@ import * as retHabitActions from '../../../actions/retHabitInfo'
 
 
 
+
+
 const aboutMessage = `About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros About routine bros `;
 
 const useStyles = makeStyles((theme) => ({
@@ -57,26 +59,35 @@ const AboutRoutine = ({routineID}) => {
     const userRoutines = useSelector(state => state.dashboardReducers.userRoutines)
     const [inRoutine, setInRoutine] = useState(false);
 
+    const [newColor, setNewColor] = useState('');
+    const [newState, setNewState] = useState('');
+
+
     useEffect(() => {
-        dispatch(retHabitActions.getUsersRoutines('zn7hQCpcROQWjyToWL2qlVjOrzo1', (userRoutines) => {
+        dispatch(retHabitActions.getUsersRoutines(uid, (userRoutines) => {
             if (userRoutines.map(a => a._id).includes(routineID)){
                 setInRoutine(true);
+                setNewColor('#b4b8bf');
+                setNewState('Joined');
+                console.log("yessir")
+
             } else {
                 setInRoutine(false);
+                setNewColor('#72b01d');
+                setNewState('Join');
+                console.log("no sir")
+
             }
             console.log("here", userRoutines.map(a => a._id))
         }))
     }, []) // only runs once when the page renders
 
+
+
     
-    const [joinButtonState, setJoinButtonState] = useState([inRoutine, '#72b01d', 'Join'])
 
 
-
-
-  
-
-
+    const [joinButtonState, setJoinButtonState] = useState([inRoutine, newColor, newState])
 
 
     const openDialog = () => {
@@ -88,22 +99,34 @@ const AboutRoutine = ({routineID}) => {
     let testClick = false;
 
     const joinGroup = () => {
-        dispatch(routineActions.joinRoutine(uid, routineID))
+        dispatch(routineActions.joinRoutine("4m8lQ26VHgTlPkDusuL0f4yAXmA3", routineID))
     }
 
     const leaveGroup = () => {
-        dispatch(routineActions.leaveRoutine(uid, routineID))
+        dispatch(routineActions.leaveRoutine("4m8lQ26VHgTlPkDusuL0f4yAXmA3", routineID))
+        document.getElementById("joinButton").innerText="Join";
+        document.getElementById("joinButton").style.color='#72b01d';
     }
 
     const revertButton = () => {
-        !joinButtonState[0] ? setJoinButtonState([true, '#b4b8bf', 'Joined']) : setJoinButtonState([false, '#72b01d', 'Join']);
-
+        if (inRoutine==false) {
+            setInRoutine(true);
+            setNewColor('#b4b8bf');
+            setNewState('Joined');
+            setJoinButtonState([inRoutine, newColor, newState]);
+        } else {
+            setInRoutine(false);
+            setNewColor('#72b01d');
+            setNewState('Join');
+            setJoinButtonState([inRoutine, newColor, newState]);
+        }
     }
 
 
 
     return (
         <div >
+            
             <div style={{ padding: 15 }}>
                 <RoutineDialog dialog={dialog} openDialog={openDialog} type='Post' />
                 <PostDialog dialog={postDialog} openDialog={openPostDialog} type='Post' />
@@ -142,15 +165,13 @@ const AboutRoutine = ({routineID}) => {
                                 <NeuButton
                                         height="50px"
                                         onClick={(event) => {
-                                            if(event.target.innerText === 'Join'){
+                                            if(!inRoutine){
                                                 joinGroup(event);
                                                 revertButton();
                                             }
                                             else {
                                                 leaveGroup(event);
                                                 revertButton();
-                                                document.getElementById("joinButton").innerText='Join';
-                                                document.getElementById("joinButton").style.color='#72b01d';
                                             }
                                         }}
                                         color='#ffffff'
@@ -158,8 +179,9 @@ const AboutRoutine = ({routineID}) => {
                                         radius = {10}
                                         className={classes.button}
                                         id="joinButton"
+                                        
                                         onMouseOver ={(event) => {
-                                            if (joinButtonState[0]){
+                                            if (inRoutine){
                                                 document.getElementById("joinButton").innerText='Leave';
                                                 document.getElementById("joinButton").style.color='#f26a66';
                                                 
@@ -170,7 +192,7 @@ const AboutRoutine = ({routineID}) => {
 
                                         }}
                                         onMouseOut ={() => {
-                                            if (joinButtonState[0]){
+                                            if (inRoutine){
                                                 document.getElementById("joinButton").innerText="Joined";
                                                 document.getElementById("joinButton").style.color='#b4b8bf';
 
@@ -181,7 +203,7 @@ const AboutRoutine = ({routineID}) => {
                                         
                                         
                                 >
-                                    <div id="joinedText" style={{color:joinButtonState[1]}}>{joinButtonState[2]}</div>
+                                    <div id="joinedText" style={{color:newColor}}>{newState}</div>
                                 </NeuButton>
                             </Grid>         
                         </Grid>

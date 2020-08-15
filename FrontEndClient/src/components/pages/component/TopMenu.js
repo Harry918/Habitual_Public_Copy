@@ -17,7 +17,7 @@ import * as searchResultsFunctions from '../../../actions/search_Results'
 import { useSelector, useDispatch } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-
+import Beta from './beta'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -138,23 +138,25 @@ const TopMenu = () => {
           </Typography>
         <div >
 
-          <NeuButton height="50px"
+          {/* <NeuButton height="50px"
             color="#FFFFFF"
             distance={8}
             radius={10}
-            onClick={signOut}>logout</NeuButton>
+            onClick={signOut}>logout</NeuButton> */}
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             color="inherit"
+            onClick={signOut}
           >
             <AccountCircle />
           </IconButton>
+          <Beta/>
+
         </div>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
-            <SearchIcon />
           </div>
             <Autocomplete
               getLimitTagsText={(more) => +`${more}`}
@@ -166,7 +168,7 @@ const TopMenu = () => {
               renderInput={(params) => <TextField
               onChange={searchQueriedRoutines}
                 {...params} 
-                label="Combo box" variant="outlined" />
+                label="Search Routines" variant="outlined" />
               }
             />
 
@@ -174,7 +176,7 @@ const TopMenu = () => {
 
         </div>
       </Toolbar>
-
+      
     </div>
   )
 }
