@@ -57,41 +57,40 @@ class Room {
         this.users = []
     }
 };
-
 io.on('connection', function (socket) {
     let members;
 
     socket.on('join', function ({ roomID, name }) {
         //console.log(roomID)
         socket.join(roomID);
-        const user = new User(name);
-        if (rooms.hasOwnProperty(roomID)) {
-            rooms[roomID].users.push(user)
-            //rooms
-            //consist
-            members = rooms[roomID].users.map(({ name }) => name);
-        }
-        else {
-            const routine = new Room();
-            rooms[roomID] = routine
-            rooms[roomID].users.push(user)
-            members = rooms[roomID].users.map(({ name }) => name);
-            //  listOfUsers = mongo.incremntPeople()
-            //  io.emit()
-        }
+        // const user = new User(name);
+        // if (rooms.hasOwnProperty(roomID)) {
+        //     rooms[roomID].users.push(user)
+        //     //rooms
+        //     //consist
+        //     members = rooms[roomID].users.map(({ name }) => name);
+        // }
+        // else {
+        //     const routine = new Room();
+        //     rooms[roomID] = routine
+        //     rooms[roomID].users.push(user)
+        //     members = rooms[roomID].users.map(({ name }) => name);
+        //     //  listOfUsers = mongo.incremntPeople()
+        //     //  io.emit()
+        // }
         //console.log(rooms)
-        io.in(roomID).emit('first-connection', { roomID: roomID, members: members });
+        io.in(roomID).emit('first-connection', { message: "connected" });
     }
     )
 
 
     socket.on('markCompletion', function ({ uid, routine_ID, name, task }) {
         mongo.markCompletion(uid, routine_ID, (response) => {
-            //io.in(routine_`ID).emit('people_routine_completion', {message: `${name} has completed ${task}`})
+            console.log(name + "")
+            io.in(routine_ID).emit('people_routine_completion', {message: `${name} has completed ${task}`})
         })
     })
 })
-
 // socket.on('getRoutinePosts', function() {
 //     ....
 //     ...
@@ -407,6 +406,46 @@ app.get("/createComment", (req, res) => {//admin supported
     })
 
 })
+app.get("/sendMessageToRoom", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response = mongo.sendMessageToRoom(req.query.uid, req.query.roomid, req.query.message, (result) => {
+        //console.log(result)
+        res.send(result);
+    })
+
+})
+app.get("/getRoomMessages", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response = mongo.getRoomMessages(req.query.roomid, (result) => {
+        //console.log(result)
+        res.send(result);
+    })
+
+})
+app.get("/checkJoinStatus", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response = mongo.checkJoinStatus(req.query.uid, req.query.routineid, (result) => {
+        //console.log(result)
+        if(result == "user not found"){
+            res.status(400);
+        }
+        res.send(result)
+    })
+
+})
+
 
 cron.schedule("0 0 * * *", function() {
     console.log("clearing Completion Mappings")
