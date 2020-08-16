@@ -33,6 +33,8 @@ import { useHistory } from "react-router-dom";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import * as test from '../../../actions/retHabitInfo'
 
+import RoutineDialog from '../insertRoutine'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,6 +76,13 @@ const Dialog = () => {
   const {pageNumber, stop} = useSelector(state => state.dashboardReducers)
   const dispatch = useDispatch()
 
+
+  const openDialog = () => {
+    setDialog(!dialog)
+}
+const [dialog, setDialog] = useState(false)
+
+
   const movetoNextPage = (routine) => {
     history.push('/routine', { routine: routine})
   }
@@ -92,11 +101,16 @@ const Dialog = () => {
           loader={<h4>Loading...</h4>}
         >
       <Grid container spacing={0} style={{justifyContent:'center'}}>
+
+
       <NeuButton height="230px"
                 width="300px"
                 color="#FFFFFF"
                 distance={8}
+                onClick={openDialog}
                 > create a routine</NeuButton>
+
+
         {publicRoutines.map((item, i) => (
           <List key={i} style={{justifyContent: 'center' }}>
               <Slide bottom collapse>
@@ -124,6 +138,8 @@ const Dialog = () => {
         ))}
       </Grid>
       </InfiniteScroll>
+      <RoutineDialog dialog={dialog} openDialog={openDialog} type='Routine' />
+
       </div>
   )
 }
