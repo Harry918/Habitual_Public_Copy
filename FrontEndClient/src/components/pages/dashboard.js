@@ -91,7 +91,7 @@ const Dashboard = React.memo(() => {
             >
                +
             </NeuButton>
-            <AddRoutine />
+            {/* <AddRoutine /> */}
 
             <RoutineDialog dialog={dialog} openDialog={openDialog} type='Routine' />
         </div>

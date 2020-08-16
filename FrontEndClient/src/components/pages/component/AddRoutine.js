@@ -20,7 +20,7 @@ function AddRoutine() {
                 width="300px"
                 color="#FFFFFF"
                 distance={8}
-                > +</NeuButton>
+                > create Routine</NeuButton>
         </div>
     )
 }

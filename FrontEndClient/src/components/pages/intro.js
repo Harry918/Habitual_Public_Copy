@@ -14,9 +14,19 @@ import SignIn from './SignIn'
 
 
 const useStyles = makeStyles((theme) => ({
-    root :{
+    miniHeader: {
+
     },
-    buttons :{}
+
+    header: {
+        fontFamily: 'Montserrat',
+        fontSize: '36px',
+    },
+    subHeader: {
+        fontFamily: 'Montserrat',
+        fontSize: '18px',
+    },
+
 }));
 
 
@@ -27,9 +37,8 @@ const Intro = () => {
     return (
         <div className={classes.root}>
             <TopMenu />
-            <NeuButton height="50px" width="50%" color="#FFFFFF" distance={8} radius={10} className={classes.buttons} > Sign In </NeuButton>
-            <NeuButton height="50px" width="50%" color="#FFFFFF" distance={8} radius={10} className={classes.buttons}> Sign Up </NeuButton>
-            < img src="https://bashooka.com/wp-content/uploads/2018/01/intro-page-designs-12.jpg" alt="intro" style={{width:'100%', height:'100%'}} ></img>
+            <Typography className={classes.header}>Get motivated with habitual </Typography>
+            <Typography className={classes.subHeader}>Create Routines that drive personal growth for you and your community. All in a matter of seconds.</Typography>
         </div>
     );
 }

@@ -56,25 +56,22 @@ const AboutRoutine = ({routineID}) => {
     const [dialog, setDialog] = useState(false)
     const {uid} = useSelector(state => state.firebase.auth)
 
-    const userRoutines = useSelector(state => state.dashboardReducers.userRoutines)
-    const [inRoutine, setInRoutine] = useState(false);
+    // const userRoutines = useSelector(state => state.dashboardReducers.userRoutines)
 
-    const [newColor, setNewColor] = useState('');
-    const [newState, setNewState] = useState('');
+
+    // const [inRoutine, setInRoutine] = useState(false);
+    const [joinButtonState, setJoinButtonState] = useState([])
 
 
     useEffect(() => {
         dispatch(retHabitActions.getUsersRoutines(uid, (userRoutines) => {
             if (userRoutines.map(a => a._id).includes(routineID)){
-                setInRoutine(true);
-                setNewColor('#b4b8bf');
-                setNewState('Joined');
+                setJoinButtonState([true, '#b4b8bf', 'Joined'])
+
                 console.log("yessir")
 
             } else {
-                setInRoutine(false);
-                setNewColor('#72b01d');
-                setNewState('Join');
+                setJoinButtonState([false, '#72b01d', 'Join'])
                 console.log("no sir")
 
             }
@@ -84,10 +81,11 @@ const AboutRoutine = ({routineID}) => {
 
 
 
-    
 
 
-    const [joinButtonState, setJoinButtonState] = useState([inRoutine, newColor, newState])
+
+
+
 
 
     const openDialog = () => {
@@ -99,26 +97,18 @@ const AboutRoutine = ({routineID}) => {
     let testClick = false;
 
     const joinGroup = () => {
-        dispatch(routineActions.joinRoutine("4m8lQ26VHgTlPkDusuL0f4yAXmA3", routineID))
+        dispatch(routineActions.joinRoutine(uid, routineID))
     }
 
     const leaveGroup = () => {
-        dispatch(routineActions.leaveRoutine("4m8lQ26VHgTlPkDusuL0f4yAXmA3", routineID))
-        document.getElementById("joinButton").innerText="Join";
-        document.getElementById("joinButton").style.color='#72b01d';
+        dispatch(routineActions.leaveRoutine(uid, routineID));
     }
 
     const revertButton = () => {
-        if (inRoutine==false) {
-            setInRoutine(true);
-            setNewColor('#b4b8bf');
-            setNewState('Joined');
-            setJoinButtonState([inRoutine, newColor, newState]);
+        if (joinButtonState[0]==false) {
+            setJoinButtonState([true, '#b4b8bf', 'Joined']);
         } else {
-            setInRoutine(false);
-            setNewColor('#72b01d');
-            setNewState('Join');
-            setJoinButtonState([inRoutine, newColor, newState]);
+            setJoinButtonState([false, '#72b01d', 'Join']);
         }
     }
 
@@ -165,7 +155,7 @@ const AboutRoutine = ({routineID}) => {
                                 <NeuButton
                                         height="50px"
                                         onClick={(event) => {
-                                            if(!inRoutine){
+                                            if(joinButtonState[0] == false){
                                                 joinGroup(event);
                                                 revertButton();
                                             }
@@ -180,30 +170,30 @@ const AboutRoutine = ({routineID}) => {
                                         className={classes.button}
                                         id="joinButton"
                                         
-                                        onMouseOver ={(event) => {
-                                            if (inRoutine){
-                                                document.getElementById("joinButton").innerText='Leave';
-                                                document.getElementById("joinButton").style.color='#f26a66';
+                                        // onMouseOver ={(event) => {
+                                        //     if (inRoutine){
+                                        //         document.getElementById("joinButton").innerText='Leave';
+                                        //         document.getElementById("joinButton").style.color='#f26a66';
                                                 
                                                 
-                                                // setJoinButtonState([joinButtonState[0], '#ff0000', 'Leave']);
+                                        //         // setJoinButtonState([joinButtonState[0], '#ff0000', 'Leave']);
 
-                                            }
+                                        //     }
 
-                                        }}
-                                        onMouseOut ={() => {
-                                            if (inRoutine){
-                                                document.getElementById("joinButton").innerText="Joined";
-                                                document.getElementById("joinButton").style.color='#b4b8bf';
+                                        // }}
+                                        // onMouseOut ={() => {
+                                        //     if (inRoutine){
+                                        //         document.getElementById("joinButton").innerText="Joined";
+                                        //         document.getElementById("joinButton").style.color='#b4b8bf';
 
                                                 
-                                            }
+                                        //     }
 
-                                        }}
+                                        // }}
                                         
                                         
                                 >
-                                    <div id="joinedText" style={{color:newColor}}>{newState}</div>
+                                    <div id="joinedText" style={{color:joinButtonState[1]}}>{joinButtonState[2]}</div>
                                 </NeuButton>
                             </Grid>         
                         </Grid>

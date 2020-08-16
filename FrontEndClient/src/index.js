@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import './components/pages/PressStart2P-Regular.ttf'
+import './components/pages/Montserrat-Medium.ttf'
 
 import {Provider} from 'react-redux'
 import {createStore, applyMiddleware, compose} from 'redux'

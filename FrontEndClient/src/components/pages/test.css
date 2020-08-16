@@ -2,6 +2,10 @@
     font-family: 'PressStart';
     src: local('PressStart'), url(./PressStart2P-Regular.ttf) format('truetype');
 }
+@font-face {
+    font-family: 'MontSerrat';
+    src: local('MontSerrat'), url(./Montserrat-Medium.ttf) format('truetype');
+}
 
 html {
 	height: 100%;

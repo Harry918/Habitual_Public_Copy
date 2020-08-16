@@ -33,6 +33,7 @@ import { useHistory } from "react-router-dom";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import * as test from '../../../actions/retHabitInfo'
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     
@@ -95,7 +96,7 @@ const Dialog = () => {
                 width="300px"
                 color="#FFFFFF"
                 distance={8}
-                > +</NeuButton>
+                > create a routine</NeuButton>
         {publicRoutines.map((item, i) => (
           <List key={i} style={{justifyContent: 'center' }}>
               <Slide bottom collapse>

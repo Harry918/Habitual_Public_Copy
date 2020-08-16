@@ -20,6 +20,7 @@ function App() {
               <Route exact path="/" component={Dashboard}></Route>
               <Route exact path="/home" component={Home}></Route>
               <Route path="/routine" component={Routine}></Route>
+              <Route path="/intro" component={Intro}></Route>
         </Router>
       
     </div>

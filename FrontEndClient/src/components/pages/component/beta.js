@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     betaRect: {
         fontSize:6,
-        color:'#4bf542',
+        color:'black',
         fontFamily:'PressStart',
     }
 }));

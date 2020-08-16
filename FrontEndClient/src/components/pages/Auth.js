@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {fade, makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -13,37 +13,80 @@ import firebase from 'firebase';
 import { useSelector, useDispatch } from 'react-redux';
 import * as authFunctions from '../../actions/authFunctions'
 import { useHistory } from "react-router-dom";
-
+import Particles from 'react-particles-js';
+import { NeuButton } from "neumorphism-react";
 
 
 const useStyles = makeStyles((theme) => ({
     user: {
         width: '100%',
         alignItems: 'center',
-        padding: 5
+        padding: 5,
+        margin: 10,
+        zIndex: 101,
 
     },
     pass: {
         width: '100%',
         alignItems: 'center',
-        padding: 5
+        padding: 5,
+        margin: 10,
+        zIndex: 101,
+
 
     },
     pad: {
         textAlign: 'center',
-        color: 'RGB(92, 88, 88)'
+        color: 'RGB(92, 88, 88)',
+        margin: 10,
+        fontFamily: 'Lato',
+        zIndex: 101,
     },
     back: {
         minHeight: '100vh',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        position: "fixed ",
+        zIndex: 100,
+        top: '25%',
+        width: '100%',
+        zIndex: 101,
+
 
     },
     test: {
         width: '50%',
         marginTop: 5,
-    }
-       
-  }));
+        maxWidth: '500px',
+        margin: 50,
+        padding: 7,
+        fontFamily: "Lato"
+    },
+    particle: {
+        height: '100%',
+        zIndex: 10,
+
+    },
+    title: {
+        flex: 1,
+        display: 'flex',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        fontFamily: 'Lato',
+        marginLeft: 10,
+        marginRight: 10,
+        top: '5%',
+        position: "absolute ",
+        width: '100%',
+        zIndex: 101,
+    },
+    glass: {
+        backgroundColor: 'white',
+        opacity: '0.5',
+        zIndex: -10,
+    },
+
+
+}));
 
 //redux
 //actions and reducers and dispatch
@@ -65,33 +108,27 @@ const Auth = () => {
     //login
     //u would need to use useState for user and pass
     const changeValue = (event, type) => {
-        if(type === 'user')
-        {
+        if (type === 'user') {
             setUser(event.target.value)
         }
-        else
-        {
+        else {
             setPass(event.target.value)
         }
     }
-    const logValues = () => 
-    {
+    const logValues = () => {
         console.log("here")
-        try
-        {
-           const response = app.auth().createUserWithEmailAndPassword(user, pass);//doSignInWithGoogle()
-           console.log(response)
+        try {
+            const response = app.auth().createUserWithEmailAndPassword(user, pass);//doSignInWithGoogle()
+            console.log(response)
         }
-        catch(err)
-        {
+        catch (err) {
             console.log(err)
         }
     }
 
-    const googleLogin = () => 
-    {
+    const googleLogin = () => {
         var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function(result) {
+        firebase.auth().signInWithPopup(provider).then(function (result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
             console.log(result.user.email)
             console.log(result.user.displayName)
@@ -102,7 +139,7 @@ const Auth = () => {
             // The signed-in user info.
             var user = result.user;
             // ...
-          }).catch(function(error) {
+        }).catch(function (error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -111,30 +148,69 @@ const Auth = () => {
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
             // ...
-          });
-        }
-        
+        });
+    }
 
-    return(
+
+    return (
         <div>
-            <div className={classes.back} style={{textAlign: 'center'}}>
-                <h1 className={classes.pad}>Login</h1>
+            <Typography variant="h6" className={classes.title}>
+                HABITUAL
+                </Typography>
+            <div className={classes.particle}>
+                <div className={classes.glass}>
+                    <Particles
 
-                <Button className={classes.test} onClick={(event) => {logValues(event)}} variant="contained">SIGN UP</Button>
+                        params={{
+                            "particles": {
+                                "number": {
+                                    "value": 50
 
-                <h3 className={classes.pad}>OR</h3>
-                <Button className={classes.test} onClick={googleLogin} variant="contained">LOG IN WITH GOOGLE</Button>
+                                },
+                                "size": {
+                                    "value": 3
+                                },
+                                "color": {
+                                    "value": "#a1a1a1"
+                                }, // color of the dot
+                                "line_linked": {
+                                    "enable": true,
+                                    "distance": 300,
+                                    "color": "#a1a1a1", //color of the lines
+                                    "opacity": 0.4,
+                                    "width": 1
+                                },
+                            },
+
+                            "interactivity": {
+                                "events": {
+                                    "onhover": {
+                                        "enable": true,
+                                        "mode": "grab"
+                                    }
+                                }
+                            }
+                        }} />
+                </div>
+            </div>
+            <div className={classes.back} style={{ textAlign: 'center' }}>
+
+                <NeuButton className={classes.test} onClick={(event) => { logValues(event) }} color="#ffffff" distance={8} radius={10} >SIGN UP</NeuButton>
+
+                <h5 className={classes.pad}>OR</h5>
+                <NeuButton className={classes.test} onClick={googleLogin} color="#ffffff" distance={8} radius={10} >LOG IN WITH GOOGLE</NeuButton>
 
                 <Grid item xs={12}>
                 </Grid>
-                <h3 className={classes.pad}>OR</h3>
+                <h5 className={classes.pad}>OR</h5>
                 <Grid item xs={12}>
 
-                    <TextField required className={classes.user} placeholder="User" onChange={(event) => {changeValue(event, 'user')}}/>
-                    <TextField required className={classes.pass} placeholder="Password" onChange={(event) => {changeValue(event, 'pass')}}/>
-                <Button className={classes.test}  onClick={logValues} variant="contained">LOG IN</Button>
-                </Grid>  
+                    <TextField required className={classes.user} placeholder="Email" onChange={(event) => { changeValue(event, 'user') }} />
+                    <TextField required className={classes.pass} placeholder="Password" onChange={(event) => { changeValue(event, 'pass') }} />
+                    <NeuButton className={classes.test} onClick={logValues} color="#ffffff" distance={8} radius={10} >LOG IN</NeuButton>
+                </Grid>
             </div>
+
         </div>
     )
 }

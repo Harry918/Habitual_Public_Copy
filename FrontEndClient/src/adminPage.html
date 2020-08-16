@@ -30,6 +30,7 @@
         <input class="form-control" id="pageNumber" placeholder="pageNumber">
         <input class="form-control" id="pageLimit" placeholder="pageLimit">
         <input class="form-control" id="bots" placeholder="bots">
+        <input class="form-control" id="keywords" placeholder="keywords">
 
     </div>
 
@@ -44,6 +45,8 @@
                 class="btn btn-secondary">getPublicRoutines</button> Requires: page number, page limit</li>
         <li class="list-group-item"> <button type='button' onclick="joinRoutine()"
                 class="btn btn-secondary">joinRoutine</button> Requires: uid, routineid</li>
+        <li class="list-group-item"> <button type='button' onclick="leaveRoutine()"
+                class="btn btn-secondary">leaveRoutine</button> Requires: uid, routineid</li>
         <li class="list-group-item"> <button type='button' onclick="createPost()"
                 class="btn btn-secondary">createPost</button> Requires: uid, title, content, parentRoutine</li>
         <li class="list-group-item"> <button type='button' onclick="getPosts()"
@@ -56,8 +59,14 @@
                 class="btn btn-secondary">getPublicRoutinesData</button></button> query stats on public routines</li>
         <li class="list-group-item"> <button type='button' onclick="createRoutineWithBots()" class="btn btn-secondary">create
                 Routine with bots</button></button> TESTING ONLY, Requires: BOTS, uid, title, description, public, picturekey </li>
+        <li class="list-group-item"> <button type='button' onclick="searchRoutines()" class="btn btn-secondary">search
+                Routines</button></button> Requires: keywords, pageLimit, pageNumber </li>
         <li class="list-group-item"> <button type='button' onclick="createRoom()" class="btn btn-secondary">create
                 Room</button></button> NOT FOR HABITAPP</li>
+        <li class="list-group-item"> <button type='button' onclick="getComments()" class="btn btn-secondary">get Comments
+                </button></button> Requires: parentPost (input into parentRoutine field) </li>
+        <li class="list-group-item"> <button type='button' onclick="createCommentOnPost()" class="btn btn-secondary">create Comment
+                </button></button> Requires: uid, content, parentPost  (input into parentRoutine field)</li>
     </ul>
 
 
@@ -77,6 +86,15 @@
         parentRoutine
         email
         */
+        /*db.Posts.find(
+            {$text: {$search: "water gang"}},
+            {
+                projection: {score:{$meta:"textScore"}},
+                sort: { score: {$meta: "textScore"}} 
+            }
+        )*/
+        //META SEARCH
+        
         const serverAddress = 'http://ec2-13-57-36-23.us-west-1.compute.amazonaws.com:9000'
         for (let i = 0; i < 500; i++) {
             console.log(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
@@ -156,7 +174,7 @@
             let uid = document.getElementById("uid").value
             let title = document.getElementById("title").value
             let description = document.getElementById("description").value
-            console.log('data', uid, title, description, picturekey)
+            //console.log('data', uid, title, description, picturekey)
             let public = document.getElementById('public').value
             let picturekey = document.getElementById('picturekey').value
             let routineid = document.getElementById('routineid').value
@@ -210,6 +228,27 @@
             let content = document.getElementById('content').value
             try {
                 let url = `${serverAddress}/joinRoutine?uid=${uid}&routineid=${routineid}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function leaveRoutine() {
+            let uid = document.getElementById('uid').value
+            let title = document.getElementById('title').value
+            let description = document.getElementById('description').value
+            let public = document.getElementById('public').value
+            let picturekey = document.getElementById('picturekey').value
+            let routineid = document.getElementById('routineid').value
+            let parentRoutine = document.getElementById('parentRoutine').value
+            let email = document.getElementById('email').value
+            let content = document.getElementById('content').value
+            try {
+                let url = `${serverAddress}/leaveRoutine?uid=${uid}&routineid=${routineid}`
                 const response = await axios.get(url)
                     .then(async (response) => {
                         console.log(response)
@@ -295,7 +334,64 @@
                 console.log(err)
             }
         }
-
+        async function searchRoutines() {
+            let pageLimit = document.getElementById("pageLimit").value
+            let pageNumber = document.getElementById("pageNumber").value
+            let keywords = document.getElementById("keywords").value
+            try {
+                let url = `${serverAddress}/searchRoutines?keywords=${keywords}&pageLimit=${pageLimit}&pageNumber=${pageNumber}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function createCommentOnPost(){
+            console.log('creating a comment')
+            let uid = document.getElementById('uid').value
+            let title = document.getElementById('title').value
+            let description = document.getElementById('description').value
+            let public = document.getElementById('public').value
+            let picturekey = document.getElementById('picturekey').value
+            let routineid = document.getElementById('routineid').value
+            let parentPost = document.getElementById('parentRoutine').value
+            let email = document.getElementById('email').value
+            let content = document.getElementById('content').value
+            try {
+                let url = `${serverAddress}/createComment?uid=${uid}&content=${content}&parentPost=${parentPost}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        async function getComments() {
+            let uid = document.getElementById('uid').value
+            let title = document.getElementById('title').value
+            let description = document.getElementById('description').value
+            let public = document.getElementById('public').value
+            let picturekey = document.getElementById('picturekey').value
+            let routineid = document.getElementById('routineid').value
+            let parentPost = document.getElementById('parentRoutine').value
+            let email = document.getElementById('email').value
+            let content = document.getElementById('content').value
+            try {
+                let url = `${serverAddress}/getComments?parentPost=${parentPost}`
+                const response = await axios.get(url)
+                    .then(async (response) => {
+                        console.log(response)
+                    })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
 
     </script>
 </body>
