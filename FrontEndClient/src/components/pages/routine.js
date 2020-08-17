@@ -17,6 +17,8 @@ import Particles from 'react-particles-js';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import List from '@material-ui/core/List'
 import { Slide } from 'react-reveal';
+import LiveFeedBox from './component/liveFeedBox'
+
 
 
 
@@ -119,8 +121,10 @@ const Routine = (props) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const params = props.location.state
+    console.log(params)
     const user = useSelector(state => state.firebase.auth)
     const [live_feed, setLive_feed] = useState([])
+    const [peopleLive, setPeopleLive] = useState(0)
     // console.log(temp.displayName)
     // console.log(temp.uid)
     // const params = {
@@ -138,19 +142,20 @@ const Routine = (props) => {
         let name = Math.random().toString(36).substring(3); //temp name for now
         socket.emit('join', { roomID: params.routine._id, name: user.displayName });
         socket.on('first-connection', (response) => {
+            setPeopleLive(response.numPeople.length)
             console.log(response)
             // dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
         })
     }, [])
 
     const completedRoutine = () => {
-        socket.emit('markCompletion', {uid: user.uid, routine_ID: params.routine._id, name: user.displayName, task: 'drinking water' })
+        socket.emit('markCompletion', { uid: user.uid, routine_ID: params.routine._id, name: user.displayName, task: 'drinking water' })
     }
 
     useEffect(() => {
         socket.on('people_routine_completion', (response) => {
             console.log(response.message)
-            setLive_feed([...response.message])
+            setLive_feed([...live_feed, response.message])
         })
     })
     console.log(posts)
@@ -164,19 +169,27 @@ const Routine = (props) => {
 
                     <Grid item xs={12} >
                         <Grid container spacing={0} className={classes.live}>
-                                {live_feed.map((item, i) => (
-                                <List key={i} style={{justifyContent: 'center' }}>
-                                            <Typography style={{fontSize: 5}}variant="h4" color="textSecondary" component="p">
-                                                {item}
-                                            </Typography>
+
+                        
+                        
+                            {/* {live_feed.map((item, i) => (
+                                <List key={i} style={{ justifyContent: 'center' }}>
+                                    <Typography style={{ fontSize: 5 }} variant="h4" color="textSecondary" component="p">
+                                        {item}
+                                    </Typography>
                                 </List>
-                                ))}
-                            <h1 className={classes.liveFeed}>{live_feed}</h1>
+                            ))} */}
                             <Grid item xs={6}>
-                            <h1 className={classes.liveCount}>420 <br/>COMPLETED TODAY</h1>
+                                <LiveFeedBox live_feed={live_feed}/> 
+                            </Grid>
+
+
+
+                            <Grid item xs={6}>
+                                <h1 className={classes.liveCount}>420 <br />COMPLETED TODAY</h1>
                             </Grid>
                         </Grid>
-                        
+
 
                         <Particles
                             className={classes.particle}
@@ -184,7 +197,7 @@ const Routine = (props) => {
                                 "particles": {
                                     "number": {
                                         "value": 50
-                                    
+
                                     },
                                     "size": {
                                         "value": 3
@@ -222,13 +235,13 @@ const Routine = (props) => {
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__center}>
                                     <Typography variant="h6" className={classes.centerTitle}>
-                                        DRINKING WATER
+                                        {params.routine.title.toUpperCase()}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__right} >
                                     <NeuButton className={classes.completedButton} height="50px" width="150px" color="#ffffff" distance={8} radius={10} onClick={completedRoutine}>
                                         <Typography style={{ fontFamily: 'Lato', color: 'rgb(114, 176, 29)' }}>
-                                        COMPLETED
+                                            COMPLETED
                                     </Typography></NeuButton>
                                 </Grid>
                             </Grid>
@@ -241,7 +254,7 @@ const Routine = (props) => {
 
                         <Grid container spacing={1} wrap="nowrap" direction="column">
                             {posts.map((item, i) => (
-                                <Post description={item.content} title={item.title} postID={item._id}/>
+                                <Post description={item.content} title={item.title} postID={item._id} />
                             ))}
                             <Grid item xs={12}>
                                 <Paper className={classes.paper}>
@@ -259,7 +272,7 @@ const Routine = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={3} className={classes.about}>
-                        <AboutRoutine routineID={params.routine._id} />
+                        <AboutRoutine peopleLive={peopleLive} routineID={params.routine._id} description={params.routine.description} numPeople={params.routine.numPeople} creationDate={params.routine.creationDate} />
                     </Grid>
                 </Grid>
             </div>

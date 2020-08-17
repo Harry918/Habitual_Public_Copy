@@ -343,7 +343,7 @@ async function markCompletion(uid, routineID, callback) {
         client.db('HabitApp').collection('completionMapping').find(query).toArray(function (err, result) {
             if (err) throw err;
             //console.log(result);
-            if (1 == 1/*result.length == 0*/) {
+            if (result.length == 0) {
                 postDoc = {
                     uid: uid,
                     routineID: routineID,
@@ -370,7 +370,6 @@ async function markCompletion(uid, routineID, callback) {
             }
         });
     }
-
 }
 async function getPosts(parentRoutine, callback) {
     console.log('retreiving public posts')

@@ -38,10 +38,13 @@ const useStyles = makeStyles((theme) => ({
         fontSize:20
       },
     go: {
-        width:'80%'
-    },
+        width:'20%',
+        height: '60%'
+    },  
     comment: {
-        width:'20%'
+        width:'100%',
+        height: '100%',
+
     }
 }));
 
@@ -73,14 +76,14 @@ const Post = ({title, description, postID}) => {
                                 <Typography variant='h2' className={classes.title}>{title}</Typography>
                                 <Typography style={{color:"black"}, {fontFamliy:'Antic Slab'}}>{description}</Typography>
 
-                                <Grid container spacing={0}>
-                                    <Grid item xs={6}>
-                                    <TextField onChange={(event) => {setMessage(event.target.value)}} classname={classes.comment} id="outlined-basic" label="Comment" variant="outlined" />
+                                <Grid container spacing={1} style={{height: 100}}>
+                                    <Grid item xs={8}>
+                                    <TextField onChange={(event) => {setMessage(event.target.value)}} className={classes.comment} id="Standard" label="Comment" />
 
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
 
-                                    <Button onClick={postComment} classname={classes.go} variant="outline-success">GO</Button>
+                                    <Button onClick={postComment} className={classes.go} variant="outline-success">GO</Button>
                                     </Grid>
                                     
                                 </Grid>

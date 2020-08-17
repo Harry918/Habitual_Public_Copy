@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as routineActions from '../../../actions/routineFunctions'
 import PostDialog from '../createPost';
 import * as retHabitActions from '../../../actions/retHabitInfo'
+import moment from 'moment';
 
 
 
@@ -49,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const AboutRoutine = ({routineID}) => {
+const AboutRoutine = ({routineID, description, numPeople, creationDate, peopleLive}) => {
+    console.log(creationDate)
     const classes = useStyles();
     const dispatch = useDispatch()
     const [postDialog, setPostDialog] = useState(false)
@@ -61,6 +63,12 @@ const AboutRoutine = ({routineID}) => {
 
     // const [inRoutine, setInRoutine] = useState(false);
     const [joinButtonState, setJoinButtonState] = useState([])
+
+    const convertTime = (date) => {
+        console.log(date)
+        //let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        return(moment(date).format('MMMM Do YYYY'))
+    }
 
 
     useEffect(() => {
@@ -128,16 +136,16 @@ const AboutRoutine = ({routineID}) => {
                             <Grid item xs>
                                 <Typography style={{ color: "black", fontFamily: 'Lato' }}>
                                     <h2 style={{margin: '15px'}}>About Routine</h2>
-                                    <p style={{margin: '25px 15px 25px 15px'}}>{aboutMessage}</p>
+                                    <p style={{margin: '25px 15px 25px 15px'}}>{description}</p>
                                     <Grid container wrap="nowrap" className = {classes.counts} spacing={2}>
                                         <Grid item xs={6}>  
-                                            <p >23.2k Members</p>
+                                            <p >{numPeople} Members</p>
                                         </Grid>
                                         <Grid item xs={6}>  
-                                            <p >462 Active</p>
+                                            <p >{peopleLive} Active</p>
                                         </Grid>
                                     </Grid>
-                                    <p className={classes.created}>Created Aug 6, 2020</p>
+                                    <p className={classes.created}>{convertTime(creationDate)}</p>
                                 </Typography>
                                 <NeuButton
                                         height="50px"
