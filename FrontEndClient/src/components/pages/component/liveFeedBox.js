@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { NeuDiv } from "neumorphism-react";
 import { Grid } from "@material-ui/core"
 import { NeuButton } from "neumorphism-react";
+import { useSelector, useDispatch } from 'react-redux';
+import Fade from '@material-ui/core/Fade';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,16 +37,20 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function LiveFeedBox({live_feed}) {
+function LiveFeedBox() {
     const classes = useStyles();
+    const temp = useSelector(state => state.routineReducers)
+    console.log(temp)
     return (
         <div>
             {/* <div className={classes.box}> */}
                 
                 <ul className ={classes.boxList}>
                     <li className={classes.title} ><h1>Recent Completions</h1></li>
-                    {live_feed.map((item, i) => (
+                    {temp.live_feed.map((item, i) => (
+                            <Fade in={item ? true : false}>
                                 <li className={classes.listItemStyling}>{item}</li>
+                                </Fade>
                             ))}
                 </ul>
             {/* </div> */}

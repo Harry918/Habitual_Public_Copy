@@ -9,7 +9,7 @@ import PrivateRoute from './PrivateRoute/PrivateRoute.js'
 import RoutinePrototype from './components/pages/routinePrototype'
 import PersonalRoutine from './components/pages/PersonalRoutine'
 import SignUp from './components/pages/SignUp'
-import Graph from './components/pages/graph'
+
 
 
 //hi tim <3
@@ -28,7 +28,6 @@ function App() {
               <Route path="/routinePrototype" component={RoutinePrototype}></Route>
               <Route path="/PersonalRoutine" component={PersonalRoutine}></Route>
               <Route path="/signUp" component={SignUp}></Route>
-              <Route path="/graph" component={Graph}></Route>
 
              
         </Router>

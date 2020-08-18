@@ -50,13 +50,14 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const AboutRoutine = ({routineID, description, numPeople, creationDate, peopleLive}) => {
+const AboutRoutine = ({routineID, description, numPeople, creationDate}) => {
     console.log(creationDate)
     const classes = useStyles();
     const dispatch = useDispatch()
     const [postDialog, setPostDialog] = useState(false)
     const [dialog, setDialog] = useState(false)
     const {uid} = useSelector(state => state.firebase.auth)
+    const peopleLive = useSelector(state => state.routineReducers.active)
 
     // const userRoutines = useSelector(state => state.dashboardReducers.userRoutines)
 
@@ -142,7 +143,7 @@ const AboutRoutine = ({routineID, description, numPeople, creationDate, peopleLi
                                             <p >{numPeople} Members</p>
                                         </Grid>
                                         <Grid item xs={6}>  
-                                            <p >{peopleLive} Active</p>
+                                            <p >Active</p>
                                         </Grid>
                                     </Grid>
                                     <p className={classes.created}>{convertTime(creationDate)}</p>

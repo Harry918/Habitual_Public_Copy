@@ -38,7 +38,7 @@ import RoutineDialog from '../insertRoutine'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    
+
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -57,34 +57,42 @@ const useStyles = makeStyles((theme) => ({
     padding: 15
   },
   imageDiv: {
-    width: 300,
-    height: 150
+    width: 600,
+    height: 300
   },
   button: {
-    padding:15,
-    margin:15
-}
+    padding: 15,
+    margin: 15
+  }
 }));
 
 const Dialog = () => {
   let history = useHistory();
   const classes = useStyles();
   let description = "This is a test description"
-  const {images, publicRoutines, userRoutines} = useSelector(state => state.dashboardReducers)
+  const { images, publicRoutines, userRoutines } = useSelector(state => state.dashboardReducers)
   const temp = useSelector(state => state.dashboardReducers)
-  const {uid} = useSelector(state => state.firebase.auth)
-  const {pageNumber, stop} = useSelector(state => state.dashboardReducers)
+  const { uid } = useSelector(state => state.firebase.auth)
+  const { pageNumber, stop } = useSelector(state => state.dashboardReducers)
   const dispatch = useDispatch()
 
 
   const openDialog = () => {
     setDialog(!dialog)
-}
-const [dialog, setDialog] = useState(false)
+  }
+  function truncateWord(word, limit) {
+    if (word.length > limit) {
+      return word.substring(0, limit - 3) + "..."
+    }
+    else {
+      return word
+    }
+  }
+  const [dialog, setDialog] = useState(false)
 
 
   const movetoNextPage = (routine) => {
-    history.push('/routine', { routine: routine})
+    history.push('/routine', { routine: routine })
   }
 
   const fetchNext = () => {
@@ -93,54 +101,57 @@ const [dialog, setDialog] = useState(false)
   console.log(images)
   return (
     <div className={classes.root}>
-            <InfiniteScroll
-          dataLength={images.length}
-          next={fetchNext}
-          hasMore={true}
-          scrollThreshold={0.7}
-          loader={<h4>Loading...</h4>}
-        >
-      <Grid container spacing={0} style={{justifyContent:'center'}}>
+      <InfiniteScroll
+        dataLength={images.length}
+        next={fetchNext}
+        hasMore={true}
+        scrollThreshold={0.7}
+        loader={<h4>Loading...</h4>}
+      >
+        <Grid container spacing={0} style={{ justifyContent: 'center' }} direction="row">
 
 
-      <NeuButton height="230px"
-                width="300px"
-                color="#FFFFFF"
-                distance={8}
-                onClick={openDialog}
-                > create a routine</NeuButton>
+
+            <NeuButton height="391.3px"
+              width="630px"
+              color="#FFFFFF"
+              distance={8}
+              style={{margin: 30}}
+              onClick={openDialog}
+            ><Typography variant='h1'>
+              +
+              </Typography>
+            </NeuButton>
+            {publicRoutines.map((item, i) => (
+              <Grid item>
+                <Slide bottom collapse>
+                  <div className={classes.button}>
+                    <NeuButton
+                      className={classes.neubutton}
+                      onClick={() => { movetoNextPage(publicRoutines[i]) }}
+                      color="#FFFFFF"
+                    >
+                      <Typography variant="h4" color="textSecondary" component="p">
+                        {truncateWord(publicRoutines[i].title, 35)}
+                      </Typography>
+                      <div >
+                        <img className={classes.imageDiv} src={item} thumbnail />
+                      </div>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        {truncateWord(publicRoutines[i].description,80)}
+                      </Typography>
 
 
-        {publicRoutines.map((item, i) => (
-          <List key={i} style={{justifyContent: 'center' }}>
-              <Slide bottom collapse>
-                <div className={classes.button}>
-                  <NeuButton
-                    className={classes.neubutton}
-                    onClick={() => { movetoNextPage(publicRoutines[i]) }}
-                    color="#FFFFFF"
-                  >
-                    <Typography variant="h4" color="textSecondary" component="p">
-                      {publicRoutines[i].title}
-                    </Typography>
-                    <div >
-                      <img className={classes.imageDiv} src={item} thumbnail />
-                    </div>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                      {publicRoutines[i].description}
-                    </Typography>
-
-
-                  </NeuButton>
-                </div>
-              </Slide>
-          </List>
-        ))}
-      </Grid>
+                    </NeuButton>
+                  </div>
+                </Slide>
+              </Grid>
+            ))}
+        </Grid>
       </InfiniteScroll>
       <RoutineDialog dialog={dialog} openDialog={openDialog} type='Routine' />
 
-      </div>
+    </div>
   )
 }
 

@@ -18,6 +18,8 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import List from '@material-ui/core/List'
 import { Slide } from 'react-reveal';
 import LiveFeedBox from './component/liveFeedBox'
+import Comment from './component/Comment'
+
 
 
 
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
-    paper: {
+    noPostsPaper: {
         padding: theme.spacing(2),
         textAlign: 'center',
         color: 'black',
@@ -73,9 +75,19 @@ const useStyles = makeStyles((theme) => ({
 
     },
 
-    leftImage: {
+    leftImageDiv: {
+        width: '100px',
+        height: '100px',
+        position: 'relative',
+        overflow: 'hidden',
         borderRadius: '50%',
-        width: 100,
+    },
+
+    leftImage: {
+        display: 'inline',
+    margin: '0 auto',
+    height: '100%',
+    width: 'auto',
     },
 
     pictureBar__center: {
@@ -113,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const message = `No posts here yet, check back later`;
+
 
 let socket
 const Routine = (props) => {
@@ -132,6 +144,8 @@ const Routine = (props) => {
     // }
 
     const posts = useSelector(state => state.routineReducers.routinePosts)
+    const numCompletions = useSelector(state => state.routineReducers.numCompletions)
+
 
     useEffect(() => {
         console.log(params.routine)
@@ -142,23 +156,41 @@ const Routine = (props) => {
         let name = Math.random().toString(36).substring(3); //temp name for now
         socket.emit('join', { roomID: params.routine._id, name: user.displayName });
         socket.on('first-connection', (response) => {
-            setPeopleLive(response.numPeople.length)
+            // setPeopleLive(response.numPeople.length)
             console.log(response)
+            let messages = response.messages.map(({message}) => message)
+            console.log(messages)
+            dispatch({type:'SET_LIVE_MESSAGES', payload: {messages: messages, numCompletions: response.completions, active: response.numPeople.length}})
             // dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
         })
     }, [])
 
     const completedRoutine = () => {
-        socket.emit('markCompletion', { uid: user.uid, routine_ID: params.routine._id, name: user.displayName, task: 'drinking water' })
+        socket.emit('markCompletion', { uid: user.uid, routine_ID: params.routine._id, name: user.displayName, task: `${user.displayName} is drinking water` })
     }
 
     useEffect(() => {
         socket.on('people_routine_completion', (response) => {
-            console.log(response.message)
-            setLive_feed([...live_feed, response.message])
+            console.log(response)
+            let messages = response.messages.map(({message}) => message)
+            console.log(messages)
+            dispatch({type:'SET_LIVE_MESSAGES', payload: messages})
+            // dispatch({ type: 'LIVE_FEED_UPDATE', payload: response.message })
+            // setLive_feed([...live_feed, response.message])
         })
     })
-    console.log(posts)
+
+    const showNone = () => {
+        if (!posts.length) {
+            return (
+                <Grid item xs={12}>
+                    <Paper className={classes.noPostsPaper}>
+                        <Typography>No posts here yet, check back later</Typography>
+                    </Paper>
+                </Grid>
+            );
+        }
+    }
     return (
         <div style={{ minWidth: 500 }}>
             <TopMenu />
@@ -170,8 +202,8 @@ const Routine = (props) => {
                     <Grid item xs={12} >
                         <Grid container spacing={0} className={classes.live}>
 
-                        
-                        
+
+
                             {/* {live_feed.map((item, i) => (
                                 <List key={i} style={{ justifyContent: 'center' }}>
                                     <Typography style={{ fontSize: 5 }} variant="h4" color="textSecondary" component="p">
@@ -180,13 +212,13 @@ const Routine = (props) => {
                                 </List>
                             ))} */}
                             <Grid item xs={6}>
-                                <LiveFeedBox live_feed={live_feed}/> 
+                                <LiveFeedBox live_feed={live_feed} />
                             </Grid>
 
 
 
                             <Grid item xs={6}>
-                                <h1 className={classes.liveCount}>420 <br />COMPLETED TODAY</h1>
+                                <h1 className={classes.liveCount}>{numCompletions}<br />COMPLETED TODAY</h1>
                             </Grid>
                         </Grid>
 
@@ -231,7 +263,9 @@ const Routine = (props) => {
                         <Paper className={classes.pictureBar}>
                             <Grid container spacing={0}>
                                 <Grid item xs={4} className={classes.pictureBar__left}>
+                                    <div className={classes.leftImageDiv}>
                                     < img className={classes.leftImage} src="https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies" ></img>
+                                    </div>
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__center}>
                                     <Typography variant="h6" className={classes.centerTitle}>
@@ -257,19 +291,8 @@ const Routine = (props) => {
                                 <Post description={item.content} title={item.title} postID={item._id} />
                             ))}
 
+                            {showNone()}
 
-                            <Grid item xs={12}>
-                                <Paper className={classes.paper}>
-                                    <Grid container wrap="nowrap" spacing={2}>
-                                        <Grid item>
-                                            <Avatar>W</Avatar>
-                                        </Grid>
-                                        <Grid item xs>
-                                            <Typography>{message}</Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Paper>
-                            </Grid>
 
 
                         </Grid>
