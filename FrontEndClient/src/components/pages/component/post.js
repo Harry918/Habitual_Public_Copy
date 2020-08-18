@@ -20,6 +20,7 @@ import {Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as routineActions from '../../../actions/routineFunctions'
 import { useSelector, useDispatch } from 'react-redux';
+import Comment from './Comment'
 
 // title
 // avatar
@@ -35,13 +36,24 @@ const useStyles = makeStyles((theme) => ({
         marginLeft:10,
         marginRight:10,
         color:"black",
-        fontSize:20
+        fontSize:40,
+        margin:10
+      },
+      description: {
+       fontSize:20,
+       color:"black",
+       fontFamliy:'Antic Slab',
+       margin:10
+
       },
     go: {
-        width:'80%'
-    },
+        width:'20%',
+        height: '60%'
+    },  
     comment: {
-        width:'20%'
+        width:'100%',
+        height: '100%',
+
     }
 }));
 
@@ -71,18 +83,20 @@ const Post = ({title, description, postID}) => {
                             </Grid>
                             <Grid item xs>
                                 <Typography variant='h2' className={classes.title}>{title}</Typography>
-                                <Typography style={{color:"black"}, {fontFamliy:'Antic Slab'}}>{description}</Typography>
+                                <Typography className={classes.description}>{description}</Typography>
+                                <Comment />
 
-                                <Grid container spacing={0}>
-                                    <Grid item xs={6}>
-                                    <TextField onChange={(event) => {setMessage(event.target.value)}} classname={classes.comment} id="outlined-basic" label="Comment" variant="outlined" />
+                                <Grid container spacing={1} style={{height: 100}}>
+
+                                    <Grid item xs={8}>
+                                    <TextField onChange={(event) => {setMessage(event.target.value)}} className={classes.comment} id="Standard" label="Comment" />
 
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
 
-                                    <Button onClick={postComment} classname={classes.go} variant="outline-success">GO</Button>
+                                    <Button onClick={postComment} className={classes.go} variant="outline-success">GO</Button>
                                     </Grid>
-                                    
+
                                 </Grid>
                                 
                             </Grid>

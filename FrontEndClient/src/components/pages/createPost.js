@@ -16,7 +16,8 @@ import 'fontsource-raleway';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import { NeuButton } from "neumorphism-react";
 import * as routineActions from '../../actions/routineFunctions'
-
+import Beta from './component/beta'
+//
 const useStyles = makeStyles((theme) => ({
     title: {
         margin:5,
@@ -146,15 +147,15 @@ const PostDialog = ({ dialog, openDialog, type }) => {
                         />
                     <Grid container direction="row" jusitfyContent="space-between">
                         <Grid item xs={12} sm={6}>
-                            <div style={{ marginBottom: 15 }, {marginRight: 15}, {marginTop: 15}}>
+                            <div style={{ marginBottom: 15 }, {marginRight: 15}, {marginTop: 15}, {alignItems:'center'}}>
                                 <Button distance={4} color="#ffffff" radius={4} style={{ padding: 15 }} component="label" >
-                                    <input type="file"onChange={upload} style={{ display: "none" }}/>
-                                    <Typography style={{color:"#454955"}}>upload a photo</Typography> 
+                                    <input /*type="file"*/onChange={upload} style={{ display: "none" }}/>
+                                    <Typography style={{color:"#454955"}}>upload a photo</Typography> <Beta style={{padding:15}}/>
                                 </Button>
                             </div>
                         </Grid>
                         {type === 'Post' ? null : <Grid item container justifyContent="center" xs={12} sm={6}>
-                            <FormControlLabel style={{ margin: 15 }} control={<Checkbox name="checkedA" onChange={(e) => { changeText(e, 'public') }} />} label="Make Routine Private" className={classes.checkbox}/>
+                            
                         </Grid>}
                     </Grid>
                     <div style={{ marginBottom: 15 }, {marginRight: 15}, {marginTop: 15}}>

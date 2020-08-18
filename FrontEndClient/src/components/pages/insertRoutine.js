@@ -154,7 +154,7 @@ const RoutineDialog = ({ dialog, openDialog, type }) => {
                             </div>
                         </Grid>
                         {type === 'Post' ? null : <Grid item container justifyContent="center" xs={12} sm={6}>
-                            <FormControlLabel style={{ margin: 15 }} control={<Checkbox name="checkedA" onChange={(e) => { changeText(e, 'public') }} />} label="Make Routine Private" className={classes.checkbox}/>
+                            <FormControlLabel disabled style={{ margin: 15 }} control={<Checkbox name="checkedA" onChange={(e) => { changeText(e, 'public') }} />} label="Make Routine Private" className={classes.checkbox}/>
                         </Grid>}
                     </Grid>
                     <div style={{ marginBottom: 15 }, {marginRight: 15}, {marginTop: 15}}>

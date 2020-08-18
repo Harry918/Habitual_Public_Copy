@@ -414,7 +414,6 @@ async function markCompletion(uid, routineID, callback) {
             }
         });
     }
-
 }
 async function getNumCompletions(routineid, callback)
 {

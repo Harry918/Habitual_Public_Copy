@@ -15,6 +15,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as routineActions from '../../../actions/routineFunctions'
 import PostDialog from '../createPost';
 import * as retHabitActions from '../../../actions/retHabitInfo'
+import moment from 'moment';
+
+
 
 
 
@@ -47,34 +50,49 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const AboutRoutine = ({routineID}) => {
+const AboutRoutine = ({routineID, description, numPeople, creationDate}) => {
+    console.log(creationDate)
     const classes = useStyles();
     const dispatch = useDispatch()
     const [postDialog, setPostDialog] = useState(false)
     const [dialog, setDialog] = useState(false)
     const {uid} = useSelector(state => state.firebase.auth)
+    const peopleLive = useSelector(state => state.routineReducers.active)
 
-    const userRoutines = useSelector(state => state.dashboardReducers.userRoutines)
-    const [inRoutine, setInRoutine] = useState(false);
+    // const userRoutines = useSelector(state => state.dashboardReducers.userRoutines)
+
+
+    // const [inRoutine, setInRoutine] = useState(false);
+    const [joinButtonState, setJoinButtonState] = useState([])
+
+    const convertTime = (date) => {
+        console.log(date)
+        //let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        return(moment(date).format('MMMM Do YYYY'))
+    }
+
 
     useEffect(() => {
-        dispatch(retHabitActions.getUsersRoutines('zn7hQCpcROQWjyToWL2qlVjOrzo1', (userRoutines) => {
+        dispatch(retHabitActions.getUsersRoutines(uid, (userRoutines) => {
             if (userRoutines.map(a => a._id).includes(routineID)){
-                setInRoutine(true);
+                setJoinButtonState([true, '#b4b8bf', 'Joined'])
+
+                console.log("yessir")
+
             } else {
-                setInRoutine(false);
+                setJoinButtonState([false, '#72b01d', 'Join'])
+                console.log("no sir")
+
             }
             console.log("here", userRoutines.map(a => a._id))
         }))
     }, []) // only runs once when the page renders
 
-    
-    const [joinButtonState, setJoinButtonState] = useState([inRoutine, '#72b01d', 'Join'])
 
 
 
 
-  
+
 
 
 
@@ -92,18 +110,22 @@ const AboutRoutine = ({routineID}) => {
     }
 
     const leaveGroup = () => {
-        dispatch(routineActions.leaveRoutine(uid, routineID))
+        dispatch(routineActions.leaveRoutine(uid, routineID));
     }
 
     const revertButton = () => {
-        !joinButtonState[0] ? setJoinButtonState([true, '#b4b8bf', 'Joined']) : setJoinButtonState([false, '#72b01d', 'Join']);
-
+        if (joinButtonState[0]==false) {
+            setJoinButtonState([true, '#b4b8bf', 'Joined']);
+        } else {
+            setJoinButtonState([false, '#72b01d', 'Join']);
+        }
     }
 
 
 
     return (
         <div >
+            
             <div style={{ padding: 15 }}>
                 <RoutineDialog dialog={dialog} openDialog={openDialog} type='Post' />
                 <PostDialog dialog={postDialog} openDialog={openPostDialog} type='Post' />
@@ -115,16 +137,16 @@ const AboutRoutine = ({routineID}) => {
                             <Grid item xs>
                                 <Typography style={{ color: "black", fontFamily: 'Lato' }}>
                                     <h2 style={{margin: '15px'}}>About Routine</h2>
-                                    <p style={{margin: '25px 15px 25px 15px'}}>{aboutMessage}</p>
+                                    <p style={{margin: '25px 15px 25px 15px'}}>{description}</p>
                                     <Grid container wrap="nowrap" className = {classes.counts} spacing={2}>
                                         <Grid item xs={6}>  
-                                            <p >23.2k Members</p>
+                                            <p >{numPeople} Members</p>
                                         </Grid>
                                         <Grid item xs={6}>  
-                                            <p >462 Active</p>
+                                            <p >Active</p>
                                         </Grid>
                                     </Grid>
-                                    <p className={classes.created}>Created Aug 6, 2020</p>
+                                    <p className={classes.created}>{convertTime(creationDate)}</p>
                                 </Typography>
                                 <NeuButton
                                         height="50px"
@@ -142,15 +164,13 @@ const AboutRoutine = ({routineID}) => {
                                 <NeuButton
                                         height="50px"
                                         onClick={(event) => {
-                                            if(event.target.innerText === 'Join'){
+                                            if(joinButtonState[0] == false){
                                                 joinGroup(event);
                                                 revertButton();
                                             }
                                             else {
                                                 leaveGroup(event);
                                                 revertButton();
-                                                document.getElementById("joinButton").innerText='Join';
-                                                document.getElementById("joinButton").style.color='#72b01d';
                                             }
                                         }}
                                         color='#ffffff'
@@ -158,26 +178,27 @@ const AboutRoutine = ({routineID}) => {
                                         radius = {10}
                                         className={classes.button}
                                         id="joinButton"
-                                        onMouseOver ={(event) => {
-                                            if (joinButtonState[0]){
-                                                document.getElementById("joinButton").innerText='Leave';
-                                                document.getElementById("joinButton").style.color='#f26a66';
+                                        
+                                        // onMouseOver ={(event) => {
+                                        //     if (inRoutine){
+                                        //         document.getElementById("joinButton").innerText='Leave';
+                                        //         document.getElementById("joinButton").style.color='#f26a66';
                                                 
                                                 
-                                                // setJoinButtonState([joinButtonState[0], '#ff0000', 'Leave']);
+                                        //         // setJoinButtonState([joinButtonState[0], '#ff0000', 'Leave']);
 
-                                            }
+                                        //     }
 
-                                        }}
-                                        onMouseOut ={() => {
-                                            if (joinButtonState[0]){
-                                                document.getElementById("joinButton").innerText="Joined";
-                                                document.getElementById("joinButton").style.color='#b4b8bf';
+                                        // }}
+                                        // onMouseOut ={() => {
+                                        //     if (inRoutine){
+                                        //         document.getElementById("joinButton").innerText="Joined";
+                                        //         document.getElementById("joinButton").style.color='#b4b8bf';
 
                                                 
-                                            }
+                                        //     }
 
-                                        }}
+                                        // }}
                                         
                                         
                                 >

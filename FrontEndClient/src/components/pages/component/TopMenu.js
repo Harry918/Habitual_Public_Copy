@@ -17,7 +17,7 @@ import * as searchResultsFunctions from '../../../actions/search_Results'
 import { useSelector, useDispatch } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-
+import Beta from './beta'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,6 +102,14 @@ const useStyles = makeStyles((theme) => ({
 
   }
 }));
+function truncateWord(word, limit) {
+  if (word.length > limit) {
+    return word.substring(0, limit - 3) + "..."
+  }
+  else {
+    return word
+  }
+}
 
 const TopMenu = () => {
   let history = useHistory();
@@ -124,49 +132,76 @@ const TopMenu = () => {
     <div className={classes.root}>
 
       <Toolbar>
-        <form action="./" method="get" >
-          <a href='./'>
+          <a href='./intro'>
             {/* <div className={classes.logoImage} style={{backgroundImage: `url('https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67)`}}> */}
               <img className={classes.logoImage} src={logo} /> 
               {/* </div> */}
 
           </a>
 
-        </form>
-        <Typography variant="h6" className={classes.title}>
+        <Typography id="exploreText" variant="h6" className={classes.title}
+        onMouseOver={(event) => {
+          document.getElementById("exploreText").style.textDecoration="underline" ;
+        }} 
+        onMouseOut={(event) => {
+          document.getElementById("exploreText").style.textDecoration="none" ;
+
+        }}>
+          <a href="./" style={{color:'inherit'}}>
+          EXPLORE
+          </a>
+        </Typography>
+        <Typography id="habitualText" variant="h6" className={classes.title}>
+        
           HABITUAL
-          </Typography>
+        </Typography>
+        <Typography id="personalText" variant="h6" className={classes.title}
+        onMouseOver={(event) => {
+          document.getElementById("personalText").style.textDecoration="underline" ;
+        }} 
+        onMouseOut={(event) => {
+          document.getElementById("personalText").style.textDecoration="none" ;
+
+        }}>
+          <a href="https://www.google.com/search?safe=active&sxsrf=ALeKk01z8DXDZhgBb1wkOvCVfxlySJl9Jw%3A1597773318740&source=hp&ei=BhY8X4LxKaet0PEP7tK8gAk&q=personal&oq=personal&gs_lcp=CgZwc3ktYWIQAzIECCMQJzIECCMQJzIECCMQJzIECAAQQzIECAAQQzIHCAAQsQMQQzIECAAQQzIECAAQQzIFCAAQsQMyBAgAEEM6BwguECcQkwI6BQgAEJECOg4ILhCxAxCDARDHARCjAjoLCC4QsQMQxwEQowI6DQguEMcBEKMCECcQkwI6CgguEMcBEK8BECc6BAguEENQ7BRY6hpg8xtoAHAAeACAAWeIAbsFkgEDNy4xmAEAoAEBqgEHZ3dzLXdpeg&sclient=psy-ab&ved=0ahUKEwiCjN64qaXrAhWnFjQIHW4pD5AQ4dUDCAk&uact=5" style={{color:'inherit'}} target="_blank">
+
+          PERSONAL
+          </a>
+
+        </Typography>
         <div >
 
-          <NeuButton height="50px"
+          {/* <NeuButton height="50px"
             color="#FFFFFF"
             distance={8}
             radius={10}
-            onClick={signOut}>logout</NeuButton>
+            onClick={signOut}>logout</NeuButton> */}
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             color="inherit"
+            onClick={signOut}
           >
             <AccountCircle />
           </IconButton>
+          <Beta/>
+
         </div>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
-            <SearchIcon />
           </div>
             <Autocomplete
               getLimitTagsText={(more) => +`${more}`}
               id="combo-box-demo"
               options={results}
-              getOptionLabel={(option) => option.title + '-' + option.description}
+              getOptionLabel={(option) =>truncateWord(option.title,30)/*+ '-' + truncateWord(option.description,10)*/}
               filterOptions={(options, state) => options}
               style={{ width: 300 }}
               renderInput={(params) => <TextField
               onChange={searchQueriedRoutines}
                 {...params} 
-                label="Combo box" variant="outlined" />
+                label="Search Routines" variant="outlined" />
               }
             />
 
@@ -174,7 +209,7 @@ const TopMenu = () => {
 
         </div>
       </Toolbar>
-
+      
     </div>
   )
 }
