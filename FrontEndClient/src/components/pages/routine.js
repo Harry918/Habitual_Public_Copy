@@ -256,6 +256,8 @@ const Routine = (props) => {
                             {posts.map((item, i) => (
                                 <Post description={item.content} title={item.title} postID={item._id} />
                             ))}
+
+
                             <Grid item xs={12}>
                                 <Paper className={classes.paper}>
                                     <Grid container wrap="nowrap" spacing={2}>
@@ -268,6 +270,7 @@ const Routine = (props) => {
                                     </Grid>
                                 </Paper>
                             </Grid>
+
 
                         </Grid>
                     </Grid>

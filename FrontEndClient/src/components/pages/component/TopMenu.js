@@ -133,9 +133,36 @@ const TopMenu = () => {
           </a>
 
         </form>
-        <Typography variant="h6" className={classes.title}>
+        <Typography id="exploreText" variant="h6" className={classes.title}
+        onMouseOver={(event) => {
+          document.getElementById("exploreText").style.textDecoration="underline" ;
+        }} 
+        onMouseOut={(event) => {
+          document.getElementById("exploreText").style.textDecoration="none" ;
+
+        }}>
+          EXPLORE
+        </Typography>
+        <Typography id="habitualText" variant="h6" className={classes.title}
+         onMouseOver={(event) => {
+          document.getElementById("habitualText").style.textDecoration="underline" ;
+        }} 
+        onMouseOut={(event) => {
+          document.getElementById("habitualText").style.textDecoration="none" ;
+
+        }}>
           HABITUAL
-          </Typography>
+        </Typography>
+        <Typography id="personalText" variant="h6" className={classes.title}
+        onMouseOver={(event) => {
+          document.getElementById("personalText").style.textDecoration="underline" ;
+        }} 
+        onMouseOut={(event) => {
+          document.getElementById("personalText").style.textDecoration="none" ;
+
+        }}>
+          PERSONAL
+        </Typography>
         <div >
 
           {/* <NeuButton height="50px"

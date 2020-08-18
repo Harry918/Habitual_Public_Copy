@@ -18,21 +18,7 @@ import { NeuButton } from "neumorphism-react";
 
 
 const useStyles = makeStyles((theme) => ({
-    user: {
-        width: '100%',
-        alignItems: 'center',
-        padding: 5,
-        margin: 10,
-        zIndex: 101,
-
-    },
-    pass: {
-        width: '100%',
-        alignItems: 'center',
-        padding: 5,
-        margin: 10,
-        zIndex: 101,
-
+    root: {
 
     },
     pad: {
@@ -71,9 +57,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignSelf: 'center',
         justifyContent: 'center',
-        fontFamily: 'Lato',
-        marginLeft: 10,
-        marginRight: 10,
+        fontFamily: 'Lato', 
         top: '5%',
         position: "absolute ",
         width: '100%',
@@ -153,10 +137,7 @@ const Auth = () => {
 
 
     return (
-        <div>
-            <Typography variant="h6" className={classes.title}>
-                HABITUAL
-                </Typography>
+        <div className={classes.root}>
             <div className={classes.particle}>
                 <div className={classes.glass}>
                     <Particles
@@ -193,24 +174,46 @@ const Auth = () => {
                         }} />
                 </div>
             </div>
-            <div className={classes.back} style={{ textAlign: 'center' }}>
-
-                <NeuButton className={classes.test} onClick={(event) => { logValues(event) }} color="#ffffff" distance={8} radius={10} >SIGN UP</NeuButton>
-
-                <h5 className={classes.pad}>OR</h5>
-                <NeuButton className={classes.test} onClick={googleLogin} color="#ffffff" distance={8} radius={10} >LOG IN WITH GOOGLE</NeuButton>
-
-                <Grid item xs={12}>
+            <Grid container spacing={0}>
+            <Grid item xs={12}>
+            <Typography variant="h6" className={classes.title}>
+                HABITUAL
+                </Typography>
                 </Grid>
-                <h5 className={classes.pad}>OR</h5>
-                <Grid item xs={12}>
+            
+            
+                <div className={classes.back} style={{ textAlign: 'center' }}>
+                <Grid container spacing={0}>
+                    <Grid item xs={12}>
+                    <NeuButton className={classes.test} onClick={(event) => { logValues(event) }} color="#ffffff" distance={8} radius={10} >SIGN UP</NeuButton>
+                    </Grid>
+                    <Grid item xs={12}>
 
-                    <TextField required className={classes.user} placeholder="Email" onChange={(event) => { changeValue(event, 'user') }} />
-                    <TextField required className={classes.pass} placeholder="Password" onChange={(event) => { changeValue(event, 'pass') }} />
-                    <NeuButton className={classes.test} onClick={logValues} color="#ffffff" distance={8} radius={10} >LOG IN</NeuButton>
-                </Grid>
-            </div>
+                    <h5 className={classes.pad}>OR</h5>
+                    </Grid>
+                    <Grid item xs={12}>
+                    
+                    <NeuButton className={classes.test} onClick={googleLogin} color="#ffffff" distance={8} radius={10} >LOG IN WITH GOOGLE</NeuButton>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <h5 className={classes.pad}>OR</h5>
+                    </Grid>
+                    <Grid item xs={12}>
 
+                        <input type="text"  className={classes.test} placeholder="Email" onChange={(event) => { changeValue(event, 'user') }} />
+                        </Grid>
+                    <Grid item xs={12}>
+                        
+                    <input type="text" className={classes.test} placeholder="Password" onChange={(event) => { changeValue(event, 'pass') }} />
+                    </Grid>
+                    <Grid item xs={12}>
+
+                        <NeuButton className={classes.test} onClick={logValues} color="#ffffff" distance={8} radius={10} >LOG IN</NeuButton>
+                    </Grid>
+            </Grid>
+
+                </div>
+            </Grid>
         </div>
     )
 }

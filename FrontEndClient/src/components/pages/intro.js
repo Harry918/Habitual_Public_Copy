@@ -10,7 +10,6 @@ import { NeuButton } from "neumorphism-react";
 import Post from './component/post'
 import AboutRoutine from './component/aboutRoutine'
 import * as routineActions from '../../actions/routineFunctions'
-import SignIn from './SignIn'
 
 
 const useStyles = makeStyles((theme) => ({
