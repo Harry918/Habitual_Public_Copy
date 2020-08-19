@@ -129,14 +129,12 @@ const useStyles = makeStyles((theme) => ({
 
 let socket
 const Routine = (props) => {
-    const serverAddress = 'http://ec2-13-57-36-23.us-west-1.compute.amazonaws.com:9000'
+    const serverAddress = 'http://ec2-52-53-149-51.us-west-1.compute.amazonaws.com:9000'
     const dispatch = useDispatch()
     const classes = useStyles();
     const params = props.location.state
     console.log(params)
     const user = useSelector(state => state.firebase.auth)
-    const [live_feed, setLive_feed] = useState([])
-    const [peopleLive, setPeopleLive] = useState(0)
     // console.log(temp.displayName)
     // console.log(temp.uid)
     // const params = {
@@ -145,6 +143,7 @@ const Routine = (props) => {
 
     const posts = useSelector(state => state.routineReducers.routinePosts)
     const numCompletions = useSelector(state => state.routineReducers.numCompletions)
+    const active = useSelector(state => state.routineReducers.active)
 
 
     useEffect(() => {
@@ -174,9 +173,17 @@ const Routine = (props) => {
             console.log(response)
             let messages = response.messages.map(({message}) => message)
             console.log(messages)
-            dispatch({type:'SET_LIVE_MESSAGES', payload: messages})
+            dispatch({type:'SET_LIVE_UPDATE', payload: {messages: messages, numCompletions: response.completions}})
             // dispatch({ type: 'LIVE_FEED_UPDATE', payload: response.message })
             // setLive_feed([...live_feed, response.message])
+        })
+        
+    })
+
+    useEffect(() => {
+        socket.on('active_people', (response) => {
+            dispatch({type: 'SET_ACTIVE_PEOPLE', payload: response.numPeople})
+            console.log(response)
         })
     })
 
@@ -190,6 +197,9 @@ const Routine = (props) => {
                 </Grid>
             );
         }
+    }
+    window.onbeforeunload = function() {
+        socket.emit('forceDisconnect', { routine_ID: params.routine._id})
     }
     return (
         <div style={{ minWidth: 500 }}>
@@ -212,7 +222,7 @@ const Routine = (props) => {
                                 </List>
                             ))} */}
                             <Grid item xs={6}>
-                                <LiveFeedBox live_feed={live_feed} />
+                                <LiveFeedBox />
                             </Grid>
 
 
@@ -298,7 +308,7 @@ const Routine = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={3} className={classes.about}>
-                        <AboutRoutine peopleLive={peopleLive} routineID={params.routine._id} description={params.routine.description} numPeople={params.routine.numPeople} creationDate={params.routine.creationDate} />
+                        <AboutRoutine routineID={params.routine._id} description={params.routine.description} numPeople={params.routine.numPeople} creationDate={params.routine.creationDate} />
                     </Grid>
                 </Grid>
             </div>

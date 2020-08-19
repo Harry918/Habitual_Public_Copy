@@ -47,11 +47,11 @@ function LiveFeedBox() {
                 
                 <ul className ={classes.boxList}>
                     <li className={classes.title} ><h1>Recent Completions</h1></li>
-                    {temp.live_feed.map((item, i) => (
+                    {temp.live_feed ? temp.live_feed.map((item, i) => (
                             <Fade in={item ? true : false}>
                                 <li className={classes.listItemStyling}>{item}</li>
-                                </Fade>
-                            ))}
+                            </Fade>
+                            )) : null}
                 </ul>
             {/* </div> */}
             

@@ -18,6 +18,10 @@ export default function routineReducers(state=initalState, action) {
             return{...state, errorMessage: 'ERROR RETRIEVING POSTS'}
         case 'SET_LIVE_MESSAGES':
             return{...state, live_feed: action.payload.messages, numCompletions: action.payload.numCompletions, active: action.payload.active}
+        case 'SET_LIVE_UPDATE':
+            return{...state, live_feed: action.payload.messages, numCompletions: action.payload.numCompletions}
+        case 'SET_ACTIVE_PEOPLE':
+            return{...state, active: action.payload}
         default: 
             return{...state}
     }

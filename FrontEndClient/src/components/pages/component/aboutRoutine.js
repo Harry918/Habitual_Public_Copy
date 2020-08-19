@@ -143,7 +143,7 @@ const AboutRoutine = ({routineID, description, numPeople, creationDate}) => {
                                             <p >{numPeople} Members</p>
                                         </Grid>
                                         <Grid item xs={6}>  
-                                            <p >Active</p>
+                                            <p >{peopleLive} Active</p>
                                         </Grid>
                                     </Grid>
                                     <p className={classes.created}>{convertTime(creationDate)}</p>

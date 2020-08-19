@@ -163,7 +163,7 @@ const TopMenu = () => {
           document.getElementById("personalText").style.textDecoration="none" ;
 
         }}>
-          <a href="https://www.google.com/search?safe=active&sxsrf=ALeKk01z8DXDZhgBb1wkOvCVfxlySJl9Jw%3A1597773318740&source=hp&ei=BhY8X4LxKaet0PEP7tK8gAk&q=personal&oq=personal&gs_lcp=CgZwc3ktYWIQAzIECCMQJzIECCMQJzIECCMQJzIECAAQQzIECAAQQzIHCAAQsQMQQzIECAAQQzIECAAQQzIFCAAQsQMyBAgAEEM6BwguECcQkwI6BQgAEJECOg4ILhCxAxCDARDHARCjAjoLCC4QsQMQxwEQowI6DQguEMcBEKMCECcQkwI6CgguEMcBEK8BECc6BAguEENQ7BRY6hpg8xtoAHAAeACAAWeIAbsFkgEDNy4xmAEAoAEBqgEHZ3dzLXdpeg&sclient=psy-ab&ved=0ahUKEwiCjN64qaXrAhWnFjQIHW4pD5AQ4dUDCAk&uact=5" style={{color:'inherit'}} target="_blank">
+          <a href="../PersonalRoutine" style={{color:'inherit'}}>
 
           PERSONAL
           </a>
