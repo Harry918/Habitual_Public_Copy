@@ -57,18 +57,19 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Post = ({title, description, postID}) => {
+const Post = ({title, description, postID, post}) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const uid = useSelector(state => state.firebase.auth.uid)
-    // console.log(description)
+    const name = useSelector(state => state.firebase.auth.displayName)
+    // console.log("3212314141", uid)
     
     const [message, setMessage] = useState('');
 
     const postComment = (event) => {
         dispatch(routineActions.postComment(uid, message, postID))
       }
-
+      console.log(post)
 
     return (
         <div>
@@ -79,7 +80,7 @@ const Post = ({title, description, postID}) => {
                     <Grid item xs={12}>
                         <Grid container wrap="nowrap" spacing={2}>
                             <Grid item>
-                                <Avatar>W</Avatar>
+                                <Avatar>{post.creator[0]}</Avatar>
                             </Grid>
                             <Grid item xs>
                                 <Typography variant='h2' className={classes.title}>{title}</Typography>

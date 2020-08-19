@@ -1,5 +1,6 @@
 import axios from 'axios';
-let serverAddress = 'http://ec2-52-53-149-51.us-west-1.compute.amazonaws.com:9000'
+// let serverAddress = 'http://ec2-52-53-149-51.us-west-1.compute.amazonaws.com:9000'
+let serverAddress = 'http://localhost:9000'
 
 export const googleUser = (uid, displayName, email) => async dispatch => {
     try{

@@ -85,14 +85,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const PostDialog = ({ dialog, openDialog, type }) => {
+const PostDialog = ({ dialog, openDialog, type, routineID }) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const [title, setTitle] = useState('')
     const [desc, setDesc] = useState('')
     const [pub, setPub] = useState(false)
     const [file, setFile] = useState(null)
-    const {uid} = useSelector(state => state.firebase.auth)
+    const {uid, displayName} = useSelector(state => state.firebase.auth)
+    console.log(displayName)
     const changeText = (e, type) => {
         if (type === 'title') {
             setTitle(e.target.value)
@@ -121,7 +122,7 @@ const PostDialog = ({ dialog, openDialog, type }) => {
     openDialog(!dialog)
     }
     const createPost = () => {
-    dispatch(routineActions.createPost(uid, title, desc, file))
+    dispatch(routineActions.createPostWithoutPicture(displayName, title, desc, routineID))
     openDialog(!dialog)
     }
 
@@ -149,7 +150,7 @@ const PostDialog = ({ dialog, openDialog, type }) => {
                         <Grid item xs={12} sm={6}>
                             <div style={{ marginBottom: 15 }, {marginRight: 15}, {marginTop: 15}, {alignItems:'center'}}>
                                 <Button distance={4} color="#ffffff" radius={4} style={{ padding: 15 }} component="label" >
-                                    <input /*type="file"*/onChange={upload} style={{ display: "none" }}/>
+                                    <input type="file" onChange={upload} style={{ display: "none" }}/>
                                     <Typography style={{color:"#454955"}}>upload a photo</Typography> <Beta style={{padding:15}}/>
                                 </Button>
                             </div>
@@ -159,7 +160,7 @@ const PostDialog = ({ dialog, openDialog, type }) => {
                         </Grid>}
                     </Grid>
                     <div style={{ marginBottom: 15 }, {marginRight: 15}, {marginTop: 15}}>
-                        <NeuButton distance={4} color="#ffffff" radius={4} style={{ padding: 15 }} component="label" onClick={createRoutine}>
+                        <NeuButton distance={4} color="#ffffff" radius={4} style={{ padding: 15 }} component="label" onClick={createPost}>
                             <Typography style={{color:"#72B01D"}}>SUBMIT</Typography>
                         </NeuButton>
                     </div>

@@ -1,5 +1,6 @@
 import axios from 'axios';
-let serverAddress = 'http://ec2-52-53-149-51.us-west-1.compute.amazonaws.com:9000'
+// let serverAddress = 'http://ec2-52-53-149-51.us-west-1.compute.amazonaws.com:9000'
+let serverAddress = 'http://localhost:9000'
 
 export const retRoutinePosts = (routine_ID) => async dispatch => {
     try{
@@ -17,8 +18,20 @@ export const retRoutinePosts = (routine_ID) => async dispatch => {
     }
 }
 
-export const createPost = (uid, title, desc, routine_ID) => async dispatch => {
-    console.log("here")
+export const createPostWithoutPicture = (name, title, desc, routine_ID) => async dispatch => {
+    try{
+        dispatch({type: 'POST_POSTS_START'})
+        let url = `${serverAddress}/createPost?uid=${name}&title=${title}&content=${desc}&parentRoutine=${routine_ID}`
+        const response = await axios.get(url)
+        console.log(response)
+        dispatch({type: 'POST_POSTS_SUCCESS', payload: response.data})
+    }
+    catch(err)
+    {
+        dispatch({type: 'POST_POSTS_FAILURE'})
+        console.log(err)
+
+    }
 }
 
 export const checkRoutineCompletion = (uid, routine_ID) => async dispatch => {

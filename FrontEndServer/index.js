@@ -40,7 +40,7 @@ async function main() {
 main().catch(console.error);
 
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 9000;
 console.log("RUNNING ON PORT", PORT)
 
 let rooms = {}
@@ -55,67 +55,51 @@ class Room {
         this.users = []
     }
 };
-// io.on('connection', function (socket) {
-//     let members;
+io.on('connection', function (socket) {
+    let members;
 
-//     socket.on('join', function ({ roomID, name }) {
-//         socket.join(roomID);
-//         // const user = new User(name);
-//         // if (rooms.hasOwnProperty(roomID)) {
-//         //     rooms[roomID].users.push(user)
-//         //     //rooms
-//         //     //consist
-//         //     members = rooms[roomID].users.map(({ name }) => name);
-//         // }
-//         // else {
-//         //     const routine = new Room();
-//         //     rooms[roomID] = routine
-//         //     rooms[roomID].users.push(user)
-//         //     members = rooms[roomID].users.map(({ name }) => name);
-//         //     //  listOfUsers = mongo.incremntPeople()
-//         //     //  io.emit()
-//         // }
-//         //console.log(rooms)
-//         console.log(roomID)
-//         mongo.getRoomMessages(roomID, (result) => {
-//             // mongo.getNumCompletions(roomID, (completions)=> {
-//                 io.in(roomID).emit('first-connection', { messages:  result , numPeople: io.sockets.adapter.rooms[roomID]});
-//             // })
-//         })
-//         //mongo.getRoutineCompletions ->
-//     }
-//     )
+    socket.on('join', function ({ roomID, name }) {
+        socket.join(roomID);
+        console.log(`${name} has joined ${roomID}`)
+        mongo.getRoomMessages(roomID, (result) => {
+            mongo.getNumCompletions(roomID, (completions)=> {
+                io.in(roomID).emit('first-connection', { messages:  result , numPeople: io.sockets.adapter.rooms[roomID], completions: completions});
+            })
+                // io.in(roomID).emit('first-connection', { messages:  result , numPeople: io.sockets.adapter.rooms[roomID]});
+        })
+        //mongo.getRoutineCompletions ->
+    }
+    )
 
 
-//     socket.on('markCompletion', function ({ uid, routine_ID, name, task }) {
-//         mongo.markCompletion(uid, routine_ID, (response) => {
-//             if(response !== 'ERROR'){
-//                 mongo.sendMessageToRoom(uid, routine_ID, task, (result) => {
-//                     mongo.getRoomMessages(routine_ID, (result) => {
-//                         mongo.getNumCompletions(routine_ID, (completions)=>{
-//                             io.in(routine_ID).emit('people_routine_completion', { messages:  result , numCompletions: completions });
-//                         })
+    socket.on('markCompletion', function ({ uid, routine_ID, name, task }) {
+        console.log(`${name} has completed ${task}`)
+        mongo.markCompletion(uid, routine_ID, (response) => {
+            if(response !== 'ERROR'){
+                mongo.sendMessageToRoom(uid, routine_ID, task, (result) => {
+                    console.log(`sending messages to ${name}`)
+                    mongo.getRoomMessages(routine_ID, (result) => {
+                        mongo.getNumCompletions(routine_ID, (completions)=>{
+                            io.in(routine_ID).emit('people_routine_completion', { messages:  result, completions: completions });
+                        })
 
-//                     })
-//                     console.log(result)
-//                 })
-//             // io.in(routine_ID).emit('people_routine_completion', {messages: `${name} has completed ${task}`})
-//             }
-//             else{
-//                 socket.emit({message: 'The Routine has already been completed'}) //NEED A CALLBACK ERROR in HELPER
-//             }
-//         })
-//     })
-//     socket.on('forceDisconnect', function(roomID){
-//         io.in(roomID).emit('first-connection', {numPeople: io.sockets.adapter.rooms[roomID] });
-//         //NEED TO ADD TO CLIENT SIDE
-//         socket.disconnect();
-//     });
-// })
-// socket.on('getRoutinePosts', function() {
-
-//     socket.emit("")
-// });
+                    })
+                    console.log(result)
+                })
+            // io.in(routine_ID).emit('people_routine_completion', {messages: `${name} has completed ${task}`})
+            }
+            else{
+                socket.emit({message: 'The Routine has already been completed'}) //NEED A CALLBACK ERROR in HELPER
+            }
+        })
+    })
+    socket.on('forceDisconnect', function(roomID){
+        console.log("disconnecting")
+        io.in(roomID).emit('active_people', {numPeople: io.sockets.adapter.rooms[roomID] });
+        //NEED TO ADD TO CLIENT SIDE
+        socket.disconnect();
+    });
+})
 
 
 app.get("/getUsers", function (req, res) {

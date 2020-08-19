@@ -37,43 +37,19 @@ const Dashboard = React.memo(() => {
     const dispatch = useDispatch()
     const [dialog, setDialog] = useState(false)
     const update = useSelector(state => state.update)
-    const {uid} = useSelector(state => state.firebase.auth)
     const {pageNumber} = useSelector(state => state.dashboardReducers)
-    const [reached, setReached] = useState(false)
-    // const [routines, setRoutines] = useState(['Drinking Water', 'Better Sleep', 'Healthy Food']) //temperorary till we have a backend where we can retrieve the routines for each person
-    // useEffect(() => {
-    //     dispatch(test.getUsersRoutines(uid))
-    // }, [update])
+
+
     useEffect(() => {
         // dispatch(test.getUsersRoutines(uid))
         console.log("REFRESHED")
         dispatch(test.getPublicRoutines(pageNumber))
-            // window.addEventListener('scroll', function() {
-            //     // setPageLength(pageLength)
-            //     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && pageNumber < 3 && reached == false) {
-            //         setReached(true)
-            //        dispatch(test.getPublicRoutines(pageNumber, () => {
-            //         dispatch({type:'INCREASE_PAGE'})
-            //        }))
-            //        //show loading spinner and make fetch request to api
-            //     }
-            //  });))
+
     }, [update])
     const openDialog = () => {
         setDialog(!dialog)
     }
-    // useEffect(() => {
-    // window.addEventListener('scroll', function() {
-    //     // setPageLength(pageLength)
-    //     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && pageNumber < 3 && reached == false) {
-    //         setReached(true)
-    //        dispatch(test.getPublicRoutines(pageNumber, () => {
-    //            dispatch({type:'INCREASE_PAGE'})
-    //        }))
-    //        //show loading spinner and make fetch request to api
-    //     }
-    //  });
-    // })
+
 
     return (
         <div className={classes.root}>

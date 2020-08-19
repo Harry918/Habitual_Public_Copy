@@ -128,7 +128,7 @@ const AboutRoutine = ({routineID, description, numPeople, creationDate}) => {
             
             <div style={{ padding: 15 }}>
                 <RoutineDialog dialog={dialog} openDialog={openDialog} type='Post' />
-                <PostDialog dialog={postDialog} openDialog={openPostDialog} type='Post' />
+                <PostDialog dialog={postDialog} openDialog={openPostDialog} type='Post' routineID={routineID}/>
 
                 <NeuDiv revert radius={10} color="#FFFFFF" style={{ padding: 15 }} >
 

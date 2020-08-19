@@ -6,7 +6,7 @@ const initalState = {
     userRoutines: [],
     pageNumber: 1,
     lastPage: false,
-    stop: true
+    stop: true,
 }
 
 export default function dashboardReducers(state=initalState, action) {

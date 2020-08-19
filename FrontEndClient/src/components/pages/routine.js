@@ -120,6 +120,10 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         marginTop: 150,
         color: '#575353',
+    },
+
+    refreshButton: {
+        textAlign: 'center'
     }
 
 }));
@@ -133,6 +137,7 @@ const Routine = (props) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const params = props.location.state
+    //params.image
     console.log(params)
     const user = useSelector(state => state.firebase.auth)
     // console.log(temp.displayName)
@@ -142,14 +147,17 @@ const Routine = (props) => {
     // }
 
     const posts = useSelector(state => state.routineReducers.routinePosts)
+    console.log(posts)
+    console.log("POSTSSSSSSS", posts)
+
     const numCompletions = useSelector(state => state.routineReducers.numCompletions)
     const active = useSelector(state => state.routineReducers.active)
+
 
 
     useEffect(() => {
         console.log(params.routine)
         dispatch(routineActions.retRoutinePosts(params.routine._id))
-        console.log(posts)
         var endpoint = serverAddress
         socket = io(endpoint)
         let name = Math.random().toString(36).substring(3); //temp name for now
@@ -274,7 +282,7 @@ const Routine = (props) => {
                             <Grid container spacing={0}>
                                 <Grid item xs={4} className={classes.pictureBar__left}>
                                     <div className={classes.leftImageDiv}>
-                                    < img className={classes.leftImage} src="https://styles.redditmedia.com/t5_10288s/styles/communityIcon_u14gs7f4ugx21.png?width=256&s=5a814bcf6e9855f15f4a5ff9c4655de96565ff67" alt="hydro homies" ></img>
+                                    < img className={classes.leftImage} src={params.image} alt="hydro homies" ></img>
                                     </div>
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__center}>
@@ -291,14 +299,19 @@ const Routine = (props) => {
                             </Grid>
                         </Paper>
                     </Grid>
-
+                   
                     <Grid item xs={9} style={{ padding: 20 }}>
 
-
+                    <NeuButton className={classes.refreshButton} height="50px" width="150px" color="#ffffff" distance={8} radius={10} onClick={window.location.reload}>
+                                        <Typography style={{ fontFamily: 'Lato', color: 'rgb(114, 176, 29)' }}>
+                                            Refresh Posts Not working yet
+                                    </Typography>
+                                    </NeuButton>
 
                         <Grid container spacing={1} wrap="nowrap" direction="column">
                             {posts.map((item, i) => (
-                                <Post description={item.content} title={item.title} postID={item._id} />
+                                <Post description={item.content} title={item.title} postID={item._id} post={posts[i]}/>
+                                
                             ))}
 
                             {showNone()}

@@ -9,7 +9,6 @@ async function connectToMongo() {
     try {
         client = new MongoClient(uri, { useUnifiedTopology: true });
         await client.connect();
-        await incrementCoutner();
         console.log('\x1b[32m', '[mongo] connected');
         console.log('\x1b[40m');
         console.log('\x1b[37m');
@@ -22,33 +21,11 @@ async function connectToMongo() {
     try {
         client = new MongoClient(uri, { useUnifiedTopology: true });
         await client.connect();
-        await printServerStarts();
     } catch (e) {
         console.error(e);
     } finally {
         //await client.close();
     }
-}
-async function incrementCoutner() {
-    query = { numStarts: { $exists: true } }
-    update = { $inc: { numStarts: 1 } }
-    client.db('HabitApp').collection('Test').updateOne(query, update, (function (err, doc) {
-        if (err) {
-            console.log('error occured while searching');
-            console.log(err);
-        }
-    }));
-}
-async function printServerStarts() {
-    query = { numStarts: { $exists: true } }
-    client.db('HabitApp').collection('Test').findOne(query, function (err, doc) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            console.log('The server has been started', doc.numStarts, 'times');
-        }
-    });
 }
 /*async function addSomething(client){
     doc = {hi:'hi'};
@@ -387,7 +364,7 @@ async function markCompletion(uid, routineID, callback) {
         client.db('HabitApp').collection('completionMapping').find(query).toArray(function (err, result) {
             if (err) throw err;
             //console.log(result);
-            if (result.length == 0) {
+            if (1==1) {
                 postDoc = {
                     uid: uid,
                     routineID: routineID,
@@ -667,7 +644,7 @@ async function checkJoinStatus(uid, routineid, callback) {
 //
 
 module.exports = {
-    connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, createRoutineWithBots,
+    connectToMongo, findHi, createUserDoc, createRoutine, createRoutineWithBots,
     getPublicRoutines, getPublicRoutinesData, joinRoutine, leaveRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion,
     getUserRoutines, searchRoutines, searchPosts, searchUsers, getComments, createComment, clearCompletionMapping, sendMessageToRoom, getRoomMessages,
     checkJoinStatus, getNumCompletions

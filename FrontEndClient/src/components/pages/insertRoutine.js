@@ -116,13 +116,18 @@ const RoutineDialog = ({ dialog, openDialog, type }) => {
 
     const createRoutine = () => {
         console.log(file)
-    dispatch(test.createRoutine(uid, title, desc, pub, file))
+        if(file){
+            dispatch(test.createRoutine(uid, title, desc, pub, file))
+        }
+        else{
+            dispatch(test.createRoutineWithoutImage(uid, title, desc, pub))
+        }
     openDialog(!dialog)
     }
-    const createPost = () => {
-    dispatch(routineActions.createPost(uid, title, desc, file))
-    openDialog(!dialog)
-    }
+    // const createPost = () => {
+    // dispatch(routineActions.createPost(uid, title, desc, file))
+    // openDialog(!dialog)
+    // }
 
     return (
         <Grid container>

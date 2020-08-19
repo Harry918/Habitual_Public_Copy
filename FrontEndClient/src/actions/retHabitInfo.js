@@ -1,6 +1,6 @@
 import axios from 'axios';
-let serverAddress = 'https://ec2-52-53-149-51.us-west-1.compute.amazonaws.com:9000'
-//let serverlink = 'http://dbe991ca5bf7.ngrok.io'
+//let serverAddress = 'http://ec2-52-53-149-51.us-west-1.compute.amazonaws.com:9000'
+let serverAddress = 'http://localhost:9000'
 
 export const retTest = () => async dispatch => {
     try{
@@ -80,6 +80,7 @@ export const getPublicRoutines = (pageNumber, callback) => async dispatch => {
 
 
 export const createRoutine = (uid,title, desc, pub, file, callback) => async dispatch => {
+    console.log("here")
     console.log(file)
     const   options = {
         headers: {'Content-Type': 'multipart/form-data'}
@@ -113,6 +114,17 @@ export const createRoutine = (uid,title, desc, pub, file, callback) => async dis
     {
         console.log(err)
         dispatch({type: 'ROUTINE_POSTS_FAILURE'})
+    }
+}
+
+export const createRoutineWithoutImage = (uid, title, desc, pub) => async dispatch => {
+    let url = `${serverAddress}/createRoutine?uid=${uid}&title=${title}&description=${desc}&public=true&picturekey=''`
+    try{
+       const response = await axios.get(url)
+       console.log(response)
+    }
+    catch(err){
+        console.log(err)
     }
 }
 

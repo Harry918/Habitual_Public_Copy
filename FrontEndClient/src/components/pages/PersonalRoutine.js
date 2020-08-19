@@ -49,7 +49,7 @@ const PersonalRoutine = React.memo(() => {
     useEffect(() => {
         console.log("REFRESHED")
         dispatch(test.getPublicRoutines(pageNumber))
-    }, [update])
+    }, [])
     const openDialog = () => {
         setDialog(!dialog)
     }
@@ -60,7 +60,6 @@ const PersonalRoutine = React.memo(() => {
 
 
             <Grid container spacing={0}>
-
                     <Grid item xs={12} >
                         <Paper className={classes.pictureBar}>
                             <Grid container spacing={0}>
