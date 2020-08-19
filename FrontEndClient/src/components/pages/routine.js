@@ -85,9 +85,9 @@ const useStyles = makeStyles((theme) => ({
 
     leftImage: {
         display: 'inline',
-    margin: '0 auto',
-    height: '100%',
-    width: 'auto',
+        margin: '0 auto',
+        height: '100%',
+        width: 'auto',
     },
 
     pictureBar__center: {
@@ -123,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     refreshButton: {
-        textAlign: 'center'
+        width: '100%'
     }
 
 }));
@@ -165,9 +165,9 @@ const Routine = (props) => {
         socket.on('first-connection', (response) => {
             // setPeopleLive(response.numPeople.length)
             console.log(response)
-            let messages = response.messages.map(({message}) => message)
+            let messages = response.messages.map(({ message }) => message)
             console.log(messages)
-            dispatch({type:'SET_LIVE_MESSAGES', payload: {messages: messages, numCompletions: response.completions, active: response.numPeople.length}})
+            dispatch({ type: 'SET_LIVE_MESSAGES', payload: { messages: messages, numCompletions: response.completions, active: response.numPeople.length } })
             // dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
         })
     }, [])
@@ -179,18 +179,18 @@ const Routine = (props) => {
     useEffect(() => {
         socket.on('people_routine_completion', (response) => {
             console.log(response)
-            let messages = response.messages.map(({message}) => message)
+            let messages = response.messages.map(({ message }) => message)
             console.log(messages)
-            dispatch({type:'SET_LIVE_UPDATE', payload: {messages: messages, numCompletions: response.completions}})
+            dispatch({ type: 'SET_LIVE_UPDATE', payload: { messages: messages, numCompletions: response.completions } })
             // dispatch({ type: 'LIVE_FEED_UPDATE', payload: response.message })
             // setLive_feed([...live_feed, response.message])
         })
-        
+
     })
 
     useEffect(() => {
         socket.on('active_people', (response) => {
-            dispatch({type: 'SET_ACTIVE_PEOPLE', payload: response.numPeople})
+            dispatch({ type: 'SET_ACTIVE_PEOPLE', payload: response.numPeople })
             console.log(response)
         })
     })
@@ -206,8 +206,8 @@ const Routine = (props) => {
             );
         }
     }
-    window.onbeforeunload = function() {
-        socket.emit('forceDisconnect', { routine_ID: params.routine._id})
+    window.onbeforeunload = function () {
+        socket.emit('forceDisconnect', { routine_ID: params.routine._id })
     }
     return (
         <div style={{ minWidth: 500 }}>
@@ -282,7 +282,7 @@ const Routine = (props) => {
                             <Grid container spacing={0}>
                                 <Grid item xs={4} className={classes.pictureBar__left}>
                                     <div className={classes.leftImageDiv}>
-                                    < img className={classes.leftImage} src={params.image} alt="hydro homies" ></img>
+                                        < img className={classes.leftImage} src={params.image} alt="hydro homies" ></img>
                                     </div>
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__center}>
@@ -299,27 +299,30 @@ const Routine = (props) => {
                             </Grid>
                         </Paper>
                     </Grid>
-                   
+
+
+
+
+
                     <Grid item xs={9} style={{ padding: 20 }}>
 
-                    <NeuButton className={classes.refreshButton} height="50px" width="150px" color="#ffffff" distance={8} radius={10} onClick={window.location.reload}>
-                                        <Typography style={{ fontFamily: 'Lato', color: 'rgb(114, 176, 29)' }}>
-                                            Refresh Posts Not working yet
-                                    </Typography>
-                                    </NeuButton>
+                        <NeuButton className={classes.refreshButton} height="50px"  color="#ffffff" distance={8} radius={10} onClick={event => { window.location.reload() }}>
+                            <Typography style={{ fontFamily: 'Lato', color: 'rgb(114, 176, 29)' }}>
+                                Refresh Posts
+                            </Typography>
+                        </NeuButton>
 
-                        <Grid container spacing={1} wrap="nowrap" direction="column">
-                            {posts.map((item, i) => (
-                                <Post description={item.content} title={item.title} postID={item._id} post={posts[i]}/>
-                                
-                            ))}
+                        {posts.map((item, i) => (
+                            <Post description={item.content} title={item.title} postID={item._id} post={item} />
 
-                            {showNone()}
+                        ))}
 
-
-
-                        </Grid>
+                        {showNone()}
                     </Grid>
+
+
+
+
                     <Grid item xs={3} className={classes.about}>
                         <AboutRoutine routineID={params.routine._id} description={params.routine.description} numPeople={params.routine.numPeople} creationDate={params.routine.creationDate} />
                     </Grid>
