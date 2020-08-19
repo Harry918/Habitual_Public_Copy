@@ -40,7 +40,7 @@ async function main() {
 main().catch(console.error);
 
 
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 8080;
 console.log("RUNNING ON PORT", PORT)
 
 let rooms = {}
@@ -55,32 +55,65 @@ class Room {
         this.users = []
     }
 };
-io.on('connection', function (socket) {
-    let members;
+// io.on('connection', function (socket) {
+//     let members;
 
-    socket.on('join', function ({ roomID, name }) {
-        socket.join(roomID);
-        io.in(roomID).emit('first-connection', { message: `${name} is in the room`, counter: io.sockets.clients(roomID)});
-    }
-    )
+//     socket.on('join', function ({ roomID, name }) {
+//         socket.join(roomID);
+//         // const user = new User(name);
+//         // if (rooms.hasOwnProperty(roomID)) {
+//         //     rooms[roomID].users.push(user)
+//         //     //rooms
+//         //     //consist
+//         //     members = rooms[roomID].users.map(({ name }) => name);
+//         // }
+//         // else {
+//         //     const routine = new Room();
+//         //     rooms[roomID] = routine
+//         //     rooms[roomID].users.push(user)
+//         //     members = rooms[roomID].users.map(({ name }) => name);
+//         //     //  listOfUsers = mongo.incremntPeople()
+//         //     //  io.emit()
+//         // }
+//         //console.log(rooms)
+//         console.log(roomID)
+//         mongo.getRoomMessages(roomID, (result) => {
+//             // mongo.getNumCompletions(roomID, (completions)=> {
+//                 io.in(roomID).emit('first-connection', { messages:  result , numPeople: io.sockets.adapter.rooms[roomID]});
+//             // })
+//         })
+//         //mongo.getRoutineCompletions ->
+//     }
+//     )
 
 
-    socket.on('markCompletion', function ({ uid, routine_ID, name, task }) {
-        mongo.markCompletion(uid, routine_ID, (response) => {
-            if(response !== 'ERROR'){
-            console.log(name + "")
-            io.in(routine_ID).emit('people_routine_completion', {message: `${name} has completed ${task}`})
-            }
-            else{
-                socket.emit({message: 'The Routine has already been completed'}) //NEED A CALLBACK ERROR in HELPER
-            }
-        })
-    })
-})
+//     socket.on('markCompletion', function ({ uid, routine_ID, name, task }) {
+//         mongo.markCompletion(uid, routine_ID, (response) => {
+//             if(response !== 'ERROR'){
+//                 mongo.sendMessageToRoom(uid, routine_ID, task, (result) => {
+//                     mongo.getRoomMessages(routine_ID, (result) => {
+//                         mongo.getNumCompletions(routine_ID, (completions)=>{
+//                             io.in(routine_ID).emit('people_routine_completion', { messages:  result , numCompletions: completions });
+//                         })
+
+//                     })
+//                     console.log(result)
+//                 })
+//             // io.in(routine_ID).emit('people_routine_completion', {messages: `${name} has completed ${task}`})
+//             }
+//             else{
+//                 socket.emit({message: 'The Routine has already been completed'}) //NEED A CALLBACK ERROR in HELPER
+//             }
+//         })
+//     })
+//     socket.on('forceDisconnect', function(roomID){
+//         io.in(roomID).emit('first-connection', {numPeople: io.sockets.adapter.rooms[roomID] });
+//         //NEED TO ADD TO CLIENT SIDE
+//         socket.disconnect();
+//     });
+// })
 // socket.on('getRoutinePosts', function() {
-//     ....
-//     ...
-//     ..
+
 //     socket.emit("")
 // });
 
@@ -311,7 +344,7 @@ app.get("/createRoom", (req, res) => {
             headers: {
                 'content-type': 'application/json',
                 authorization: 'Bearer d4964dd7795730e98cb9fa93230557ebf19f04aaca506c87f586b074128fdc09',
-                
+
             },
             body: dataString
         };
@@ -428,6 +461,18 @@ app.get("/checkJoinStatus", (req, res) => {//admin supported
             res.status(400);
         }
         res.send(result)
+    })
+
+})
+app.get("/getNumCompletions", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+
+    const response = mongo.getNumCompletions(req.query.routineid, (result) => {
+        //console.log(result)
+        res.send({numCompletions:result})
     })
 
 })

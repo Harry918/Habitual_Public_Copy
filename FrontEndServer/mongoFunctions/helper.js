@@ -117,7 +117,7 @@ async function createRoutine(uid, title, description, public, picturekey, callba
         numPeople: 1,
         public: public,
         picturekey: picturekey,
-        creationDate: date
+        creationDate: today
     }
     try {
         //let client = new MongoClient(uri, { useUnifiedTopology: true } );
@@ -253,33 +253,77 @@ async function getUserRoutines(uid, callback) {
 }
 
 async function joinRoutine(uid, routineid, callback) {
+    routineidObject = ObjectId(routineid)
     console.log("joining routine of routineid", routineid, 'with uid', uid)
-    update = { $addToSet: { routines: routineid } }
-    query = { _id: uid }
-    client.db('HabitApp').collection('Users').updateOne(query, update, function (err, doc) {
-        if (err) {
-            console.log('error occured while searching');
-            console.log(err);
+    const userUpdate = { $addToSet: { routines: routineid } }
+    const userQuery = { _id: uid }
+    const routineUpdate = {$inc: {numPeople:1}}
+    const routineQuery = {_id:routineidObject}
+    console.log('checking if user', uid, 'is already in routine', routineid);
+    client.db('HabitApp').collection('Users').findOne({ _id: uid }).then(data => {
+        if (data != null) {
+            //console.log(data.routines)
+            if (data.routines.indexOf(routineid) != -1) {
+                callback({ joined: true })
+            }
+            else {
+                client.db("HabitApp").collection("Routines").updateOne(routineQuery, routineUpdate).then( () => {
+
+                    client.db('HabitApp').collection('Users').updateOne(userQuery, userUpdate, function (err, doc) {
+                        if (err) {
+                            console.log('error occured while searching');
+                            console.log(err);
+                        }
+                        //console.log(doc)
+                        if (callback) {
+                            callback('routine joined')
+                        }
+                    })
+                })
+            }
         }
-        //console.log(doc)
-        if (callback) {
-            callback('routine joined')
+        else{
+            callback("user not found")
         }
+
     })
+
+
 }
 async function leaveRoutine(uid, routineid, callback) {
+    routineidObject = ObjectId(routineid)
     console.log("leaving routine of routineid", routineid, 'with uid', uid)
-    update = { $pull: { routines: routineid } }
-    query = { _id: uid }
-    client.db('HabitApp').collection('Users').updateOne(query, update, function (err, doc) {
-        if (err) {
-            console.log('error occured while searching');
-            console.log(err);
+    const userUpdate = { $pull: { routines: routineid } }
+    const userQuery = { _id: uid }
+    const routineUpdate = {$inc: {numPeople:-1}}
+    const routineQuery = {_id:routineidObject}
+    console.log('checking if user', uid, 'is already in routine', routineid);
+    client.db('HabitApp').collection('Users').findOne({ _id: uid }).then(data => {
+        if (data != null) {
+            //console.log(data.routines)
+            if (data.routines.indexOf(routineid) == -1) {
+                callback({ message: "routine not found"})
+            }
+            else {
+                client.db("HabitApp").collection("Routines").updateOne(routineQuery, routineUpdate).then( () => {
+
+                    client.db('HabitApp').collection('Users').updateOne(userQuery, userUpdate, function (err, doc) {
+                        if (err) {
+                            console.log('error occured while searching');
+                            console.log(err);
+                        }
+                        //console.log(doc)
+                        if (callback) {
+                            callback('routine left')
+                        }
+                    })
+                })
+            }
         }
-        //console.log(doc)
-        if (callback) {
-            callback('routine left')
+        else{
+            callback("user not found")
         }
+
     })
 }
 
@@ -370,6 +414,19 @@ async function markCompletion(uid, routineID, callback) {
             }
         });
     }
+}
+async function getNumCompletions(routineid, callback)
+{
+
+    const query = {routineID:routineid}
+    console.log('retrieveing number of completions for id', routineid)
+    client.db('HabitApp').collection('completionMapping').find(query).toArray().then( numCompletions => {
+        console.log(numCompletions.length, 'completions were found')
+        if(callback)
+        {
+            callback(numCompletions.length)
+        }
+    })
 }
 async function getPosts(parentRoutine, callback) {
     console.log('retreiving public posts')
@@ -520,12 +577,12 @@ async function sendMessageToRoom(uid, roomid, message, callback) {
         roomid: roomid,
         message: message
     }
-    client.db('HabitApp').collection("LiveFeed").countDocuments().then(messageCount => {
-        console.log('counted ', messageCount, 'message Objects')
+    client.db('HabitApp').collection("LiveFeed").find({ roomid: roomid }).toArray().then(messageArray => {
+        console.log('counted ', messageArray.length, 'message Objects')
         sortOrder = { $orderBy: { _id: 1 } }
         //FIND THE ID OF THE LAST DOCUMENT SORTED BY DOCUMENT ID AND DELETE ONE DOCUMENT EQUAL TO THAT ID BEFORE INSERTING THE NEW ONE
-        //ASLO WRITE THE GETMESSAGES ENDPOINT 
-        if (messageCount > 4) {
+        //ASLO WRITE THE GETMESSAGES ENDPOINT
+        if (messageArray.length > 4) {
             //console.log("message limit hit, deleting one...")
 
 
@@ -575,7 +632,7 @@ async function sendMessageToRoom(uid, roomid, message, callback) {
 async function getRoomMessages(roomid, callback) {
     console.log('getting messages')
     try {
-        client.db('HabitApp').collection('LiveFeed').find({ roomid: roomid }).sort({ _id: 1 }).toArray().then(result => {
+        client.db('HabitApp').collection('LiveFeed').find({ roomid: roomid }).sort({ _id: -1 }).toArray().then(result => {
             //console.log(result);
             if (callback) {
                 callback(result)
@@ -613,5 +670,5 @@ module.exports = {
     connectToMongo, incrementCoutner, printServerStarts, findHi, createUserDoc, createRoutine, createRoutineWithBots,
     getPublicRoutines, getPublicRoutinesData, joinRoutine, leaveRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion,
     getUserRoutines, searchRoutines, searchPosts, searchUsers, getComments, createComment, clearCompletionMapping, sendMessageToRoom, getRoomMessages,
-    checkJoinStatus
+    checkJoinStatus, getNumCompletions
 };
