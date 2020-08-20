@@ -48,7 +48,7 @@ const PersonalRoutine = React.memo(() => {
     const [reached, setReached] = useState(false)
     useEffect(() => {
         console.log("REFRESHED")
-        dispatch(test.getPublicRoutines(pageNumber))
+        dispatch(test.getUsersRoutines(pageNumber))
     }, [])
     const openDialog = () => {
         setDialog(!dialog)
@@ -69,7 +69,7 @@ const PersonalRoutine = React.memo(() => {
                     </Grid>
                     </Grid>
 
-            <Dialog />
+            <Dialog type="private"/>
         </div>
     )
 })
