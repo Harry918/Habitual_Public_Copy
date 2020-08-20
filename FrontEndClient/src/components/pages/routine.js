@@ -24,7 +24,6 @@ import Comment from './component/Comment'
 
 
 
-
 // todo: get rid of margins around the page, reformat image size/shape, make post text wrap (when word is long)
 
 
@@ -124,7 +123,8 @@ const useStyles = makeStyles((theme) => ({
 
     refreshButton: {
         width: '100%'
-    }
+    },
+    
 
 }));
 
@@ -153,6 +153,10 @@ const Routine = (props) => {
     const numCompletions = useSelector(state => state.routineReducers.numCompletions)
     const active = useSelector(state => state.routineReducers.active)
 
+    
+    // initialize completed button state here
+    const [userFinished, setuserFinished] = useState(true)
+
 
 
     useEffect(() => {
@@ -169,6 +173,8 @@ const Routine = (props) => {
             console.log(messages)
             dispatch({ type: 'SET_LIVE_MESSAGES', payload: { messages: messages, numCompletions: response.completions, active: response.numPeople.length } })
             // dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
+        
+        
         })
     }, [])
 
@@ -208,6 +214,21 @@ const Routine = (props) => {
     }
     window.onbeforeunload = function () {
         socket.emit('forceDisconnect', { routine_ID: params.routine._id })
+    }
+
+    const renderCompletedText = () => {
+        let color;
+        if (userFinished) {
+            color = '#b4b8bf'
+        } else {
+            color = 'rgb(114, 176, 29)'
+        }
+        return (
+            <Typography id="completedButtonId" style={{fontFamily: 'Lato'}, {color: color}}>
+                                            COMPLETED 
+                        {userFinished ? <span> <CheckCircleOutlineIcon /></span> : <div></div>}
+                                    </Typography>
+        )
     }
     return (
         <div style={{ minWidth: 500 }}>
@@ -291,10 +312,9 @@ const Routine = (props) => {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__right} >
-                                    <NeuButton className={classes.completedButton} height="50px" width="150px" color="#ffffff" distance={8} radius={10} onClick={completedRoutine}>
-                                        <Typography style={{ fontFamily: 'Lato', color: 'rgb(114, 176, 29)' }}>
-                                            COMPLETED
-                                    </Typography></NeuButton>
+                                    <NeuButton className={classes.completedButton} height="50px" width="175px" color="#ffffff" distance={8} radius={10} onClick={completedRoutine}>
+                                        {renderCompletedText()}    
+                                    </NeuButton>
                                 </Grid>
                             </Grid>
                         </Paper>
@@ -307,7 +327,7 @@ const Routine = (props) => {
                     <Grid item xs={9} style={{ padding: 20 }}>
 
                         <NeuButton className={classes.refreshButton} height="50px"  color="#ffffff" distance={8} radius={10} onClick={event => { window.location.reload() }}>
-                            <Typography style={{ fontFamily: 'Lato', color: 'rgb(114, 176, 29)' }}>
+                            <Typography style={{ fontFamily: 'Lato', }}>
                                 Refresh Posts
                             </Typography>
                         </NeuButton>
