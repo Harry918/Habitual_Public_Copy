@@ -155,9 +155,6 @@ const Routine = (props) => {
     const numCompletions = useSelector(state => state.routineReducers.numCompletions)
     const active = useSelector(state => state.routineReducers.active)
 
-    
-    // initialize completed button state here
-    const [userFinished, setuserFinished] = useState(true)
 
 
 
@@ -175,10 +172,24 @@ const Routine = (props) => {
             console.log(messages)
             dispatch({ type: 'SET_LIVE_MESSAGES', payload: { messages: messages, numCompletions: response.completions, active: response.numPeople.length } })
             // dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
-        
+
         
         })
+
     }, [])
+
+
+    const [userFinished, setUserFinished] = useState(0)
+
+    useEffect(() => {
+        dispatch(routineActions.checkRoutineCompletion(user.uid, params.routine._id, (response) => {
+            console.log(response.data);
+            setUserFinished(response.data);
+            console.log(userFinished)
+        })) 
+    }, [])
+
+    
 
     const completedRoutine = () => {
         socket.emit('markCompletion', { uid: user.uid, routine_ID: params.routine._id, name: user.displayName, task: `${user.displayName} is drinking water` })
@@ -202,6 +213,7 @@ const Routine = (props) => {
             console.log(response)
         })
     })
+
 
     const showNone = () => {
         if (!posts.length) {

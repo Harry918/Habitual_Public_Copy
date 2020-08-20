@@ -43,12 +43,12 @@ const PersonalRoutine = React.memo(() => {
     const dispatch = useDispatch()
     const [dialog, setDialog] = useState(false)
     const update = useSelector(state => state.update)
-    const {uid} = useSelector(state => state.firebase.auth)
+    const uid = useSelector(state => state.firebase.auth)
     const {pageNumber} = useSelector(state => state.dashboardReducers)
     const [reached, setReached] = useState(false)
     useEffect(() => {
-        console.log("REFRESHED")
-        dispatch(test.getUsersRoutines(pageNumber))
+        console.log(uid)
+        dispatch(test.getUsersRoutines(uid))
     }, [])
     const openDialog = () => {
         setDialog(!dialog)

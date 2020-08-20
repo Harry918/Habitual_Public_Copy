@@ -121,6 +121,7 @@ const Dialog = ({type}) => {
   }
 
   const renderScroll = (routines) => {
+    console.log(routines)
     return(
       routines.map((item, i) => (
         <Grid item>

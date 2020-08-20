@@ -34,12 +34,15 @@ export const createPostWithoutPicture = (name, title, desc, routine_ID) => async
     }
 }
 
-export const checkRoutineCompletion = (uid, routine_ID) => async dispatch => {
+export const checkRoutineCompletion = (uid, routine_ID,  callback) => async dispatch => {
     try{
         // dispatch({type: 'GET_ROUTINE_POSTS_START'})
-        let url = `${serverAddress}/checkCompletion?uid=${uid}&routineID=${routine_ID}`
+        let url = `${serverAddress}/checkCompletion?uid=${uid}&routineid=${routine_ID}`
         const response = await axios.get(url)
-        console.log(response)
+        if(callback){
+            callback(response.data)
+        }
+        // console.log(response)
         // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
     }
     catch(err)
