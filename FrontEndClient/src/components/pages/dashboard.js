@@ -55,7 +55,7 @@ const Dashboard = React.memo(() => {
         <div className={classes.root}>
             <TopMenu />
             
-            <Dialog />
+            <Dialog type="public"/>
         </div>
     )
 })

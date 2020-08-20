@@ -66,12 +66,24 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dialog = () => {
+const Dialog = ({type}) => {
   let history = useHistory();
   const classes = useStyles();
   let description = "This is a test description"
+  const publicRoutines = useSelector(state => state.dashboardReducers.publicRoutines)
+  const userRoutines= useSelector(state => state.dashboardReducers.userRoutines)
+  const [routines, setRoutines] = useState([])
   // const { images, publicRoutines, userRoutines } = useSelector(state => state.dashboardReducers)
-  const { publicRoutines, userRoutines } = useSelector(state => state.dashboardReducers)
+  // useEffect(() => {
+  //   if(type === 'public'){
+  //     setRoutines(publicRoutines)
+  //    }
+  //    else{
+  //     setRoutines(userRoutines)
+  //    }
+  //    console.log(routines)
+  // }, [])
+ 
 
   const temp = useSelector(state => state.dashboardReducers)
   const { uid } = useSelector(state => state.firebase.auth)
@@ -100,9 +112,42 @@ const Dialog = () => {
   }
 
   const fetchNext = () => {
-    dispatch(test.getPublicRoutines(pageNumber))
+    if(type === 'public'){
+      dispatch(test.getPublicRoutines(pageNumber))
+    }
+    else{
+      dispatch(test.getUsersRoutines(pageNumber))
+    }
   }
-  console.log(images)
+
+  const renderScroll = (routines) => {
+    return(
+      routines.map((item, i) => (
+        <Grid item>
+          <Slide bottom collapse>
+            <div className={classes.button}>
+              <NeuButton
+                className={classes.neubutton}
+                onClick={() => { movetoNextPage(routines[i], images[i]) }}
+                color="#FFFFFF"
+              >
+                <Typography variant="h4" color="textSecondary" component="p">
+                  {truncateWord(routines[i].title, 35)}
+                </Typography>
+                <div >
+                  <img className={classes.imageDiv} src={images[i]} thumbnail />
+                </div>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {truncateWord(routines[i].description,80)}
+                </Typography>
+              </NeuButton>
+            </div>
+          </Slide>
+        </Grid>
+      ))
+    )
+  }
+
   return (
     <div className={classes.root}>
       <InfiniteScroll
@@ -126,31 +171,7 @@ const Dialog = () => {
               +
               </Typography>
             </NeuButton>
-            {publicRoutines.map((item, i) => (
-              <Grid item>
-                <Slide bottom collapse>
-                  <div className={classes.button}>
-                    <NeuButton
-                      className={classes.neubutton}
-                      onClick={() => { movetoNextPage(publicRoutines[i], images[i]) }}
-                      color="#FFFFFF"
-                    >
-                      <Typography variant="h4" color="textSecondary" component="p">
-                        {truncateWord(publicRoutines[i].title, 35)}
-                      </Typography>
-                      <div >
-                        <img className={classes.imageDiv} src={images[i]} thumbnail />
-                      </div>
-                      <Typography variant="body2" color="textSecondary" component="p">
-                        {truncateWord(publicRoutines[i].description,80)}
-                      </Typography>
-
-
-                    </NeuButton>
-                  </div>
-                </Slide>
-              </Grid>
-            ))}
+            {type === 'public' ? renderScroll(publicRoutines) : renderScroll(userRoutines)}
         </Grid>
       </InfiniteScroll>
       <RoutineDialog dialog={dialog} openDialog={openDialog} type='Routine' />
