@@ -106,14 +106,25 @@ const SignUp = () => {
         }
     }
     const logValues = () => {
-        console.log("here")
-        try {
-            const response = app.auth().createUserWithEmailAndPassword(user, pass);//doSignInWithGoogle()
-            console.log(response)
-        }
-        catch (err) {
-            console.log(err)
-        }
+        let submittedUser = document.getElementById("username").value;
+        let submittedEmail = document.getElementById("email").value;
+        let submittedPassword = document.getElementById("password").value;
+        firebase.auth().createUserWithEmailAndPassword(submittedEmail, submittedPassword).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log("yoo")
+          }).then( result => {
+              console.log(result);
+          });
+
+        // try {
+        //     const response = app.auth().createUserWithEmailAndPassword(user, pass);//doSignInWithGoogle()
+        //     console.log(response)
+        // }
+        // catch (err) {
+        //     console.log(err)
+        // }
     }
 
     const googleLogin = () => {
@@ -193,16 +204,16 @@ const SignUp = () => {
 
                         <Grid item xs={12}>
 
-                            <input type="text" className={classes.test} placeholder="Username" />
+                            <input id="username" type="text" onChange={(event) => {console.log(event.target.value)}} className={classes.test} placeholder="Username" />
                         </Grid>
                         <Grid item xs={12}></Grid>
                         <Grid item xs={12}>
 
-                            <input type="text" className={classes.test} placeholder="Email" />
+                            <input id="email" type="text" onChange={(event) => {console.log(event.target.value)}} className={classes.test} placeholder="Email" />
                         </Grid>
                         <Grid item xs={12}>
 
-                            <input type="password" className={classes.test} placeholder="Password" />
+                            <input id="password" type="password" onChange={(event) => {console.log(event.target.value)}} className={classes.test} placeholder="Password" />
                         </Grid>
                         <Grid item xs={12}>
 

@@ -17,6 +17,7 @@ import * as searchResultsFunctions from '../../../actions/search_Results'
 import { useSelector, useDispatch } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import Beta from './beta'
 
 const useStyles = makeStyles((theme) => ({
@@ -128,6 +129,10 @@ const TopMenu = () => {
     dispatch(searchResultsFunctions.getSearchRoutines(event.target.value))
   }
 
+  const moveToRoutine = (routine) => {
+    console.log(routine.target.value)
+  }
+
   return (
     <div className={classes.root}>
 
@@ -192,11 +197,13 @@ const TopMenu = () => {
           <div className={classes.searchIcon}>
           </div>
             <Autocomplete
+              onClick={() => {console.log('clicked')}}
               getLimitTagsText={(more) => +`${more}`}
               id="combo-box-demo"
               options={results}
               getOptionLabel={(option) =>truncateWord(option.title,30)/*+ '-' + truncateWord(option.description,10)*/}
               filterOptions={(options, state) => options}
+              renderOption={(option) => <Button value={option} onClick={(option) => moveToRoutine(option)} noWrap>{option.title}</Button>}
               style={{ width: 300 }}
               renderInput={(params) => <TextField
               onChange={searchQueriedRoutines}

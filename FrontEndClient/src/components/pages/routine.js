@@ -139,7 +139,20 @@ const Routine = (props) => {
 
     const dispatch = useDispatch()
     const classes = useStyles();
+    const {routineID} = useSelector(state => state.routineReducers)
     const params = props.location.state
+    const [update, setUpdate] = useState(false)
+    // console.log(JSON.parse(localStorage.getItem("params")))
+    // useEffect(() => {
+    //     if(params){
+    //         console.log(params)
+    //         dispatch({type: 'SET_ROUTINE_ID_TEMP', payload: params.routine._id})
+    //     }
+    //     else{
+    //         console.log(routineID)
+    //     }
+    // }, [])
+
     //params.image
     console.log(params)
     const user = useSelector(state => state.firebase.auth)
@@ -183,11 +196,13 @@ const Routine = (props) => {
     const [userFinished, setUserFinished] = useState(0)
 
     useEffect(() => {
+        console.log(params.routine._id)
         dispatch(routineActions.checkRoutineCompletion(user.uid, params.routine._id, (response) => {
-            console.log(response.data);
-            setUserFinished(response.data);
-            console.log(userFinished)
-        })) 
+            console.log(response)
+            setUserFinished(response.data)
+            setUpdate(true)
+            }
+        )) 
     }, [])
 
     
@@ -232,8 +247,9 @@ const Routine = (props) => {
     }
 
     const renderCompletedText = () => {
+        console.log(userFinished)
         let color;
-        if (userFinished) {
+        if (userFinished && update) {
             color = '#b4b8bf'
         } else {
             color = 'rgb(114, 176, 29)'
@@ -328,7 +344,7 @@ const Routine = (props) => {
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__right} >
                                     <NeuButton className={classes.completedButton} height="50px" width="175px" color="#ffffff" distance={8} radius={10} onClick={completedRoutine}>
-                                        {renderCompletedText()}    
+                                        {update ? renderCompletedText() : null}    
                                     </NeuButton>
                                 </Grid>
                             </Grid>

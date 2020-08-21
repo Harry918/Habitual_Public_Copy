@@ -102,7 +102,7 @@ const Auth = () => {
     const logValues = () => {
         console.log("here")
         try {
-            const response = app.auth().createUserWithEmailAndPassword(user, pass);//doSignInWithGoogle()
+            const response = app.auth().signInWithEmailAndPassword(user, pass);//doSignInWithGoogle()
             console.log(response)
         }
         catch (err) {
@@ -204,7 +204,7 @@ const Auth = () => {
                         </Grid>
                     <Grid item xs={12}>
                         
-                    <input type="text" className={classes.test} placeholder="Password" onChange={(event) => { changeValue(event, 'pass') }} />
+                    <input type="password" className={classes.test} placeholder="Password" onChange={(event) => { changeValue(event, 'pass') }} />
                     </Grid>
                     <Grid item xs={12}>
 
