@@ -122,8 +122,9 @@ const PostDialog = ({ dialog, openDialog, type, routineID }) => {
     openDialog(!dialog)
     }
     const createPost = () => {
-    dispatch(routineActions.createPostWithoutPicture(displayName, title, desc, routineID))
-    openDialog(!dialog)
+        dispatch(routineActions.createPostWithoutPicture(displayName, title, desc, routineID))
+        openDialog(!dialog)
+        window.location.reload();
     }
 
     return (

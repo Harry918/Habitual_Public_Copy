@@ -1,6 +1,9 @@
 import axios from 'axios';
 // let serverAddress = 'https://ec2-52-53-232-246.us-west-1.compute.amazonaws.com:9000'
-let serverAddress = 'http://localhost:9000'
+// let serverAddress = 'http://localhost:9000'
+const serverAddress = 'https://habitual.live:9000'
+
+
 
 export const retTest = () => async dispatch => {
     try{
