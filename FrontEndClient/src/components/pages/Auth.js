@@ -220,6 +220,7 @@ const Auth = () => {
                     <Grid item xs={12}>
 
                         <NeuButton className={classes.test} onClick={logValues} color="#ffffff" distance={8} radius={10} >LOG IN</NeuButton>
+
                     </Grid>
             </Grid>
 

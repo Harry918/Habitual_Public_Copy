@@ -16,3 +16,15 @@ export const googleUser = (uid, displayName, email) => async dispatch => {
     }
 
 }
+
+export const createUser = (uid, email, displayName) => async dispatch => {
+    try {
+        let url = `${serverAddress}/createUser?uid=${uid}&displayName=${displayName}&email=${email}`
+        const response = await axios.get(url)
+        dispatch({type: "LOGIN_SUCCESS"})
+        console.log(response)
+    }
+    catch(err) {
+        console.log(err)
+    }
+}
