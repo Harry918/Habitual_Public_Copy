@@ -101,13 +101,24 @@ const Auth = () => {
     }
     const logValues = () => {
         console.log("here")
-        try {
-            const response = app.auth().signInWithEmailAndPassword(user, pass);//doSignInWithGoogle()
+
+
+        firebase.auth().signInWithEmailAndPassword(user, pass)
+        .then((response) => {
             console.log(response)
-        }
-        catch (err) {
-            console.log(err)
-        }
+            history.push('/')
+
+
+        })
+        .catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            
+            alert("Invalid Login. Please try again.")
+          });
+
+
     }
 
     const googleLogin = () => {
@@ -185,7 +196,7 @@ const Auth = () => {
                 <div className={classes.back} style={{ textAlign: 'center' }}>
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
-                    <NeuButton className={classes.test} onClick={(event) => { logValues(event) }} color="#ffffff" distance={8} radius={10} >SIGN UP</NeuButton>
+                    <NeuButton className={classes.test} onClick={(event) => { history.push('./signup') }} color="#ffffff" distance={8} radius={10} >SIGN UP</NeuButton>
                     </Grid>
                     <Grid item xs={12}>
 

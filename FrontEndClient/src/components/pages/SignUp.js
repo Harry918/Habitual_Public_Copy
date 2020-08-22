@@ -73,6 +73,10 @@ const useStyles = makeStyles((theme) => ({
     },
     suggestion: {
         marginTop: 25
+    },
+
+    googleSignIn: {
+        cursor: 'pointer'
     }
 
 
@@ -221,7 +225,7 @@ const SignUp = () => {
                         </Grid>
                         <Grid item xs={12}>
 
-                            <p className={classes.suggestion}>or skip creating a new account and <span><u>sign in</u></span> with Google</p>
+                            <p className={classes.suggestion}>or skip creating a new account and <span><u className={classes.googleSignIn} onClick={googleLogin}> sign in</u></span> with Google</p>
                         </Grid>
                     </Grid>
 
