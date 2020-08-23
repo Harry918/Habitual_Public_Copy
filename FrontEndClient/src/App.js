@@ -21,13 +21,14 @@ function App() {
     <div className="App">
       <Router>
             <Route path="/login"><Auth/></Route>
+            <Route path="/signUp" component={SignUp}></Route>
+
               <PrivateRoute exact path="/" component={Dashboard}></PrivateRoute>
               <PrivateRoute exact path="/home" component={Home}></PrivateRoute>
               <PrivateRoute path="/routine" component={Routine}></PrivateRoute>
               <PrivateRoute path="/intro" component={Intro}></PrivateRoute>
               <PrivateRoute path="/routinePrototype" component={RoutinePrototype}></PrivateRoute>
               <PrivateRoute path="/PersonalRoutine" component={PersonalRoutine}></PrivateRoute>
-              <PrivateRoute path="/signUp" component={SignUp}></PrivateRoute>
 
              
         </Router>
