@@ -3,7 +3,7 @@ import axios from 'axios';
 const serverAddress = 'https://habitual.live:9000'
 
 
-export const googleUser = (uid, displayName, email) => async dispatch => {
+export const googleUser = (uid, displayName, email, callback) => async dispatch => {
     try{
         let url = `${serverAddress}/createUser?uid=${uid}&displayName=${displayName}&email=${email}`
         const response = await axios.get(url)
@@ -11,6 +11,9 @@ export const googleUser = (uid, displayName, email) => async dispatch => {
         localStorage.setItem("displayName", displayName)
         dispatch({type: 'ADD_USER_CRED', payload: {displayName: displayName, uid: uid}})
         console.log(response)
+        if(callback){
+            callback()
+        }
     }
     catch(err)
     {

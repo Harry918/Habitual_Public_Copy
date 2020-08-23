@@ -99,6 +99,7 @@ const SignUp = () => {
     const [displayName, setDisplayName] = useState('')
 
     useEffect(() => {
+        localStorage.clear()
     }, [])
     //login
     //u would need to use useState for user and pass

@@ -88,6 +88,7 @@ const Auth = () => {
     const [pass, setPass] = useState('')
 
     useEffect(() => {
+        localStorage.clear()
     }, [])
     //login
     //u would need to use useState for user and pass
@@ -131,7 +132,9 @@ const Auth = () => {
             console.log(result.user.email)
             console.log(result.user.displayName)
             console.log(result.user.uid)
-            dispatch(authFunctions.googleUser(result.user.uid, result.user.displayName, result.user.email))
+            dispatch(authFunctions.googleUser(result.user.uid, result.user.displayName, result.user.email, () => {
+                history.push('/')
+            }))
             var token = result.credential.accessToken;
             history.push('/')
             // The signed-in user info.
