@@ -10,7 +10,6 @@ export const getSearchRoutines = (keyword) => async dispatch => {
     try{
     let url = `${serverAddress}/searchRoutines?keywords=${keyword}&pageNumber=1&pageLimit=15`
     const response = await axios.get(url)
-    console.log(response)
     dispatch({type: 'GET_SEARCH_ROUTINES', payload: response.data.data})
     }
     catch(err){

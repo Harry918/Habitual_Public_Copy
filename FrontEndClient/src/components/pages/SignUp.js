@@ -96,6 +96,7 @@ const SignUp = () => {
     const classes = useStyles();
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
+    const [displayName, setDisplayName] = useState('')
 
     useEffect(() => {
     }, [])
@@ -116,7 +117,11 @@ const SignUp = () => {
         firebase.auth().createUserWithEmailAndPassword(submittedEmail, submittedPassword)
             .then(response => {
                 console.log('sign up success')
-                dispatch(authFunctions.createUser(response.user.uid, response.user.displayName, response.user.email))
+                console.log(response.user.uid)
+                console.log(response.user.email)
+                console.log(displayName)
+
+                dispatch(authFunctions.createUser(response.user.uid, response.user.email, displayName))  
                 history.push('/')
             })
             .catch(function (error) {
@@ -216,7 +221,7 @@ const SignUp = () => {
                         </Grid>
                         <Grid item xs={12}>
 
-                            <input id="username" type="text" onChange={(event) => { console.log(event.target.value) }} className={classes.test} placeholder="Username" />
+                            <input id="username" type="text" onChange={(event) => { setDisplayName(event.target.value) }} className={classes.test} placeholder="Username" />
                         </Grid>
                         <Grid item xs={12}>
 

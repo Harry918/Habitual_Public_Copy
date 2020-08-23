@@ -130,7 +130,15 @@ const TopMenu = () => {
   }
 
   const moveToRoutine = (routine) => {
-    console.log(routine.target.value)
+    console.log(routine.target.innerHTML)
+    console.log(results)
+    // let temp = results.findIndex(routine.target.innerHTML)
+    console.log(results[0]._id, )
+    console.log(results.findIndex(obj => obj.title === routine.target.innerHTML))
+    dispatch(searchResultsFunctions.getSearchRoutines(routine.target.innerHTML, ))
+    //also need the api reuqest for getting the picture key
+    window.location.reload(false)
+    history.push('/routine', { routine: results[results.findIndex(obj => obj.title === routine.target.innerHTML)]})
   }
 
   return (
