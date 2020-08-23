@@ -99,24 +99,27 @@ const Auth = () => {
             setPass(event.target.value)
         }
     }
-    const logValues = () => {
-        console.log("here")
-
-
-        firebase.auth().signInWithEmailAndPassword(user, pass)
-        .then((response) => {
-            console.log(response)
+    const logValues = () =>{
+        dispatch(authFunctions.loginUser(user, pass, firebase, () => {
             history.push('/')
+        }))
+        // console.log("hello")
 
 
-        })
-        .catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
+        // firebase.auth().signInWithEmailAndPassword(user, pass)
+        // .then((response) => {
+        //     // console.log(response.user.uid)
+        //     history.push('/')
+
+
+        // })
+        // .catch(function(error) {
+        //     // Handle Errors here.
+        //     var errorCode = error.code;
+        //     var errorMessage = error.message;
             
-            alert("Invalid Login. Please try again.")
-          });
+        //     alert("Invalid Login. Please try again.")
+        //   });
 
 
     }

@@ -118,8 +118,10 @@ const TopMenu = () => {
   const dispatch = useDispatch()
   const results1 = useSelector(state => state.searchReducers)
   const {results} = useSelector(state => state.searchReducers)
+  
   const signOut = () => {
     firebase.auth().signOut()
+    localStorage.clear()
     window.location.reload(false);
   }
 

@@ -132,6 +132,7 @@ export const createRoutineWithoutImage = (uid, title, desc, pub) => async dispat
 }
 
 export const getUsersRoutines = (uid, callback) => async dispatch => {
+    console.log("GETTIGN USER ROUTINE", uid, "THIS IS UID")
     console.log(uid)
     try{
         let url = `${serverAddress}/getUserRoutines/?uid=${uid}`

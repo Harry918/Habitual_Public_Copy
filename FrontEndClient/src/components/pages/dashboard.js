@@ -38,7 +38,8 @@ const Dashboard = React.memo(() => {
     const [dialog, setDialog] = useState(false)
     const update = useSelector(state => state.update)
     const {pageNumber} = useSelector(state => state.dashboardReducers)
-
+    const state2 = useSelector(state => state)
+    console.log(state2)
 
     useEffect(() => {
         // dispatch(test.getUsersRoutines(uid))

@@ -155,7 +155,8 @@ const Routine = (props) => {
 
     //params.image
     console.log(params)
-    const user = useSelector(state => state.firebase.auth)
+    const uid = localStorage.getItem('uid')
+    const displayName = localStorage.getItem('displayName')
     // console.log(temp.displayName)
     // console.log(temp.uid)
     // const params = {
@@ -178,7 +179,7 @@ const Routine = (props) => {
         var endpoint = serverAddress
         socket = io(endpoint)
         let name = Math.random().toString(36).substring(3); //temp name for now
-        socket.emit('join', { roomID: params.routine._id, name: user.displayName });
+        socket.emit('join', { roomID: params.routine._id, name: displayName });
         socket.on('first-connection', (response) => {
             // setPeopleLive(response.numPeople.length)
             console.log(response)
@@ -197,7 +198,7 @@ const Routine = (props) => {
 
     useEffect(() => {
         console.log(params.routine._id)
-        dispatch(routineActions.checkRoutineCompletion(user.uid, params.routine._id, (response) => {
+        dispatch(routineActions.checkRoutineCompletion(uid, params.routine._id, (response) => {
             console.log(response)
             setUserFinished(response.data)
             setUpdate(true)
@@ -208,7 +209,7 @@ const Routine = (props) => {
     
 
     const completedRoutine = () => {
-        socket.emit('markCompletion', { uid: user.uid, routine_ID: params.routine._id, name: user.displayName, task: `${user.displayName} is drinking water` })
+        socket.emit('markCompletion', { uid: uid, routine_ID: params.routine._id, name: displayName, task: `${displayName} is drinking water` })
     }
 
     useEffect(() => {

@@ -11,7 +11,7 @@ const PrivateRoute = ({component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        auth.isLoaded===true && auth.isEmpty === false ? (
+        localStorage.getItem('uid') ? (
             <Component {...props} {...rest} />
         ) : (
           <Redirect to="/login"

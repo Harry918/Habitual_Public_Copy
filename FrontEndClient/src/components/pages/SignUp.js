@@ -121,8 +121,10 @@ const SignUp = () => {
                 console.log(response.user.email)
                 console.log(displayName)
 
-                dispatch(authFunctions.createUser(response.user.uid, response.user.email, displayName))  
-                history.push('/')
+                dispatch(authFunctions.createUser(response.user.uid, response.user.email, displayName, () => {
+                    history.push('/')
+                }))  
+                
             })
             .catch(function (error) {
                 // Handle Errors here.
