@@ -1,18 +1,18 @@
 const initalState = {
-    authError: null
+    displayName: '', 
+    uid: ''
 }
 
 export default function authReducer(state=initalState, action) {
     switch(action.type){
         case 'LOGIN_SUCCESS':
             return{...state, authError: null}
-        case 'GET_ROUTINE_POSTS_SUCCESS':
-            return{...state, routinePosts: action.payload, loading: false}
-        case 'GET_ROUTINE_POSTS_FAILURE':
-            return{...state, errorMessage: 'ERROR RETRIEVING POSTS'}
         case 'SIGNOUT_SUCCESS':
             return{...state, authError: true}
-            default: 
+        case 'ADD_USER_CRED':
+            console.log(action.payload.uid, action.payload.displayName)
+            return{...state, uid: action.payload.uid, displayName: action.payload.displayName}
+        default: 
             return{...state}
     }
 

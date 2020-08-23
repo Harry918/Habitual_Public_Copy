@@ -134,14 +134,29 @@ const useStyles = makeStyles((theme) => ({
 let socket
 const Routine = (props) => {
     // const serverAddress = 'https://ec2-52-53-149-51.us-west-1.compute.amazonaws.com:9000'
-    const serverAddress = 'http://localhost:9000'
+    const serverAddress = 'https://habitual.live:9000'
+
 
     const dispatch = useDispatch()
     const classes = useStyles();
+    const {routineID} = useSelector(state => state.routineReducers)
     const params = props.location.state
+    const [update, setUpdate] = useState(false)
+    // console.log(JSON.parse(localStorage.getItem("params")))
+    // useEffect(() => {
+    //     if(params){
+    //         console.log(params)
+    //         dispatch({type: 'SET_ROUTINE_ID_TEMP', payload: params.routine._id})
+    //     }
+    //     else{
+    //         console.log(routineID)
+    //     }
+    // }, [])
+
     //params.image
     console.log(params)
-    const user = useSelector(state => state.firebase.auth)
+    const uid = localStorage.getItem('uid')
+    const displayName = localStorage.getItem('displayName')
     // console.log(temp.displayName)
     // console.log(temp.uid)
     // const params = {
@@ -155,9 +170,6 @@ const Routine = (props) => {
     const numCompletions = useSelector(state => state.routineReducers.numCompletions)
     const active = useSelector(state => state.routineReducers.active)
 
-    
-    // initialize completed button state here
-    const [userFinished, setuserFinished] = useState(true)
 
 
 
@@ -167,7 +179,7 @@ const Routine = (props) => {
         var endpoint = serverAddress
         socket = io(endpoint)
         let name = Math.random().toString(36).substring(3); //temp name for now
-        socket.emit('join', { roomID: params.routine._id, name: user.displayName });
+        socket.emit('join', { roomID: params.routine._id, name: displayName });
         socket.on('first-connection', (response) => {
             // setPeopleLive(response.numPeople.length)
             console.log(response)
@@ -175,13 +187,29 @@ const Routine = (props) => {
             console.log(messages)
             dispatch({ type: 'SET_LIVE_MESSAGES', payload: { messages: messages, numCompletions: response.completions, active: response.numPeople.length } })
             // dispatch(routineActions.checkRoutineCompletion('123', params.routine_ID))
-        
+
         
         })
+
     }, [])
 
+
+    const [userFinished, setUserFinished] = useState(0)
+
+    useEffect(() => {
+        console.log(params.routine._id)
+        dispatch(routineActions.checkRoutineCompletion(uid, params.routine._id, (response) => {
+            console.log(response)
+            setUserFinished(response.data)
+            setUpdate(true)
+            }
+        )) 
+    }, [])
+
+    
+
     const completedRoutine = () => {
-        socket.emit('markCompletion', { uid: user.uid, routine_ID: params.routine._id, name: user.displayName, task: `${user.displayName} is drinking water` })
+        socket.emit('markCompletion', { uid: uid, routine_ID: params.routine._id, name: displayName, task: `${displayName} is drinking water` })
     }
 
     useEffect(() => {
@@ -203,6 +231,7 @@ const Routine = (props) => {
         })
     })
 
+
     const showNone = () => {
         if (!posts.length) {
             return (
@@ -219,8 +248,9 @@ const Routine = (props) => {
     }
 
     const renderCompletedText = () => {
+        console.log(userFinished)
         let color;
-        if (userFinished) {
+        if (userFinished && update) {
             color = '#b4b8bf'
         } else {
             color = 'rgb(114, 176, 29)'
@@ -315,7 +345,7 @@ const Routine = (props) => {
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__right} >
                                     <NeuButton className={classes.completedButton} height="50px" width="175px" color="#ffffff" distance={8} radius={10} onClick={completedRoutine}>
-                                        {renderCompletedText()}    
+                                        {update ? renderCompletedText() : null}    
                                     </NeuButton>
                                 </Grid>
                             </Grid>

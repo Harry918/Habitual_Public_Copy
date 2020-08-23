@@ -88,6 +88,7 @@ const Auth = () => {
     const [pass, setPass] = useState('')
 
     useEffect(() => {
+        localStorage.clear()
     }, [])
     //login
     //u would need to use useState for user and pass
@@ -99,15 +100,29 @@ const Auth = () => {
             setPass(event.target.value)
         }
     }
-    const logValues = () => {
-        console.log("here")
-        try {
-            const response = app.auth().createUserWithEmailAndPassword(user, pass);//doSignInWithGoogle()
-            console.log(response)
-        }
-        catch (err) {
-            console.log(err)
-        }
+    const logValues = () =>{
+        dispatch(authFunctions.loginUser(user, pass, firebase, () => {
+            history.push('/')
+        }))
+        // console.log("hello")
+
+
+        // firebase.auth().signInWithEmailAndPassword(user, pass)
+        // .then((response) => {
+        //     // console.log(response.user.uid)
+        //     history.push('/')
+
+
+        // })
+        // .catch(function(error) {
+        //     // Handle Errors here.
+        //     var errorCode = error.code;
+        //     var errorMessage = error.message;
+            
+        //     alert("Invalid Login. Please try again.")
+        //   });
+
+
     }
 
     const googleLogin = () => {
@@ -117,7 +132,9 @@ const Auth = () => {
             console.log(result.user.email)
             console.log(result.user.displayName)
             console.log(result.user.uid)
-            dispatch(authFunctions.googleUser(result.user.uid, result.user.displayName, result.user.email))
+            dispatch(authFunctions.googleUser(result.user.uid, result.user.displayName, result.user.email, () => {
+                history.push('/')
+            }))
             var token = result.credential.accessToken;
             history.push('/')
             // The signed-in user info.
@@ -185,7 +202,7 @@ const Auth = () => {
                 <div className={classes.back} style={{ textAlign: 'center' }}>
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
-                    <NeuButton className={classes.test} onClick={(event) => { logValues(event) }} color="#ffffff" distance={8} radius={10} >SIGN UP</NeuButton>
+                    <NeuButton className={classes.test} onClick={(event) => { history.push('./signup') }} color="#ffffff" distance={8} radius={10} >SIGN UP</NeuButton>
                     </Grid>
                     <Grid item xs={12}>
 
@@ -204,11 +221,12 @@ const Auth = () => {
                         </Grid>
                     <Grid item xs={12}>
                         
-                    <input type="text" className={classes.test} placeholder="Password" onChange={(event) => { changeValue(event, 'pass') }} />
+                    <input type="password" className={classes.test} placeholder="Password" onChange={(event) => { changeValue(event, 'pass') }} />
                     </Grid>
                     <Grid item xs={12}>
 
                         <NeuButton className={classes.test} onClick={logValues} color="#ffffff" distance={8} radius={10} >LOG IN</NeuButton>
+
                     </Grid>
             </Grid>
 

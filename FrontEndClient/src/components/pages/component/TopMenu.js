@@ -17,6 +17,7 @@ import * as searchResultsFunctions from '../../../actions/search_Results'
 import { useSelector, useDispatch } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import Beta from './beta'
 
 const useStyles = makeStyles((theme) => ({
@@ -117,8 +118,10 @@ const TopMenu = () => {
   const dispatch = useDispatch()
   const results1 = useSelector(state => state.searchReducers)
   const {results} = useSelector(state => state.searchReducers)
+  
   const signOut = () => {
     firebase.auth().signOut()
+    localStorage.clear()
     window.location.reload(false);
   }
 
@@ -126,6 +129,18 @@ const TopMenu = () => {
     console.log(event.target.value)
     dispatch(searchResultsFunctions.getSearchRoutines(event.target.value))
     dispatch(searchResultsFunctions.getSearchRoutines(event.target.value))
+  }
+
+  const moveToRoutine = (routine) => {
+    console.log(routine.target.innerHTML)
+    console.log(results)
+    // let temp = results.findIndex(routine.target.innerHTML)
+    console.log(results[0]._id, )
+    console.log(results.findIndex(obj => obj.title === routine.target.innerHTML))
+    dispatch(searchResultsFunctions.getSearchRoutines(routine.target.innerHTML, ))
+    //also need the api reuqest for getting the picture key
+    window.location.reload(false)
+    history.push('/routine', { routine: results[results.findIndex(obj => obj.title === routine.target.innerHTML)]})
   }
 
   return (
@@ -192,11 +207,13 @@ const TopMenu = () => {
           <div className={classes.searchIcon}>
           </div>
             <Autocomplete
+              onClick={() => {console.log('clicked')}}
               getLimitTagsText={(more) => +`${more}`}
               id="combo-box-demo"
               options={results}
               getOptionLabel={(option) =>truncateWord(option.title,30)/*+ '-' + truncateWord(option.description,10)*/}
               filterOptions={(options, state) => options}
+              renderOption={(option) => <Button value={option} onClick={(option) => moveToRoutine(option)} noWrap>{option.title}</Button>}
               style={{ width: 300 }}
               renderInput={(params) => <TextField
               onChange={searchQueriedRoutines}

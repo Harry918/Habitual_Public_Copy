@@ -16,6 +16,9 @@ import 'fontsource-raleway';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import { NeuButton } from "neumorphism-react";
 import * as routineActions from '../../actions/routineFunctions'
+import { useHistory } from "react-router-dom";
+
+
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -85,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const RoutineDialog = ({ dialog, openDialog, type }) => {
+    
     const dispatch = useDispatch()
     const classes = useStyles();
     const [title, setTitle] = useState('')
@@ -92,6 +96,8 @@ const RoutineDialog = ({ dialog, openDialog, type }) => {
     const [pub, setPub] = useState(false)
     const [file, setFile] = useState(null)
     const {uid} = useSelector(state => state.firebase.auth)
+
+
     const changeText = (e, type) => {
         if (type === 'title') {
             setTitle(e.target.value)
@@ -114,6 +120,7 @@ const RoutineDialog = ({ dialog, openDialog, type }) => {
         // dispatch(documents.sendFile(temp.userID, fd))
     }
 
+
     const createRoutine = () => {
         console.log(file)
         if(file){
@@ -122,7 +129,7 @@ const RoutineDialog = ({ dialog, openDialog, type }) => {
         else{
             dispatch(test.createRoutineWithoutImage(uid, title, desc, pub))
         }
-    openDialog(!dialog)
+        openDialog(!dialog)
     }
     // const createPost = () => {
     // dispatch(routineActions.createPost(uid, title, desc, file))

@@ -43,8 +43,13 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const Comment = () => {
+const Comment = ({postID}) => {
     const classes = useStyles();
+    const dispatch = useDispatch()
+    useEffect(() => {
+        const temp = routineActions.getComments(postID)
+        console.log(temp)
+    }, [])
 
     return (
         <div cassName={classes.root}>

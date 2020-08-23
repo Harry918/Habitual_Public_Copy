@@ -1,6 +1,7 @@
 import axios from 'axios';
 // let serverAddress = 'http://ec2-52-53-149-51.us-west-1.compute.amazonaws.com:9000'
-let serverAddress = 'http://localhost:9000'
+const serverAddress = 'https://habitual.live:9000'
+
 
 export const retRoutinePosts = (routine_ID) => async dispatch => {
     try{
@@ -34,12 +35,15 @@ export const createPostWithoutPicture = (name, title, desc, routine_ID) => async
     }
 }
 
-export const checkRoutineCompletion = (uid, routine_ID) => async dispatch => {
+export const checkRoutineCompletion = (uid, routine_ID,  callback) => async dispatch => {
     try{
         // dispatch({type: 'GET_ROUTINE_POSTS_START'})
-        let url = `${serverAddress}/checkCompletion?uid=${uid}&routineID=${routine_ID}`
+        let url = `${serverAddress}/checkCompletion?uid=${uid}&routineid=${routine_ID}`
         const response = await axios.get(url)
-        console.log(response)
+        if(callback){
+            callback(response.data)
+        }
+        // console.log(response)
         // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
     }
     catch(err)
@@ -104,6 +108,21 @@ export const postComment = (uid, message, postId) => async dispatch => {
         let url = `${serverAddress}/createComment?uid=${uid}&content=${message}&parentPost=${postId}`
         const response = await axios.get(url)
         console.log(response)
+        // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
+    }
+    catch(err)
+    {
+        console.log(err)
+
+    }
+}
+
+export const getComments = (postID) => async dispatch=> {
+    try{
+        let url = `${serverAddress}/getComments?parentPost=${postID}`
+        const response = await axios.get(url)
+        console.log(response)
+        return response
         // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
     }
     catch(err)

@@ -73,6 +73,10 @@ const useStyles = makeStyles((theme) => ({
     },
     suggestion: {
         marginTop: 25
+    },
+
+    googleSignIn: {
+        cursor: 'pointer'
     }
 
 
@@ -92,8 +96,10 @@ const SignUp = () => {
     const classes = useStyles();
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
+    const [displayName, setDisplayName] = useState('')
 
     useEffect(() => {
+        localStorage.clear()
     }, [])
     //login
     //u would need to use useState for user and pass
@@ -106,14 +112,36 @@ const SignUp = () => {
         }
     }
     const logValues = () => {
-        console.log("here")
-        try {
-            const response = app.auth().createUserWithEmailAndPassword(user, pass);//doSignInWithGoogle()
-            console.log(response)
-        }
-        catch (err) {
-            console.log(err)
-        }
+        let submittedUser = document.getElementById("username").value;
+        let submittedEmail = document.getElementById("email").value;
+        let submittedPassword = document.getElementById("password").value;
+        firebase.auth().createUserWithEmailAndPassword(submittedEmail, submittedPassword)
+            .then(response => {
+                console.log('sign up success')
+                console.log(response.user.uid)
+                console.log(response.user.email)
+                console.log(displayName)
+
+                dispatch(authFunctions.createUser(response.user.uid, response.user.email, displayName, () => {
+                    history.push('/')
+                }))  
+                
+            })
+            .catch(function (error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                alert("Sign up failed. Please try again.")
+                console.log("sign up failed")
+            });
+
+        // try {
+        //     const response = app.auth().createUserWithEmailAndPassword(user, pass);//doSignInWithGoogle()
+        //     console.log(response)
+        // }
+        // catch (err) {
+        //     console.log(err)
+        // }
     }
 
     const googleLogin = () => {
@@ -190,19 +218,21 @@ const SignUp = () => {
 
                 <div className={classes.back} style={{ textAlign: 'center' }}>
                     <Grid container spacing={0}>
-
                         <Grid item xs={12}>
 
-                            <input type="text" className={classes.test} placeholder="Username" />
-                        </Grid>
-                        <Grid item xs={12}></Grid>
-                        <Grid item xs={12}>
-
-                            <input type="text" className={classes.test} placeholder="Email" />
+                            <p className={classes.suggestion}>Already have an account? <span><u className={classes.googleSignIn} onClick={(event) => {history.push('./login')}}> Sign in</u></span> </p>
                         </Grid>
                         <Grid item xs={12}>
 
-                            <input type="password" className={classes.test} placeholder="Password" />
+                            <input id="username" type="text" onChange={(event) => { setDisplayName(event.target.value) }} className={classes.test} placeholder="Username" />
+                        </Grid>
+                        <Grid item xs={12}>
+
+                            <input id="email" type="text" onChange={(event) => { console.log(event.target.value) }} className={classes.test} placeholder="Email" />
+                        </Grid>
+                        <Grid item xs={12}>
+
+                            <input id="password" type="password" onChange={(event) => { console.log(event.target.value) }} className={classes.test} placeholder="Password" />
                         </Grid>
                         <Grid item xs={12}>
 
@@ -210,7 +240,7 @@ const SignUp = () => {
                         </Grid>
                         <Grid item xs={12}>
 
-                            <p className={classes.suggestion}>or skip creating a new account and <span><u>sign in</u></span> with Google</p>
+                            <p className={classes.suggestion}>r skip creating a new account and <span><u className={classes.googleSignIn} onClick={googleLogin}> sign in with Google</u></span></p>
                         </Grid>
                     </Grid>
 

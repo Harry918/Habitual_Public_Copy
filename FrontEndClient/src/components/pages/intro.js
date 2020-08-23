@@ -24,7 +24,19 @@ const useStyles = makeStyles((theme) => ({
     subHeader: {
         fontFamily: 'Montserrat',
         fontSize: '18px',
+        marginBottom: 100
     },
+
+    loginButton: {
+        padding: '20px',
+        borderRadius: '99px',
+        backgroundColor: 'gray',
+        fontWeight: 800,
+        textDecoration: 'none',
+        color: 'white',
+        marginTop: 500
+        
+    }
 
 }));
 
@@ -38,6 +50,7 @@ const Intro = () => {
             <TopMenu />
             <Typography className={classes.header}>Get motivated with habitual </Typography>
             <Typography className={classes.subHeader}>Create Routines that drive personal growth for you and your community. All in a matter of seconds.</Typography>
+            <a className={classes.loginButton} href ='./login'> LOGIN NOW</a>
         </div>
     );
 }

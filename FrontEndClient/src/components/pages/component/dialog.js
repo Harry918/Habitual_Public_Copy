@@ -121,6 +121,7 @@ const Dialog = ({type}) => {
   }
 
   const renderScroll = (routines) => {
+    console.log(routines)
     return(
       routines.map((item, i) => (
         <Grid item>
@@ -128,7 +129,7 @@ const Dialog = ({type}) => {
             <div className={classes.button}>
               <NeuButton
                 className={classes.neubutton}
-                onClick={() => { movetoNextPage(routines[i], images[i]) }}
+                onClick={() => { movetoNextPage(routines[i], images[i]);  }}
                 color="#FFFFFF"
               >
                 <Typography variant="h4" color="textSecondary" component="p">
