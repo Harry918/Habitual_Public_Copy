@@ -55,6 +55,13 @@ async function findHi(client) {
     });
 };
 async function createUserDoc(uid, email, displayName) {
+    let today = new Date();
+    var completionsArray = [];
+    var length = 365; // user defined length
+
+    for(var i = 0; i < length; i++) {
+        completionsArray.push(0);
+    }
     console.log('creating user with id', uid, 'and email', email);
     try {
         //let client = new MongoClient(uri, { useUnifiedTopology: true } );
@@ -62,20 +69,37 @@ async function createUserDoc(uid, email, displayName) {
         doc = {
             _id: uid,
             email: email,
-            username: '',
             displayName: displayName,
-            routines: []
+            routines: [],
+        };
+        completionSetupDoc = {
+            _id: uid,
+            startDate: today,
+            completions:completionsArray,
+            dailyCompletionCounter: 0,
+            lastUpdate: today,
         };
         client.db('HabitApp').collection('Users').insertOne(doc, function (error, response) {
             if (error) {
-                console.log('HARRY THIS USER ALREADY EXISTS SO WHEN WE TRY TO MAKE A NEW USER DOC MONGO DOESNT LET US BUT THATS OK (or it might be an actual error who knows you made me hide it');
-                console.log(error);
+                console.log('User has signed in before with this gmail account');
+                //console.log(error);
                 //return error;
             } else {
                 //console.log('inserted record', response);
                 //return 'worked';
             }
         });
+        client.db('HabitApp').collection('CompletionStorage').insertOne(completionSetupDoc, function (error, response) {
+            if (error) {
+                console.log('Already setup user for graphs');
+                //console.log(error);
+                //return error;
+            } else {
+                //console.log('inserted record', response);
+                //return 'worked';
+            }
+        });
+
     } catch (e) {
         console.error(e);
     } finally {
@@ -302,6 +326,73 @@ async function leaveRoutine(uid, routineid, callback) {
         }
 
     })
+    /* ---------SECTION 2 -------------*/
+    //calculate the number of completions by looking at the dailyCompletion counter
+    //  1. DONT INCREMENT THE DAILY COUNTER (first set it to 0 if the date doesn't match today)
+    //  2. retrieve the number of routines the user is subscribed to 
+    //  3. divide the counter by the number of routines the user is in to find todays percentage
+    //  4. subtract the starting date from the current date to find array index
+    //  5. retrieve the current array, replace the 0 with the new value and send an upate for the array as well as the counter
+    userQuery = { _id: { $eq: uid } }
+    let today = new Date();
+    client.db('HabitApp').collection('CompletionStorage').findOne(userQuery).then(result => {
+        let startDate = result.startDate
+        let lastUpdate = result.lastUpdate
+
+        let todayFormat = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        let lastUpdateFormat = lastUpdate.getFullYear() + '-' + (lastUpdate.getMonth() + 1) + '-' + lastUpdate.getDate();
+        let startDateFormat = startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate();
+        console.log('today is ', todayFormat)
+        console.log('lastUpdate is ', lastUpdateFormat)
+        console.log('startDate is ', startDateFormat)
+
+        let completions = result.completions
+        let dailyCompletionCounter = result.dailyCompletionCounter
+        console.log('the counter retrieved for today is', dailyCompletionCounter);
+        let lastDateDif = Math.floor((today-lastUpdate)/(1000*3600*24))
+        let arrayIndex = Math.floor((today-startDate)/(1000*3600*24))
+        if( lastDateDif != 0)
+        {
+            //last update was not today, have to update 
+            console.log('Last update was not today')
+            dailyCompletionCounter = 0
+        }
+        else
+        {
+            dailyCompletionCounter += 0
+        }
+            
+        //update mongo
+        //  update the lastUpdate thing in CompletionStorage as well as the dailyCompletionCounter
+        //  update the array after proccessing as well
+        //-------
+        client.db('HabitApp').collection('Users').findOne(userQuery).then(userData => {
+            let numRoutines = userData.routines.length
+            let percentage = dailyCompletionCounter/numRoutines
+            completions[arrayIndex] = percentage
+            console.log('USER HAS COMPLETED ', completions[arrayIndex],'% of their routines today')
+            console.log(completions)
+            console.log('updating array at ', arrayIndex);
+            completionUpdate = 
+            {
+                $set: {
+                    lastUpdate: today,
+                    completions: completions,
+                    dailyCompletionCounter: dailyCompletionCounter
+                }
+            }
+            client.db('HabitApp').collection('CompletionStorage').updateOne(userQuery, completionUpdate).then(result => {
+                console.log('should have updated')
+                if(callback)
+                {
+                    callback(completions)
+                }
+            })
+        })
+            
+        
+    })
+
 }
 
 async function createPost(uid, title, content, parentRoutine, callback) {
@@ -391,6 +482,88 @@ async function markCompletion(uid, routineID, callback) {
             }
         });
     }
+
+    /* ---------SECTION 2 -------------*/
+    //calculate the number of completions by looking at the dailyCompletion counter
+    //  1. create a document that links the routineid, the userid, and the timestamp of completion
+    //  2. insert this document into the rawCompletions collection
+    const dataDoc = 
+            {
+                uid:uid,
+                routineid:routineID,
+                time:today
+            }
+    client.db('HabitApp').collection('randomData').insertOne(dataDoc)
+
+   /* ---------SECTION 3 -------------*/
+    //calculate the number of completions by looking at the dailyCompletion counter
+    //  1. increment the dailyCompletionCounter by 1 (first set it to 0 if the date doesn't match today)
+    //  2. retrieve the number of routines the user is subscribed to 
+    //  3. divide the counter by the number of routines the user is in to find todays percentage
+    //  4. subtract the starting date from the current date to find array index
+    //  5. retrieve the current array, replace the 0 with the new value and send an upate for the array as well as the counter
+
+    userQuery = { _id: { $eq: uid } }
+    let today = new Date();
+    client.db('HabitApp').collection('CompletionStorage').findOne(userQuery).then(result => {
+        let startDate = result.startDate
+        let lastUpdate = result.lastUpdate
+
+        let todayFormat = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        let lastUpdateFormat = lastUpdate.getFullYear() + '-' + (lastUpdate.getMonth() + 1) + '-' + lastUpdate.getDate();
+        let startDateFormat = startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate();
+        console.log('today is ', todayFormat)
+        console.log('lastUpdate is ', lastUpdateFormat)
+        console.log('startDate is ', startDateFormat)
+
+        let completions = result.completions
+        let dailyCompletionCounter = result.dailyCompletionCounter
+        console.log('the counter retrieved for today is', dailyCompletionCounter);
+        let lastDateDif = Math.floor((today-lastUpdate)/(1000*3600*24))
+        let arrayIndex = Math.floor((today-startDate)/(1000*3600*24))
+        if( lastDateDif != 0)
+        {
+            //last update was not today, have to update 
+            console.log('Last update was not today')
+            dailyCompletionCounter = 1
+        }
+        else
+        {
+            dailyCompletionCounter += 1
+        }
+            
+        //update mongo
+        //  update the lastUpdate thing in CompletionStorage as well as the dailyCompletionCounter
+        //  update the array after proccessing as well
+        //-------
+        client.db('HabitApp').collection('Users').findOne(userQuery).then(userData => {
+            let numRoutines = userData.routines.length
+            let percentage = dailyCompletionCounter/numRoutines
+            completions[arrayIndex] = percentage
+            console.log('USER HAS COMPLETED ', completions[arrayIndex],'% of their routines today')
+            console.log(completions)
+            console.log('updating array at ', arrayIndex);
+            completionUpdate = 
+            {
+                $set: {
+                    lastUpdate: today,
+                    completions: completions,
+                    dailyCompletionCounter: dailyCompletionCounter
+                }
+            }
+            client.db('HabitApp').collection('CompletionStorage').updateOne(userQuery, completionUpdate).then(result => {
+                console.log('should have updated')
+                if(callback)
+                {
+                    callback(completions)
+                }
+            })
+        })
+            
+        
+    })
+   
+
 }
 async function getNumCompletions(routineid, callback)
 {
@@ -641,11 +814,145 @@ async function checkJoinStatus(uid, routineid, callback) {
 
     })
 }
-//
+async function clearLiveFeed() {
+    //title
+    //content
+    //uid
+    //photokey
+    console.log('clearing live feeds');
+    try {
+        client.db('HabitApp').collection('LiveFeed').drop()
+    } catch (e) {
+        console.error(e);
+    } finally {
+        //await client.close();
+    }
+    let today = new Date();
+    routineDoc = {
+      
+        deleteDate: today
+    }
+    try {
+        //let client = new MongoClient(uri, { useUnifiedTopology: true } );
+        //await client.connect();
+        client.db('HabitApp').collection('Users').insertOne(routineDoc, function (error, response) {
+            if (error) {
+                console.log('Error occurred while inserting');
+                console.log(error);
+                return error;
+            } else {
+                routineID = response.ops[0]._id;
+                //console.log('inserted record with id: ', routineID);
+                if (callback) {
+                    callback(routineID)
+                }
+            }
+        });
+    } catch (e) {
+        console.error(e);
+    } finally {
+        //await client.close();
+    }
 
+}
+async function getDisplayName(uid, callback) {
+    console.log('retreiving users displayName')
+    userQuery = { _id: { $eq: uid } }
+    // booksCollection.find({_id: {$in: author.books}}).toArray();
+    client.db('HabitApp').collection('Users').findOne(userQuery).then(data => {
+        if(callback)
+        {
+            console.log(data)
+           callback(data.displayName)
+        }
+    })
+}
+
+async function completeTest(uid, callback){
+    console.log('testing completion function')
+    /* ---------SECTION 2 -------------*/
+    //calculate the number of completions by looking at the dailyCompletion counter
+    //  1. increment the dailyCompletionCounter by 1 (first set it to 0 if the date doesn't match today)
+    //  2. retrieve the number of routines the user is subscribed to 
+    //  3. divide the counter by the number of routines the user is in to find todays percentage
+    //  4. subtract the starting date from the current date to find array index
+    //  5. retrieve the current array, replace the 0 with the new value and send an upate for the array as well as the counter
+
+    userQuery = { _id: { $eq: uid } }
+    let today = new Date();
+    client.db('HabitApp').collection('CompletionStorage').findOne(userQuery).then(result => {
+        let startDate = result.startDate
+        let lastUpdate = result.lastUpdate
+
+        let todayFormat = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        let lastUpdateFormat = lastUpdate.getFullYear() + '-' + (lastUpdate.getMonth() + 1) + '-' + lastUpdate.getDate();
+        let startDateFormat = startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate();
+        console.log('today is ', todayFormat)
+        console.log('lastUpdate is ', lastUpdateFormat)
+        console.log('startDate is ', startDateFormat)
+
+        let completions = result.completions
+        let dailyCompletionCounter = result.dailyCompletionCounter
+        console.log('the counter retrieved for today is', dailyCompletionCounter);
+        let lastDateDif = Math.floor((today-lastUpdate)/(1000*3600*24))
+        let arrayIndex = Math.floor((today-startDate)/(1000*3600*24))
+        if( lastDateDif != 0)
+        {
+            //last update was not today, have to update 
+            console.log('Last update was not today')
+            dailyCompletionCounter = 0
+        }
+        else
+        {
+            dailyCompletionCounter += 0
+        }
+            
+        //update mongo
+        //  update the lastUpdate thing in CompletionStorage as well as the dailyCompletionCounter
+        //  update the array after proccessing as well
+        //-------
+        client.db('HabitApp').collection('Users').findOne(userQuery).then(userData => {
+            let numRoutines = userData.routines.length
+            let percentage = dailyCompletionCounter/numRoutines
+            completions[arrayIndex] = percentage
+            console.log('USER HAS COMPLETED ', completions[arrayIndex],'% of their routines today')
+            console.log(completions)
+            console.log('updating array at ', arrayIndex);
+            completionUpdate = 
+            {
+                $set: {
+                    lastUpdate: today,
+                    completions: completions,
+                    dailyCompletionCounter: dailyCompletionCounter
+                }
+            }
+            client.db('HabitApp').collection('CompletionStorage').updateOne(userQuery, completionUpdate).then(result => {
+                console.log('should have updated')
+                if(callback)
+                {
+                    callback(completions)
+                }
+            })
+        })
+            
+        
+    })
+}
+
+async function getGraphData(uid, callback)
+{
+    console.log('retrieving graph data for uid', uid);
+    userQuery = {_id: uid}
+    client.db('HabitApp').collection('CompletionStorage').findOne(userQuery).then(result => {
+        if(callback)
+        {
+            callback(result)
+        }
+    })
+}
 module.exports = {
     connectToMongo, findHi, createUserDoc, createRoutine, createRoutineWithBots,
     getPublicRoutines, getPublicRoutinesData, joinRoutine, leaveRoutine, uploadFile, getPosts, createPost, markCompletion, checkCompletion,
     getUserRoutines, searchRoutines, searchPosts, searchUsers, getComments, createComment, clearCompletionMapping, sendMessageToRoom, getRoomMessages,
-    checkJoinStatus, getNumCompletions
+    checkJoinStatus, getNumCompletions, clearLiveFeed, getDisplayName, completeTest, getGraphData
 };

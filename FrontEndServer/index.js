@@ -24,17 +24,25 @@ const express = require('express');
 //express is being used for FrontEndServer
 const socketio = require('socket.io');
 const http = require('http');
+const https = require('https');
 const router = require('./router');
 const mongo = require('./mongoFunctions/helper')
 
 const app = express();
-const server = http.createServer(app);
+//const server = http.createServer(app);
+const server = https.createServer({
+    key: fs.readFileSync('private.key'),
+    cert: fs.readFileSync('habitual_live.crt'),
+    passphrase: 'habit'
+}, app)
+
 require('dotenv').config();
 
 const io = socketio(server);
 
 async function main() {
     await mongo.connectToMongo();
+    //mongo.markCompletion('123', '456')
 }
 
 main().catch(console.error);
@@ -100,7 +108,10 @@ io.on('connection', function (socket) {
         socket.disconnect();
     });
 })
-
+app.get('/', function(req,res) {
+    console.log('hello');
+    res.send('hello');
+});
 
 app.get("/getUsers", function (req, res) {
 
@@ -460,11 +471,45 @@ app.get("/getNumCompletions", (req, res) => {//admin supported
     })
 
 })
+app.get("/getDisplayName", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+    console.log(req.query.uid);
+    const response = mongo.getDisplayName(req.query.uid, (result) => {
+        //console.log(result)
+        res.send({displayName:result})
+    })
+
+})
+app.get("/completeTest", (req, res) => {//admin supported
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+    console.log(req.query.uid);
+    const response = mongo.completeTest(req.query.uid, (result) => {
+        //console.log(result)
+        res.send({testResult:result})
+    })
+
+})
+app.get("/getGraphData", (req, res) => {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-XSRF-TOKEN');
+    mongo.getGraphData(req.query.uid, (result) => {
+        res.send(result)
+    })
+})
 
 
 cron.schedule("0 0 * * *", function() {
-    console.log("clearing Completion Mappings")
+    console.log("clearing Completion Mappings & Live Feeds")
     mongo.clearCompletionMapping()
+    mongo.clearLiveFeed()
 
 })
 
