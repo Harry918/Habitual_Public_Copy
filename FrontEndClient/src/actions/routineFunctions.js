@@ -133,18 +133,20 @@ export const getComments = (postID) => async dispatch=> {
 }
 
 
-// export const completeRoutine = (uid, routine_ID) => async dispatch => {
-//     try{
-//         // dispatch({type: 'GET_ROUTINE_POSTS_START'})
-//         let url = `${serverAddress}/getPosts?uid=${uid}&routineID=${routine_ID}`
-//         const response = await axios.get(url)
-//         console.log(response)
-//         // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
-//     }
-//     catch(err)
-//     {
-//         // dispatch({type: 'GET_ROUTINE_POSTS_FAILURE'})
-//         console.log(err)
+export const getGraphData = (uid, callback) => async dispatch=> {
+    try{
+        let url = `${serverAddress}/getGraphData?uid=${uid}`
+        const response = await axios.get(url)
+        console.log(response)
+        if(callback){
+            callback(response)
+        }
+        return response
+        // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
+    }
+    catch(err)
+    {
+        console.log(err)
 
-//     }
-// }
+    }
+}

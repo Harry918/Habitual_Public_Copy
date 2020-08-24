@@ -171,7 +171,21 @@ const Routine = (props) => {
     const active = useSelector(state => state.routineReducers.active)
 
 
+    // useEffect(() => {
+    //     dispatch(retHabitActions.getUsersRoutines(uid, (userRoutines) => {
+    //         if (userRoutines.map(a => a._id).includes(routineID)){
+    //             setJoinButtonState([true, '#b4b8bf', 'Joined'])
 
+    //             console.log("yessir")
+
+    //         } else {
+    //             setJoinButtonState([false, '#72b01d', 'Join'])
+    //             console.log("no sir")
+
+    //         }
+    //         console.log("here", userRoutines.map(a => a._id))
+    //     }))
+    // }, []) // only runs once when the page renders
 
     useEffect(() => {
         console.log(params.routine)

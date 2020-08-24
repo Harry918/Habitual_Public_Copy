@@ -20,114 +20,9 @@ import { NeuButton } from "neumorphism-react";
 import { Grid, Paper } from "@material-ui/core"
 import Particles from 'react-particles-js';
 import NivoChart from './component/NivoChart'
+import * as routineActions from '../../actions/routineFunctions'
 
-let data = [
-    {
-        "country": "AD",
-        "hot dog": 100,
-        "hot dogColor": "hsl(33, 70%, 50%)",
-        // "burger": 70,
-        // "burgerColor": "hsl(169, 70%, 50%)",
-        // "sandwich": 39,
-        // "sandwichColor": "hsl(175, 70%, 50%)",
-        // "kebab": 171,
-        // "kebabColor": "hsl(189, 70%, 50%)",
-        // "fries": 96,
-        // "friesColor": "hsl(309, 70%, 50%)",
-        // "donut": 57,
-        // "donutColor": "hsl(102, 70%, 50%)"
-    },
-    {
-        "country": "AE",
-        "hot dog": 67,
-        "hot dogColor": "hsl(82, 70%, 50%)",
-        // "burger": 24,
-        // "burgerColor": "hsl(219, 70%, 50%)",
-        // "sandwich": 125,
-        // "sandwichColor": "hsl(281, 70%, 50%)",
-        // "kebab": 131,
-        // "kebabColor": "hsl(23, 70%, 50%)",
-        // "fries": 165,
-        // "friesColor": "hsl(309, 70%, 50%)",
-        // "donut": 135,
-        // "donutColor": "hsl(243, 70%, 50%)"
-    },
-    {
-        "country": "AF",
-        "hot dog": 84,
-        "hot dogColor": "hsl(355, 70%, 50%)",
-        // "burger": 32,
-        // "burgerColor": "hsl(214, 70%, 50%)",
-        // "sandwich": 94,
-        // "sandwichColor": "hsl(36, 70%, 50%)",
-        // "kebab": 183,
-        // "kebabColor": "hsl(269, 70%, 50%)",
-        // "fries": 93,
-        // "friesColor": "hsl(23, 70%, 50%)",
-        // "donut": 160,
-        // "donutColor": "hsl(294, 70%, 50%)"
-    },
-    {
-        "country": "AG",
-        "hot dog": 23,
-        "hot dogColor": "hsl(171, 70%, 50%)",
-        // "burger": 41,
-        // "burgerColor": "hsl(94, 70%, 50%)",
-        // "sandwich": 76,
-        // "sandwichColor": "hsl(267, 70%, 50%)",
-        // "kebab": 17,
-        // "kebabColor": "hsl(216, 70%, 50%)",
-        // "fries": 116,
-        // "friesColor": "hsl(34, 70%, 50%)",
-        // "donut": 83,
-        // "donutColor": "hsl(273, 70%, 50%)"
-    },
-    {
-        "country": "AI",
-        "hot dog": 25,
-        "hot dogColor": "hsl(359, 70%, 50%)",
-        // "burger": 33,
-        // "burgerColor": "hsl(28, 70%, 50%)",
-        // "sandwich": 3,
-        // "sandwichColor": "hsl(234, 70%, 50%)",
-        // "kebab": 42,
-        // "kebabColor": "hsl(302, 70%, 50%)",
-        // "fries": 152,
-        // "friesColor": "hsl(196, 70%, 50%)",
-        // "donut": 153,
-        // "donutColor": "hsl(174, 70%, 50%)"
-    },
-    {
-        "country": "AL",
-        "hot dog": 66,
-        "hot dogColor": "hsl(249, 70%, 50%)",
-        // "burger": 181,
-        // "burgerColor": "hsl(359, 70%, 50%)",
-        // "sandwich": 41,
-        // "sandwichColor": "hsl(128, 70%, 50%)",
-        // "kebab": 125,
-        // "kebabColor": "hsl(290, 70%, 50%)",
-        // "fries": 78,
-        // "friesColor": "hsl(69, 70%, 50%)",
-        // "donut": 8,
-        // "donutColor": "hsl(135, 70%, 50%)"
-    },
-    {
-        "country": "AM",
-        "hot dog": 70,
-        "hot dogColor": "hsl(7, 70%, 50%)",
-        // "burger": 167,
-        // "burgerColor": "hsl(121, 70%, 50%)",
-        // "sandwich": 72,
-        // "sandwichColor": "hsl(7, 70%, 50%)",
-        // "kebab": 198,
-        // "kebabColor": "hsl(75, 70%, 50%)",
-        // "fries": 44,
-        // "friesColor": "hsl(27, 70%, 50%)",
-        // "donut": 42,
-        // "donutColor": "hsl(113, 70%, 50%)"
-    }
-    ]
+
 
 
 // for (let i = 0; i < 358; i++) {
@@ -213,6 +108,63 @@ const PersonalRoutine = React.memo(() => {
     // const uid = useSelector(state => state.firebase.auth)
     const uid = localStorage.getItem('uid')
     console.log(uid)
+    
+        
+    
+    const [data, setData] = useState([
+        {
+            "id": "norway",
+            "color": "hsl(50, 70%, 50%)",
+            "data": []
+          }
+        ])
+        
+        
+    useEffect(() => {
+        // dispatch(routineActions.checkRoutineCompletion(uid, '5f3c697e578cfd25625d5182', (response) => {
+        //     console.log(response)
+        //     }
+        // )) 
+        dispatch(routineActions.getGraphData(uid, (response) => {
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", response)
+            let newArr=[];
+            for (let i = 0; i < response.data.dataSize; i++) {
+                let percentage;
+                if (response.data.completions[i]*100 > 100 ) {
+                    percentage = 100;
+                } else {
+                    percentage = response.data.completions[0]*100;
+                }
+                newArr.push(
+                    {
+                        "x": response.data.startDate.substring(0,10), // date is hardcoded... everything else should work properly
+                        "y": percentage
+                    }
+                )
+                
+            }
+            newArr.push(
+                {
+                    "x":"2020-08-25", // date is hardcoded... everything else should work properly
+                    "y": 100
+                }
+            )
+            console.log(data[0].data)
+            
+
+            setData(
+                [
+                    {
+                        "id": "nsdf",
+                        "color": "hsl(50, 70%, 50%)",
+                        "data": newArr
+                      }
+                    ]
+            )
+            }
+        ))
+        
+    }, [])
     // var tem1 = localStorage.getItem('displayName')
     const {pageNumber} = useSelector(state => state.dashboardReducers)
     const [reached, setReached] = useState(false)
@@ -220,10 +172,16 @@ const PersonalRoutine = React.memo(() => {
         // console.log("HERE")
         // console.log(uid)
         dispatch(test.getUsersRoutines(uid))
+        
     }, [])
     const openDialog = () => {
         setDialog(!dialog)
     }
+
+
+
+    
+
 
     return (
         <div className={classes.root}>

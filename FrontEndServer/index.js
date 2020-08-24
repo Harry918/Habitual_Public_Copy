@@ -511,6 +511,6 @@ cron.schedule("0 0 * * *", function() {
     mongo.clearCompletionMapping()
     mongo.clearLiveFeed()
 
-})
+}) 
 
 server.listen(PORT, () => console.log(`Server has started`));
