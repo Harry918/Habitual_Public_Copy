@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.947085fd.chunk.css",
+    "main.js": "/static/js/main.a8cad568.chunk.js",
+    "main.js.map": "/static/js/main.a8cad568.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.304483dc.js",
+    "runtime-main.js.map": "/static/js/runtime-main.304483dc.js.map",
+    "static/css/2.9f9a4659.chunk.css": "/static/css/2.9f9a4659.chunk.css",
+    "static/js/2.d334aa14.chunk.js": "/static/js/2.d334aa14.chunk.js",
+    "static/js/2.d334aa14.chunk.js.map": "/static/js/2.d334aa14.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.d6c6930b9c4ccb3eeb27271c66042651.js": "/precache-manifest.d6c6930b9c4ccb3eeb27271c66042651.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.9f9a4659.chunk.css.map": "/static/css/2.9f9a4659.chunk.css.map",
+    "static/css/main.947085fd.chunk.css.map": "/static/css/main.947085fd.chunk.css.map",
+    "static/js/2.d334aa14.chunk.js.LICENSE.txt": "/static/js/2.d334aa14.chunk.js.LICENSE.txt",
+    "static/media/LogoMakr_5yRiFP.png": "/static/media/LogoMakr_5yRiFP.d98bf924.png",
+    "static/media/Montserrat-Medium.ttf": "/static/media/Montserrat-Medium.c8b6e083.ttf",
+    "static/media/PressStart2P-Regular.ttf": "/static/media/PressStart2P-Regular.2c404fd0.ttf",
+    "static/media/index.css": "/static/media/roboto-vietnamese-400-normal.a8be5b46.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.304483dc.js",
+    "static/css/2.9f9a4659.chunk.css",
+    "static/js/2.d334aa14.chunk.js",
+    "static/css/main.947085fd.chunk.css",
+    "static/js/main.a8cad568.chunk.js"
+  ]
+}

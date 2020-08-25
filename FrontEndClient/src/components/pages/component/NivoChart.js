@@ -8,7 +8,7 @@ import { ResponsiveLine } from '@nivo/line'
 const NivoChart = ({ data /* see data tab */ }) => (
     <ResponsiveLine
         data={data}
-        margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 60, bottom: 55, left: 60 }}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: '0', max: '100', stacked: true, reverse: false }}
         axisTop={null}
@@ -17,10 +17,11 @@ const NivoChart = ({ data /* see data tab */ }) => (
             orient: 'bottom',
             tickSize: 5,
             tickPadding: 5,
-            tickRotation: 0,
-            legend: 'DATE',
+            tickRotation: 45,
+            legend: '',
             legendOffset: 36,
-            legendPosition: 'middle'
+            legendPosition: 'middle',
+            
         }}
         axisLeft={{
             orient: 'left',
@@ -29,7 +30,9 @@ const NivoChart = ({ data /* see data tab */ }) => (
             tickRotation: 0,
             legend: 'PERCENT COMPLETION',
             legendOffset: -40,
-            legendPosition: 'middle'
+            legendPosition: 'middle',
+
+
         }}
         enableGridX={false}
         colors={"gray"}

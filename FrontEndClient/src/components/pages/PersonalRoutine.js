@@ -51,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
 
     chart: {
         height: 500,
-        borederBottom: '1px solid red'
     },
 
 
@@ -139,7 +138,8 @@ const PersonalRoutine = React.memo(() => {
                 let date = new Date(time);
                 newArr.push(
                     {
-                        "x": date.toString().substring(0,10), // date is hardcoded... everything else should work properly
+                        "x": date.toString().substring(0,10), 
+                        
                         "y": percentage
                     }
                 )
@@ -188,32 +188,27 @@ const PersonalRoutine = React.memo(() => {
             <Grid container spacing={0}>
                 <Grid item xs={12} className={classes.chart}>
                     <NivoChart data = {data}/>
-                    
                 </Grid>
 
-
                 <Grid item xs={12}>
-
-                        <Paper className={classes.pictureBar}>
-                            <Grid container spacing={0}>
-                                <Grid item xs={4} className={classes.pictureBar__left}>
-                                    <div className={classes.leftImageDiv}>
-                                        < img className={classes.leftImage} src={`https://www.whittierfirstday.org/wp-content/uploads/default-user-image-e1501670968910.png`} alt="user photo" ></img>
-                                    </div>
-                                </Grid>
-                                <Grid item xs={4} className={classes.pictureBar__center}>
-                                    <Typography variant="h6" className={classes.centerTitle}>
-                                        PERSONAL ROUTINES
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={4} className={classes.pictureBar__right} >
-                            
-                                </Grid>
+                    <Paper className={classes.pictureBar}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={4} className={classes.pictureBar__left}>
+                                <div className={classes.leftImageDiv}>
+                                    < img className={classes.leftImage} src={`https://www.whittierfirstday.org/wp-content/uploads/default-user-image-e1501670968910.png`} alt="user photo" ></img>
+                                </div>
                             </Grid>
-                        </Paper>
-                    </Grid>
-
-
+                            <Grid item xs={4} className={classes.pictureBar__center}>
+                                <Typography variant="h6" className={classes.centerTitle}>
+                                    PERSONAL ROUTINES
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={4} className={classes.pictureBar__right} >
+                        
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                </Grid>
             </Grid>
 
             <Dialog type="private"/>
