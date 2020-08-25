@@ -135,9 +135,12 @@ const PersonalRoutine = React.memo(() => {
                 } else {
                     percentage = response.data.completions[0]*100;
                 }
+                let time = Date.parse(response.data.startDate.substring(0,10)) + 86400000*(i+1);
+                let date = new Date(time);
+                console.log("#####################", date.toString());
                 newArr.push(
                     {
-                        "x": response.data.startDate.substring(0,10), // date is hardcoded... everything else should work properly
+                        "x": date.toString().substring(0,10), // date is hardcoded... everything else should work properly
                         "y": percentage
                     }
                 )
