@@ -133,11 +133,10 @@ const PersonalRoutine = React.memo(() => {
                 if (response.data.completions[i]*100 > 100 ) {
                     percentage = 100;
                 } else {
-                    percentage = response.data.completions[0]*100;
+                    percentage = response.data.completions[i]*100;
                 }
                 let time = Date.parse(response.data.startDate.substring(0,10)) + 86400000*(i+1);
                 let date = new Date(time);
-                console.log("#####################", date.toString());
                 newArr.push(
                     {
                         "x": date.toString().substring(0,10), // date is hardcoded... everything else should work properly
@@ -146,12 +145,6 @@ const PersonalRoutine = React.memo(() => {
                 )
                 
             }
-            newArr.push(
-                {
-                    "x":"2020-08-25", // date is hardcoded... everything else should work properly
-                    "y": 100
-                }
-            )
             console.log(data[0].data)
             
 
