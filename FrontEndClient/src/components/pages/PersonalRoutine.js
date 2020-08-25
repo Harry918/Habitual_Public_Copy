@@ -109,7 +109,7 @@ const PersonalRoutine = React.memo(() => {
     console.log(uid)
     
         
-    
+
     const [data, setData] = useState([
         {
             "id": "norway",
@@ -125,7 +125,7 @@ const PersonalRoutine = React.memo(() => {
         //     }
         // )) 
         dispatch(routineActions.getGraphData(uid, (response) => {
-            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", response)
+            console.log(response)
             let newArr=[];
             for (let i = 0; i < response.data.dataSize; i++) {
                 let percentage;

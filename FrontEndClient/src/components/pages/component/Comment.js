@@ -46,20 +46,40 @@ const useStyles = makeStyles((theme) => ({
 const Comment = ({postID}) => {
     const classes = useStyles();
     const dispatch = useDispatch()
+
+
+    const [content, setContent] = useState([])
+    const [creator, setCreator] = useState([])
+    const [data, setData] = useState([])
+
+
+   
     useEffect(() => {
-        const temp = routineActions.getComments(postID)
-        console.log(temp)
+        dispatch(routineActions.getComments(postID, (response) => {
+            console.log(response.data.map(a => a.content));
+            
+            setContent(response.data.map(a => a.content));
+            setCreator(response.data.map(a => a.creator));
+            }
+        ))
+        
     }, [])
+    console.log(content)
+    console.log(creator)
+
+    
+
 
     return (
-        <div cassName={classes.root}>
+        <div className={classes.root}>
             <ul className={classes.listStyle}>
-                <li className={classes.listItemStyle}>
-                    <Grid container spacing={0}>
-                        <Grid item xs={4}> <div style={{ color: 'red' }}>Rishi Petrolhead: </div> </Grid>
-                        <Grid item xs={12}> <p style={{ color: "black" }, { fontFamliy: 'Antic Slab' }}>wow i loveeee water</p> </Grid>
-                    </Grid>
-                </li>
+                {content.map((item, i) => (
+                    <li className={classes.listItemStyle}> <p style={{ color: "black" }, { fontFamliy: 'Antic Slab' }}>{creator[i]}: {item}</p></li>
+
+                ))}
+
+            {/* <li className={classes.listItemStyle}> <p style={{ color: "black" }, { fontFamliy: 'Antic Slab' }}>creator[0]: youre so cool</p></li>
+
                 <li className={classes.listItemStyle}> <p style={{ color: "black" }, { fontFamliy: 'Antic Slab' }}>Rishi Petrolhead: youre so cool</p></li>
                 <li className={classes.listItemStyle}> <p style={{ color: "black" }, { fontFamliy: 'Antic Slab' }}>Rishi Petrolhead: but is this GOOOOD water?</p></li>
                 <li className={classes.listItemStyle}> <p style={{ color: "black" }, { fontFamliy: 'Antic Slab' }}>Rishi Petrolhead: hydrohomie for life #lovewater #420blazeit</p></li>
@@ -67,9 +87,10 @@ const Comment = ({postID}) => {
                 <li className={classes.listItemStyle}> <p style={{ color: "black" }, { fontFamliy: 'Antic Slab' }}>Rishi Petrolhead: Hi tim</p></li>
                 <li className={classes.listItemStyle}> <p style={{ color: "black" }, { fontFamliy: 'Antic Slab' }}>Rishi Petrolhead: comment</p></li>
 
-
+ */}
 
             </ul>
+
         </div>
     )
 }

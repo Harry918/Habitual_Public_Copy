@@ -117,11 +117,14 @@ export const postComment = (uid, message, postId) => async dispatch => {
     }
 }
 
-export const getComments = (postID) => async dispatch=> {
+export const getComments = (postID, callback) => async dispatch=> {
     try{
         let url = `${serverAddress}/getComments?parentPost=${postID}`
         const response = await axios.get(url)
         console.log(response)
+        if(callback) {
+            callback(response)
+        }
         return response
         // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
     }

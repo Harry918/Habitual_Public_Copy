@@ -67,6 +67,7 @@ const Post = ({title, description, postID, post}) => {
 
     const postComment = (event) => {
         dispatch(routineActions.postComment(displayName, message, postID))
+        window.location.reload();
       }
 
     return (
