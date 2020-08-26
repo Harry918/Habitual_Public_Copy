@@ -19,6 +19,7 @@ import List from '@material-ui/core/List'
 import { Slide } from 'react-reveal';
 import LiveFeedBox from './component/liveFeedBox'
 import Comment from './component/Comment'
+// import { createRoutineWithBots } from '../../../../FrontEndServer/mongoFunctions/helper';
 
 
 
@@ -140,8 +141,9 @@ const Routine = (props) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const {routineID} = useSelector(state => state.routineReducers)
+    console.log(routineID)
     const params = props.location.state
-    const [update, setUpdate] = useState(false)
+    console.log(params.routine._id)
     // console.log(JSON.parse(localStorage.getItem("params")))
     // useEffect(() => {
     //     if(params){
@@ -207,23 +209,40 @@ const Routine = (props) => {
 
     }, [])
 
-
     const [userFinished, setUserFinished] = useState(0)
-
     useEffect(() => {
-        console.log(params.routine._id)
         dispatch(routineActions.checkRoutineCompletion(uid, params.routine._id, (response) => {
             console.log(response)
             setUserFinished(response.data)
-            setUpdate(true)
             }
         )) 
     }, [])
 
-    
+    const renderCompletedText = () => {
+        console.log("HEYYYYYYYYYYYYYYYYY", userFinished)
+        let color;
+        if (userFinished) {
+            color = '#b4b8bf'
+        } else {
+            color = 'rgb(114, 176, 29)'
+        }
+        return (
+            <Typography id="completedButtonId" style={{fontFamily: 'Lato'}, {color: color}}>
+                                            COMPLETED 
+                        {userFinished ? <span> <CheckCircleOutlineIcon /></span> : <div></div>}
+                                    </Typography>
+        )
+    }
 
     const completedRoutine = () => {
-        socket.emit('markCompletion', { uid: uid, routine_ID: params.routine._id, name: displayName, task: `${displayName} has completed this routine today!` })
+        dispatch(routineActions.checkJoinStatus(uid, params.routine._id, (response) => {
+            if (response.joined){
+                socket.emit('markCompletion', { uid: uid, routine_ID: params.routine._id, name: displayName, task: `${displayName} has completed this routine today!` })
+                setUserFinished(true);
+            } else {
+                alert('Please join the routine before completing')
+
+            }}))
     }
 
     useEffect(() => {
@@ -261,21 +280,7 @@ const Routine = (props) => {
         socket.emit('forceDisconnect', { routine_ID: params.routine._id })
     }
 
-    const renderCompletedText = () => {
-        console.log(userFinished)
-        let color;
-        if (userFinished && update) {
-            color = '#b4b8bf'
-        } else {
-            color = 'rgb(114, 176, 29)'
-        }
-        return (
-            <Typography id="completedButtonId" style={{fontFamily: 'Lato'}, {color: color}}>
-                                            COMPLETED 
-                        {userFinished ? <span> <CheckCircleOutlineIcon /></span> : <div></div>}
-                                    </Typography>
-        )
-    }
+    
     return (
         <div style={{ minWidth: 500 }}>
             <TopMenu />
@@ -359,7 +364,7 @@ const Routine = (props) => {
                                 </Grid>
                                 <Grid item xs={4} className={classes.pictureBar__right} >
                                     <NeuButton className={classes.completedButton} height="50px" width="175px" color="#ffffff" distance={8} radius={10} onClick={completedRoutine}>
-                                        {update ? renderCompletedText() : null}    
+                                        {renderCompletedText()}    
                                     </NeuButton>
                                 </Grid>
                             </Grid>

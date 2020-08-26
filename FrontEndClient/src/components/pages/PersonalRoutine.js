@@ -106,6 +106,12 @@ const PersonalRoutine = React.memo(() => {
     const update = useSelector(state => state.update)
     // const uid = useSelector(state => state.firebase.auth)
     const uid = localStorage.getItem('uid')
+    useEffect(() => {
+        // console.log("HERE")
+        console.log(uid)
+        dispatch(test.getUsersRoutines(uid))
+        
+    }, [])
     console.log(uid)
     
         
@@ -164,12 +170,7 @@ const PersonalRoutine = React.memo(() => {
     // var tem1 = localStorage.getItem('displayName')
     const {pageNumber} = useSelector(state => state.dashboardReducers)
     const [reached, setReached] = useState(false)
-    useEffect(() => {
-        // console.log("HERE")
-        // console.log(uid)
-        dispatch(test.getUsersRoutines(uid))
-        
-    }, [])
+
     const openDialog = () => {
         setDialog(!dialog)
     }
@@ -204,7 +205,7 @@ const PersonalRoutine = React.memo(() => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} className={classes.pictureBar__right} >
-                        
+                                <Dialog type="private"/>
                             </Grid>
                         </Grid>
                     </Paper>

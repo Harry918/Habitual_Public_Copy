@@ -61,14 +61,26 @@ const Post = ({title, description, postID, post}) => {
     const dispatch = useDispatch()
     const classes = useStyles();
     const displayName = localStorage.getItem('displayName')
+    const {update} = useSelector(state => state.routineReducers)
     // console.log("3212314141", uid)
     
     const [message, setMessage] = useState('');
 
     const postComment = (event) => {
         dispatch(routineActions.postComment(displayName, message, postID))
-        window.location.reload();
+        // window.location.reload();
+        console.log("CLEARING")
+        // document.getElementsByClass(classes.comment).value = ""
+        var x = document.getElementsByName("message").forEach(
+            input => (input.value = "")
+        )
+        console.log(x)
+          setMessage('')
       }
+
+      useEffect(() => {
+        setMessage('')
+      }, [update])
 
     return (
         <div>
@@ -89,12 +101,14 @@ const Post = ({title, description, postID, post}) => {
                                 <Grid container spacing={1} style={{height: 100}}>
 
                                     <Grid item xs={8}>
-                                    <TextField onChange={(event) => {setMessage(event.target.value)}} className={classes.comment} id="Standard" label="Comment" />
-
+                                        <form>
+                                            <TextField name="message" onChange={(event) => {setMessage(event.target.value)}} className={classes.comment} id="Standard" label="Comment" />
+                                        </form>
                                     </Grid>
                                     <Grid item xs={4}>
 
-                                    <Button onClick={postComment} className={classes.go} variant="outline-success">GO</Button>
+                                    {message.length > 0 ? <Button onClick={postComment} className={classes.go} variant="outline-success">GO</Button> :
+                                    <Button onClick={postComment} className={classes.go} disabled variant="outline-success">GO</Button>}
                                     </Grid>
 
                                 </Grid>

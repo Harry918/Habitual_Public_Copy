@@ -148,9 +148,6 @@ const SignUp = () => {
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function (result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
-            console.log(result.user.email)
-            console.log(result.user.displayName)
-            console.log(result.user.uid)
             dispatch(authFunctions.googleUser(result.user.uid, result.user.displayName, result.user.email))
             var token = result.credential.accessToken;
             history.push('/')
@@ -228,11 +225,11 @@ const SignUp = () => {
                         </Grid>
                         <Grid item xs={12}>
 
-                            <input id="email" type="text" onChange={(event) => { console.log(event.target.value) }} className={classes.test} placeholder="Email" />
+                            <input id="email" type="text" className={classes.test} placeholder="Email" />
                         </Grid>
                         <Grid item xs={12}>
 
-                            <input id="password" type="password" onChange={(event) => { console.log(event.target.value) }} className={classes.test} placeholder="Password" />
+                            <input id="password" type="password" className={classes.test} placeholder="Password" />
                         </Grid>
                         <Grid item xs={12}>
 
@@ -240,7 +237,7 @@ const SignUp = () => {
                         </Grid>
                         <Grid item xs={12}>
 
-                            <p className={classes.suggestion}>r skip creating a new account and <span><u className={classes.googleSignIn} onClick={googleLogin}> sign in with Google</u></span></p>
+                            <p className={classes.suggestion}>Or skip creating a new account and <span><u className={classes.googleSignIn} onClick={googleLogin}> sign in with Google</u></span></p>
                         </Grid>
                     </Grid>
 

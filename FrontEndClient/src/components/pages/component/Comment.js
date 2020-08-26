@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 const Comment = ({postID}) => {
     const classes = useStyles();
     const dispatch = useDispatch()
-
+    const {update} = useSelector(state => state.routineReducers)
 
     const [content, setContent] = useState([])
     const [creator, setCreator] = useState([])
@@ -63,7 +63,7 @@ const Comment = ({postID}) => {
             }
         ))
         
-    }, [])
+    }, [update])
     console.log(content)
     console.log(creator)
 

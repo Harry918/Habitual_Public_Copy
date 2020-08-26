@@ -6,7 +6,8 @@ const initalState = {
     live_feed: [],
     numCompletions: 0,
     active: 0,
-    routineID: ''
+    routineID: '',
+    update: false
 }
 
 export default function routineReducers(state=initalState, action) {
@@ -25,6 +26,8 @@ export default function routineReducers(state=initalState, action) {
             return{...state, active: action.payload}
         case 'SET_ROUTINE_ID_TEMP':
             return{...state, routineID: action.payload}
+        case 'UPDATE_COMMENTS':
+            return{...state, update: !state.update}
         default: 
             return{...state}
     }

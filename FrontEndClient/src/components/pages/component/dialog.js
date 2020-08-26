@@ -57,8 +57,8 @@ const useStyles = makeStyles((theme) => ({
     padding: 15
   },
   imageDiv: {
-    width: 600,
-    height: 300,
+    // width: 300,
+    // height: 300,
     // textAlign: 'center',
     // margin: '0 auto'
   //   margin-left: auto;
@@ -66,9 +66,15 @@ const useStyles = makeStyles((theme) => ({
   // display: block;
   },
   image: {
-
-    maxHeight:'100%',
-    maxWidth:'100%'
+    width: '500px',
+    height: '350px',
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: '5%',
+    // maxHeight:'100%',
+    // maxWidth:'100%',
+    // borderRadius:'15%',
+    // overflow:'hidden'
     // alignItems: 'center',
   },
   button: {
@@ -126,7 +132,7 @@ const Dialog = ({type}) => {
       dispatch(test.getPublicRoutines(pageNumber))
     }
     else{
-      dispatch(test.getUsersRoutines(pageNumber))
+      dispatch(test.getUsersRoutines(uid))
     }
   }
   console.log(images)
@@ -141,14 +147,14 @@ const Dialog = ({type}) => {
                 onClick={() => { movetoNextPage(routines[i], images[i]);  }}
                 color="#FFFFFF"
               >
-                <Typography variant="h4" color="textSecondary" component="p">
+                <Typography variant="header4" color="textSecondary" component="p">
                   {truncateWord(routines[i].title, 35)}
                 </Typography>
                 <div className={classes.imageDiv}>
                   {<img src={images[i]} className={classes.image} thumbnail />}
                 </div>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {truncateWord(routines[i].description,80)}
+                  {truncateWord(routines[i].description, 75)}
                 </Typography>
               </NeuButton>
             </div>
@@ -171,13 +177,13 @@ const Dialog = ({type}) => {
 
 
 
-            <NeuButton height="391.3px"
-              width="630px"
+            <NeuButton height="424px"
+              width="530px"
               color="#FFFFFF"
               distance={8}
               style={{margin: 30}}
               onClick={openDialog}
-            ><Typography variant='h1'>
+            ><Typography variant='h2'>
               +
               </Typography>
             </NeuButton>

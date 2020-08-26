@@ -59,6 +59,8 @@ export const joinRoutine = (uid, routineID) => async dispatch => {
         // dispatch({type: 'GET_ROUTINE_POSTS_START'})
         let url = `${serverAddress}/joinRoutine?uid=${uid}&routineid=${routineID}`
         const response = await axios.get(url)
+        console.log('JOINED IT')
+
         console.log(response)
         // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
     }
@@ -75,6 +77,7 @@ export const leaveRoutine = (uid, routineID) => async dispatch => {
         // dispatch({type: 'GET_ROUTINE_POSTS_START'})
         let url = `${serverAddress}/leaveRoutine?uid=${uid}&routineid=${routineID}`
         const response = await axios.get(url)
+        console.log('LEFT IT')
         console.log(response)
         // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
     }
@@ -108,7 +111,7 @@ export const postComment = (uid, message, postId) => async dispatch => {
         let url = `${serverAddress}/createComment?uid=${uid}&content=${message}&parentPost=${postId}`
         const response = await axios.get(url)
         console.log(response)
-        // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
+        dispatch({type: 'UPDATE_COMMENTS'})
     }
     catch(err)
     {
@@ -149,6 +152,25 @@ export const getGraphData = (uid, callback) => async dispatch=> {
     }
     catch(err)
     {
+        console.log(err)
+
+    }
+}
+
+export const checkJoinStatus = (uid, routine_ID,  callback) => async dispatch => {
+    try{
+        // dispatch({type: 'GET_ROUTINE_POSTS_START'})
+        let url = `${serverAddress}/checkJoinStatus?uid=${uid}&routineid=${routine_ID}`
+        const response = await axios.get(url)
+        if(callback){
+            callback(response.data)
+        }
+        // console.log(response)
+        // dispatch({type: 'GET_ROUTINE_POSTS_SUCCESS', payload: response.data})
+    }
+    catch(err)
+    {
+        // dispatch({type: 'GET_ROUTINE_POSTS_FAILURE'})
         console.log(err)
 
     }

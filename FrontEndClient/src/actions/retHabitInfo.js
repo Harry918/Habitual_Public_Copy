@@ -132,7 +132,7 @@ export const createRoutineWithoutImage = (uid, title, desc, pub) => async dispat
     }
 }
 
-export const getUsersRoutines = (uid, callback) => async dispatch => {
+export const getUsersRoutines = (uid,) => async dispatch => {
     console.log("GETTIGN USER ROUTINE", uid, "THIS IS UID")
     console.log(uid)
     try{
@@ -141,9 +141,9 @@ export const getUsersRoutines = (uid, callback) => async dispatch => {
         const response = await axios.get(url)
         console.log(response)
         dispatch({type: 'GET_USERS_ROUTINES', payload: response.data})
-        if(callback){
-            callback(response.data)
-        }
+        // if(callback){
+        //     callback(response.data)
+        // }
     }
     catch(err)
     {
