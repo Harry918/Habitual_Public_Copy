@@ -139,8 +139,8 @@ const TopMenu = () => {
     console.log(results.findIndex(obj => obj.title === routine.target.innerHTML))
     dispatch(searchResultsFunctions.getSearchRoutines(routine.target.innerHTML, ))
     //also need the api reuqest for getting the picture key
-    window.location.reload(false)
     history.push('/routine', { routine: results[results.findIndex(obj => obj.title === routine.target.innerHTML)]})
+    window.location.reload(false)
   }
 
   return (

@@ -27,6 +27,7 @@ async function retPic(response, callback) {
         let url2 = `${serverAddress}/getPhoto?key=${response.data.result[i].picturekey}`
         const response2 = await axios.get(url2, options)
         convertPic(callback, response2, imagesArray, response.data.result.length, (callback, data, imagesArray, arraySize) => {
+            console.log(data.height)
             imagesArray.push(data)
             if(imagesArray.length === arraySize){
                 // dispatch({type: 'PUBLIC_PIC_SUCCESS', payload: imagesArray})
@@ -58,7 +59,7 @@ export const getPublicRoutines = (pageNumber, callback) => async dispatch => {
     dispatch({type: 'PUBLIC_ROUTINES_START'})
     try{
         console.log(pageNumber)
-        let url = `${serverAddress}/getPublicRoutines/?pageNumber=${pageNumber}&pageLimit=5`
+        let url = `${serverAddress}/getPublicRoutines/?pageNumber=${pageNumber}&pageLimit=25`
         const response = await axios.get(url)
         .then(async (response) => {
             if(response.data.result.length < 10){
@@ -66,9 +67,9 @@ export const getPublicRoutines = (pageNumber, callback) => async dispatch => {
             }
             let images = []
             dispatch({type: 'PUBLIC_ROUTINES_SUCCESS', payload: response.data})
-            // retPic(response, (imagesArray) => {
-            //     dispatch({type: 'PUBLIC_PIC_SUCCESS', payload: imagesArray})
-            // })
+            retPic(response, (imagesArray) => {
+                dispatch({type: 'PUBLIC_PIC_SUCCESS', payload: imagesArray})
+            })
         })
         if(callback){
             callback()
@@ -135,6 +136,7 @@ export const getUsersRoutines = (uid, callback) => async dispatch => {
     console.log("GETTIGN USER ROUTINE", uid, "THIS IS UID")
     console.log(uid)
     try{
+        //specifcy page number for routines
         let url = `${serverAddress}/getUserRoutines/?uid=${uid}`
         const response = await axios.get(url)
         console.log(response)
