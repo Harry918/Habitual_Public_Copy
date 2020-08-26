@@ -223,7 +223,7 @@ const Routine = (props) => {
     
 
     const completedRoutine = () => {
-        socket.emit('markCompletion', { uid: uid, routine_ID: params.routine._id, name: displayName, task: `${displayName} is drinking water` })
+        socket.emit('markCompletion', { uid: uid, routine_ID: params.routine._id, name: displayName, task: `${displayName} has completed this routine today!` })
     }
 
     useEffect(() => {
